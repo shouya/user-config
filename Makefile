@@ -23,4 +23,9 @@ emacs:
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
 
+shell:
+  # -n :: otherwise ln will create a symlink as ~/.shell/shell
+	ln -rsf -n shell ~/.shell
+	ln -rsf ~/.shell/zshrc ~/.zshrc
+
 .PHONY : $(MAKECMDGOALS)

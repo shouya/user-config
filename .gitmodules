@@ -1,3 +1,6 @@
 [submodule "emacs"]
 	path = emacs
 	url = git@github.com:shouya/emacs.d.git
+[submodule "shell"]
+	path = shell
+	url = git@git.lain.li:shouya/dot-shell.git
