@@ -1,0 +1,74 @@
+# git ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+
+# object files and middle file of compiler
+*.o
+
+# libfile generated
+*.so
+*.pyc
+*.a
+
+
+# backup or swap files by editor
+\#*
+*~
+.\#*
+*.swp
+
+# output files
+nohup.out
+gmon.out
+*.output
+
+# Dolphin directory customization
+.directory
+
+
+.idea
+
+.DS_Store
+Thumbs.db
+.log
+.sql
+.sass-cache/
+.codekit-config.json
+.sync/
+
+# IDEA
+.idea/
+*.iml
+
+.vscode/
+.ipynb_checkpoints/
+
+.dropbox
+
+__pycache__
+
+target/
+
+.byebug-history
+
+rls/
+
+.elixir_ls
+
+wt-*/
+
+.dir-locals.el
+
+.tabnine_root
+
+.projectile
+
+flycheck_*
+
+*-emacs-elixir-format.exs
+
+node_modules/
+/erl_crash.dump
+
+flamegraph.svg
