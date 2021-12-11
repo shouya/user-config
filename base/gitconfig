@@ -1,0 +1,129 @@
+[color]
+ui = auto
+
+[log]
+date = relative
+
+[alias]
+am = commit --amend
+amch = commit --amend -C HEAD
+amm = commit --amend -m
+amcha = commit --amend -C HEAD -a
+cmm = commit -m
+a = add
+b = branch --sort=-committerdate
+bb = "!f() { git for-each-ref --sort='-committerdate' --format='%(refname)' refs/heads | sed -e 's#refs/heads/##' | head -n10; }; f"
+s = status -s
+co = checkout
+coh = checkout HEAD
+cob = checkout -b
+com = checkout master
+cod = checkout development
+cos = checkout staging
+cp = cherry-pick
+f = fetch
+d = diff
+lg = log --color --graph --oneline --abbrev-commit
+lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit
+dc = diff --cached
+dh = diff HEAD
+rsh = reset --hard
+rshh = reset --hard HEAD
+rshhh = reset --hard HEAD^
+rbi = "!f() { git rebase -i HEAD~$1; }; f"
+rbc = rebase --continue
+rba = rebase --abort
+as  = "!f() { git add \"$@\" ; git s; }; f"
+puo = push -u origin HEAD -v
+pul = push -u lain HEAD -v
+aa = add --all
+ss = stash save
+sp = stash pop
+fff = "!git fetch; git merge --ff"
+ff = merge --ff
+pr = pull-request --browse
+up = pull --rebase --autostash
+upp = "!git up; git push"
+ppr = "!f() { git puo && (git rev-parse --abbrev-ref HEAD | tr '_-' ' ' | hub pr -F -); }; f"
+tags = tag
+taga = "!f() { git tag \"$1\" -a -m \"$1\"; }; f"
+tagam = "!f() { git tag \"$1\" -a -m \"$2\"; }; f"
+c1 = clone --depth=1
+wt = worktree
+wta = "!f() { git worktree add \"wt-$1\" \"$1\"; }; f"
+prune-branch = "!f() { git fetch -p; git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d \"$@\"; }; f"
+prune-branch-bang = "!f() { git fetch -p; git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D \"$@\"; }; f"
+# typo
+ush = push
+git = !exec git
+switch = checkout
+fix-perm = "!f(){ git diff -p -R --no-color | grep -E '^(diff|(old|new) mode)' --color=never | git apply; }; f"
+fix-perm-sudo = "!f(){ git diff -p -R --no-color | grep -E '^(diff|(old|new) mode)' --color=never | sudo git apply; }; f"
+wip = for-each-ref --sort='-authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' --count=10 refs/heads
+contributors = "shortlog -s -n"
+
+[include]
+path = "~/.gitconfig.private"
+
+[user]
+name = Shou Ya
+email = shouya@users.noreply.github.com
+signingkey = 7287CB6DB65E82C5094CF34CD5020D9FAD55DEE5
+
+[core]
+excludesfile = ~/.gitignore
+editor = vim
+pager = delta
+
+[color "diff"]
+whitespace = red reverse
+
+[diff]
+# tool = icdiff
+# colorMoved = default
+
+[difftool]
+prompt = false
+
+[help]
+autocorrect = 0
+
+[push]
+default = simple
+stat = true
+followTags = true
+#  gpgSign = true
+
+[commit]
+gpgsign = true
+
+[tag]
+forceSignAnnotated = true
+sort = version:refname
+
+[status]
+showUntrackedFiles = all
+
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+
+[magithub "confirm"]
+prAllowMaintainersToSubmit = allow
+submitPR = allow
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+features = side-by-side line-numbers decorations
+features = decorations
+whitespace-error-style = 22 reverse
+
+[init]
+defaultBranch = master
+
+[pull]
+rebase = true
