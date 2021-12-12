@@ -28,13 +28,13 @@ neovim: # Neovim
 	./utils/backup ~/.config/nvim
 	ln -rsf xdg/nvim ~/.config
 
-emacs: # Emacs, requires submodule and git-crypt
+emacs: # Emacs config (requires git-crypt)
 	git clone --recursive https://github.com/shouya/emacs.d.git emacs
 	cd emacs && git crypt unlock
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
 
-shell: # Emacs, requires submodule and git-crypt
+shell: # Zsh config (requires git-crypt)
 	git clone --recursive git@git.lain.li:shouya/dot-shell.git shell
 	cd shell && git crypt unlock
 	ln -Trsf shell ~/.shell
