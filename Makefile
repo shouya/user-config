@@ -61,4 +61,9 @@ gpg: # GnuPG agent config
 	ln -rsf gnupg/gpg-agent.conf ~/.gnupg/
 	killall -9 gpg-agent
 
+tmux: # Tmux
+	./utils/backup ~/.tmux.conf ~/.tmux.d
+	ln -rsf tmux/tmux.conf ~/.tmux.conf
+	ln -rsf tmux/tmux.d ~/.tmux.d
+
 .PHONY : $(MAKECMDGOALS)
