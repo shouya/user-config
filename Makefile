@@ -21,13 +21,13 @@ ssh:
 	ln -frs base/ssh_config.private ~/.ssh/config
 
 emacs:
-	git submodule update --recursive emacs
+	git submodule update --init --recursive emacs
 	cd emacs && git crypt unlock
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
 
 shell:
-	git submodule update --recursive shell
+	git submodule update --init --recursive shell
 	cd shell && git crypt unlock
 	ln -Trsf shell ~/.shell
 	ln -rsf ~/.shell/zshrc ~/.zshrc
