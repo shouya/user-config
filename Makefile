@@ -29,7 +29,7 @@ neovim: # Neovim
 	ln -rsf xdg/nvim ~/.config
 
 emacs: # Emacs config (requires git-crypt)
-	git clone --recursive https://github.com/shouya/emacs.d.git emacs
+	git clone --recursive git@github.com:shouya/emacs.d.git emacs
 	cd emacs && git crypt unlock
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
