@@ -5,7 +5,7 @@ help:
 
 base: git ssh
 
-git: # Git config
+git: # Git config (requires git-crypt)
 	git crypt unlock
 ifndef NO_GIT_CRYPT
 	ln -frs base/gitconfig.private ~/.gitconfig.private
@@ -13,7 +13,7 @@ endif
 	ln -frs base/gitconfig ~/.gitconfig
 	ln -frs base/gitignore ~/.gitignore
 
-ssh: # SSH config, requires git config
+ssh: # SSH config (requires git-crypt)
 ifndef NO_GIT_CRYPT
 	git crypt unlock
 	mkdir -p ~/.ssh
@@ -28,13 +28,13 @@ neovim: # Neovim
 	./utils/backup ~/.config/nvim
 	ln -rsf xdg/nvim ~/.config
 
-emacs: # Emacs, requires submodule and git crypt
+emacs: # Emacs, requires submodule and git-crypt
 	git submodule update --init --recursive emacs
 	cd emacs && git crypt unlock
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
 
-shell: # Emacs, requires submodule and git crypt
+shell: # Emacs, requires submodule and git-crypt
 	git submodule update --init --recursive shell
 	cd shell && git crypt unlock
 	ln -Trsf shell ~/.shell
