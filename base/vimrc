@@ -1,0 +1,43 @@
+" set nu         " line number
+set ru         " ruler
+set incsearch  " incremental search
+set hlsearch   " highlight search result
+set smartcase  " case insensitive
+set expandtab  " use space for indenting
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+
+filetype plugin indent on
+filetype on   " enable file type detection
+syntax on     " enalbe syntax high light
+set modeline  " respect modeline hints
+set modelines=2
+
+" to make backspace work
+set backspace=indent,eol,start
+
+set wrap
+set linebreak
+set nolist
+
+set undofile
+set undodir=$HOME/.vim/vimundo
+
+" to make Y work like D/C
+map Y y$
+
+autocmd BufWritePre * %s/\s\+$//e
+
+" browse file in dir of current file
+set browsedir=buffer
+
+" do not redarw screen in the middle of a macro
+set lazyredraw
+
+" persistent undo
+set undofile
+
+
+
+

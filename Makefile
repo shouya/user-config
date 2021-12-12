@@ -9,6 +9,7 @@ default:
 #    -T :: otherwise ln may create a symlink inside the target as folder
 
 base: git ssh
+	ln -frs base/vimrc ~/.vimrc
 
 git:
 	ln -frs base/gitconfig.private ~/.gitconfig.private
