@@ -65,4 +65,9 @@ tmux: # Tmux
 	./utils/backup ~/.tmux.conf
 	ln -rsf tmux/tmux.conf ~/.tmux.conf
 
+rclone: # Rclone config (requires git-crypt)
+	git crypt unlock
+	./utils/backup ~/.config/rclone
+	ln -rsf xdg/rclone ~/.config
+
 .PHONY : $(MAKECMDGOALS)
