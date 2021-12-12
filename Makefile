@@ -12,6 +12,7 @@ base: git ssh
 	ln -frs base/vimrc ~/.vimrc
 
 git:
+	git crypt unlock
 ifndef NO_GIT_CRYPT
 	ln -frs base/gitconfig.private ~/.gitconfig.private
 endif
@@ -19,6 +20,7 @@ endif
 	ln -frs base/gitignore ~/.gitignore
 
 ssh:
+	git crypt unlock
 	mkdir -p ~/.ssh
 	chmod 700 ~/.ssh
 ifndef NO_GIT_CRYPT
