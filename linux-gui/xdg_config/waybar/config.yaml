@@ -1,0 +1,100 @@
+# Update the actual json config by running `make`
+
+layer: top
+
+height: 26
+
+modules-left:
+  - sway/workspaces
+  - sway/mode
+  - idle_inhibitor
+  - custom/keyboard-lock
+
+modules-center:
+  - custom/events
+
+modules-right:
+  - cpu
+  - temperature
+  - memory
+  - battery
+  - pulseaudio
+  - network
+  - clock
+
+custom/keyboard-lock:
+  exec: "~/.config/waybar/scripts/keyboard-lock.sh"
+  on-click: ~/.config/waybar/scripts/keyboard-lock.sh toggle
+  exec-on-event: true
+  interval: once
+
+custom/events:
+  interval: 60
+  exec: "~/.config/waybar/scripts/waybar-khal.py"
+  return-type: json
+
+idle_inhibitor:
+  format: "{icon}"
+  format-icons:
+    activated: ""
+    deactivated: ""
+  on-click-right: ~/.config/sway/scripts/lock.sh
+
+cpu:
+  format: " {usage:2d}% ({load:.2f}) {avg_frequency}GHz"
+  status:
+    medium: 50
+    hight: 90
+
+memory:
+  format: " {}%"
+
+temperature:
+  hwmon-path: /sys/class/hwmon/hwmon3/temp1_input
+  criticial-threshold: 80
+  format: "{temperatureC}°C {icon}"
+  format-icons: ["", "", ""]
+
+battery:
+  states:
+    good: 95
+    warning: 30
+    critical: 15
+  format: "{icon} {capacity}%"
+  format-charging: " {capacity}%"
+  format-plugged: ""
+  tooltip-format: "{timeTo} (current: {capacity}%)"
+  format-time: "{H}:{M:02d}"
+  format-icons: ["", "", "", "", ""]
+
+pulseaudio:
+  scroll-step: 5 # %
+  format: "{icon} {volume}%"
+  format-bluetooth: "{volume}% {icon}"
+  format-bluetooth-muted: " {icon}"
+  format-muted: ""
+  format-source: ""
+  format-source-muted: ""
+  format-icons:
+    headphone: ""
+    hands-free: ""
+    headset: ""
+    phone: ""
+    portable: ""
+    car: ""
+    hdmi: ""
+    default: ["", "", ""]
+  on-click: pactl set-sink-mute @DEFAULT_SINK@ toggle
+  on-click-right: pavucontrol-qt
+
+network:
+  interval: 5
+  format: "{ifname}"
+  format-wifi: " {bandwidthUpBits} {bandwidthDownBits}"
+  format-eithernet: " {bandwidthUpBits} {bandwidthDownBits}"
+  format-disconnected: "Disconnected"
+  tooltip-format: "{essid}/{ifname} {ipaddr}"
+
+clock:
+  interval: 1
+  format: "{:%a %F %T}"

@@ -1,0 +1,156 @@
+widget > * {
+  border: none;
+  border-radius: 0;
+  font-family: DejaVu Sans Mono;
+  font-size: 11pt;
+  min-height: 0;
+  padding: 0 0.2em;
+  margin: 0 0.1em;
+}
+
+window#waybar {
+  background-color: #000000;
+  color: #8080cc;
+  transition-property: background-color;
+  transition-duration: .5s;
+}
+
+#workspaces button {
+  padding: 0 5px;
+  background-color: transparent;
+  color: #ffffff;
+  /* Use box-shadow instead of border so the text isn't offset */
+  box-shadow: inset 0 -3px transparent;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+#workspaces button:hover {
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 -3px #ffffff;
+}
+
+#workspaces button.focused {
+  background-color: #64727D;
+  box-shadow: inset 0 -3px #ffffff;
+}
+
+#workspaces button.urgent {
+  background-color: #eb4d4b;
+}
+
+#mode {
+  color: #8080cc;
+  background-color: #000000;
+  border-bottom: 3px solid #ffffff;
+}
+
+
+.modules-left > widget:first-child > * {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.modules-right > widget:last-child > * {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+#clock {
+  color: #e6e6fa;
+}
+
+#battery.warning {
+  color: #ffb823;
+}
+#battery.discharging {
+  color: #3a88ff;
+}
+#battery.charging {
+  color: #26A65B;
+}
+#battery.plugged {
+  color: #6fa685;
+}
+
+@keyframes blink {
+  to {
+    background-color: #ffff00;
+  }
+}
+#battery.critical:not(.charging) {
+  color: #f53c3c;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#cpu {
+  font-family: monospace;
+}
+
+#cpu, #temperature {
+  color: #2ecc71;
+}
+
+#cpu.medium {
+  color: #ffb823;
+}
+
+#cpu.high {
+  color: #eb4d4b;
+}
+
+#temperature.critical {
+  color: #eb4d4b;
+}
+
+#memory {
+  color: #9b59b6;
+}
+
+#pulseaudio {
+  color: #0f80f1;
+  min-width: 55px;
+}
+
+#pulseaudio.muted {
+  color: #9ec7f0;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: #eb4d4b;
+}
+
+#idle_inhibitor {
+  color: #2d3436;
+}
+
+#idle_inhibitor.activated {
+  color: #ecf0f1;
+}
+
+#custom-aqi.green {
+  color: #00e400;
+}
+#custom-aqi.yellow {
+  color: #ffff00;
+}
+#custom-aqi.orange {
+  color: #ff7e00;
+}
+#custom-aqi.red {
+  color: #ff0000;
+}
+#custom-aqi.purple {
+  color: #99004c;
+}
+#custom-aqi.maroon {
+  color: #7e0023;
+}
