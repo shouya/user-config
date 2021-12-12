@@ -1,0 +1,18 @@
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+[pair time_blocking]
+a = "time_blocking_local"
+b = "time_blocking_fastmail"
+collections = ["from a", "from b"]
+
+[storage time_blocking_local]
+type = "filesystem"
+path = "~/.calendar"
+fileext = ".ics"
+
+[storage time_blocking_fastmail]
+type = "caldav"
+url = "https://caldav.fastmail.com/dav/calendars/user/shou@lain.li/6a41ddbc-73ad-4180-9ea1-c5ffcf2e464a"
+username = "shou@lain.li"
+password.fetch = ["command", "pass", "show", "fastmail_caldav"]

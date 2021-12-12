@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync unison files with NAS
+
+[Timer]
+# run after 30 secs since boot
+OnBootSec=30
+# run every hour
+OnUnitActiveSec=3600
+
+[Install]
+WantedBy=timers.target

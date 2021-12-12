@@ -1,0 +1,24 @@
+[calendars]
+
+[[time-blocking]]
+path = ~/.calendar/6a41ddbc-73ad-4180-9ea1-c5ffcf2e464a
+type = calendar
+color = dark green
+
+[default]
+default_calendar = time-blocking
+# highlight_event_days = yes
+
+[keybindings]
+left = left, h, ctrl b
+down = down, j, ctrl n
+up = up, k, ctrl p
+right = right, l, ctrl f
+save = ctrl enter
+
+[locale]
+timeformat = %H:%M
+dateformat = %Y-%m-%d
+longdateformat = %Y-%m-%d
+datetimeformat = %Y-%m-%d %H:%M
+longdatetimeformat = %Y-%m-%d %H:%M

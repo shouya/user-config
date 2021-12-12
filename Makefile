@@ -32,9 +32,19 @@ shell:
 	ln -Trsf shell ~/.shell
 	ln -rsf ~/.shell/zshrc ~/.zshrc
 
-
 linux-gui:
-	cd linux-gui/xdg_config && bash -c 'for i in *; do mv -f ~/.config/{$$i,$$i.bak} ; done'
+	PREFIX=~/.config ./utils/backup tools/linux-gui/*
 	ln -rsf linux-gui/xdg_config/* ~/.config
+
+tools:
+	PREFIX=~/.config ./utils/backup tools/xdg_config/*
+	ln -rsf tools/xdg_config/* ~/.config
+	mkdir -p ~/.calendar
+
+systemd:
+	mv -f ~/.config/systemd{,.bak}
+	ln -rsf systemd ~/.config/systemd
+	echo "Please run [systemctl --user daemon-reload]"
+	echo "Also [systemctl enable <unit>]"
 
 .PHONY : $(MAKECMDGOALS)

@@ -1,0 +1,10 @@
+** Profiles
+
+Run =make <profile>= to provision the config files for that profile.
+
+- base :: base system, applies to any unix for any purpose
+- linux-gui :: linux-specific gui related config (wayland, x, other tools)
+- emacs :: emacs config
+- shell :: zsh config
+- tools :: config for non-os specific tools
+- systemd :: systemd-user config

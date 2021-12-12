@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Backup files before installing symlink
+#
+# Usage: $0 <filenames>
+#
+# Only basename part of the filenames are preserved.
+#
+# Options (environment variable):
+#
+# - PREFIX :: specify a prefix for the files to be back'ed up
+#
+# Usage example:
+#
+# $ PREFIX=~/.config ./utils/backup tools/xdg_config/*
+#
+# Suppose tools/xdg_config/* expands to tools/xdg_config/{file1,file2},
+# then ~/.config/{file1,file2} will be back'ed up if they exists
+# and are not symlinks.
+#
+
+backup() {
+  local DST="$1"
+
+  if [[ ! -L "$DST" ]]; then
+    echo "Backing up $DST before installing"
+    mv "$DST" "$DST.bak"
+  fi
+}
+
+for f in "$@"; do
+  full_name="${f##*/}"
+
+  if [[ ! -z "$PREFIX" ]]; then
+    full_name="${PREFIX%/}/$full_name"
+  fi
+
+  backup "$full_name"
+done
