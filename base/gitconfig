@@ -61,6 +61,8 @@ fix-perm = "!f(){ git diff -p -R --no-color | grep -E '^(diff|(old|new) mode)' -
 fix-perm-sudo = "!f(){ git diff -p -R --no-color | grep -E '^(diff|(old|new) mode)' --color=never | sudo git apply; }; f"
 wip = for-each-ref --sort='-authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' --count=10 refs/heads
 contributors = "shortlog -s -n"
+	c = crypt
+	cs = crypt status -e
 
 [include]
 path = "~/.gitconfig.private"
