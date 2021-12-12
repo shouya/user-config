@@ -55,6 +55,10 @@ systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	@echo "Please run [systemctl --user daemon-reload]"
 	@echo "Also [systemctl enable <unit>]"
 
-
+gpg: # GnuPG agent config
+	mkdir -p ~/.gnupg
+	chmod 700 ~/.gnupg
+	ln -rsf gnupg/gpg-agent.conf ~/.gnupg/
+	killall -9 gpg-agent
 
 .PHONY : $(MAKECMDGOALS)
