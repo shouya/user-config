@@ -24,37 +24,37 @@ endif
 vim: # Vim RC
 	ln -frs base/vimrc ~/.vimrc
 
+neovim: # Neovim
+	./utils/backup ~/.config/nvim
+	ln -rsf xdg/nvim ~/.config
+
 emacs: # Emacs, requires submodule and git crypt
 	git submodule update --init --recursive emacs
 	cd emacs && git crypt unlock
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
 
-shell:
+shell: # Emacs, requires submodule and git crypt
 	git submodule update --init --recursive shell
 	cd shell && git crypt unlock
 	ln -Trsf shell ~/.shell
 	ln -rsf ~/.shell/zshrc ~/.zshrc
 
-linux-gui:
-	PREFIX=~/.config ./utils/backup tools/linux-gui/*
-	ln -rsf linux-gui/xdg_config/* ~/.config
+calendar: # Khal and vdirsyncer
+	./utils/backup ~/.config/{khal,vdirsyncer}
+	ln -rsf xdg/{khal,vdirsyncer} ~/.config
 
-tools:
-	PREFIX=~/.config ./utils/backup tools/xdg_config/*
-	ln -rsf tools/xdg_config/* ~/.config
-	mkdir -p ~/.calendar
+sway: # Sway, waybar, kanshi, rofi
+	./utils/backup ~/.config/{rofi,kanshi,sway,waybar}
+	ln -rsf xdg/{rofi,kanshi,sway,waybar} ~/.config
 
-systemd:
-	./utils/backup ~/.config/systemd/user
-	./utils/backup ~/.config/systemd/user-tmpfiles.d
-
-	mkdir -p ~/.config/systemd
-	ln -rsf systemd/user ~/.config/systemd/user
-
-	ln -rsf systemd/user-tmpfiles.d ~/.config/user-tmpfiles.d
-
+systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
+	./utils/backup ~/.config/systemd
+	ln -Trsf xdg/systemd-laptop ~/.config/systemd
+	ln -Trsf user-tmpfiles.d ~/.config/user-tmpfiles.d
 	@echo "Please run [systemctl --user daemon-reload]"
 	@echo "Also [systemctl enable <unit>]"
+
+
 
 .PHONY : $(MAKECMDGOALS)

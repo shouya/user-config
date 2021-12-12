@@ -1,32 +1,13 @@
 
 ** Dependencies
 
-- git-crypt (not for bootstraping)
-
+- git-crypt
 
 ** Profiles
 
 Run =make <profile>= to provision the config files for that profile.
 
 - base :: base system, applies to any unix for any purpose
-- linux-gui :: linux-specific gui related config (wayland, x, other tools)
 - emacs :: emacs config
 - shell :: zsh config
-- tools :: config for non-os specific tools
-- systemd :: systemd-user config
-
-
-*** =base= profile
-
-Base is the only profile that can be provisioned without needing a working gpg. Run
-
-#+begin_src
-make -DNO_GIT_CRYPT base
-#+end_src
-
-to provision it. After it, set up GPG encryption keys, and run:
-
-#+begin_src
-git crypt unlock
-make base
-#+end_src
+- ... :: See output of =make help=
