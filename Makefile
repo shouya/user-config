@@ -70,4 +70,9 @@ rclone: # Rclone config (requires git-crypt)
 	./utils/backup ~/.config/rclone
 	ln -rsf xdg/rclone ~/.config
 
+pass: # Password store
+	git clone git@git.lain.li:shouya/pass.git ~/.password-store || true
+	cd ~/.password-store; git pull --rebase
+
+
 .PHONY : $(MAKECMDGOALS)
