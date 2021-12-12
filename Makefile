@@ -12,14 +12,18 @@ base: git ssh
 	ln -frs base/vimrc ~/.vimrc
 
 git:
+ifndef NO_GIT_CRYPT
 	ln -frs base/gitconfig.private ~/.gitconfig.private
+endif
 	ln -frs base/gitconfig ~/.gitconfig
 	ln -frs base/gitignore ~/.gitignore
 
 ssh:
 	mkdir -p ~/.ssh
 	chmod 700 ~/.ssh
+ifndef NO_GIT_CRYPT
 	ln -frs base/ssh_config.private ~/.ssh/config
+endif
 
 emacs:
 	git submodule update --init --recursive emacs
