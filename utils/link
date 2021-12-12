@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SRC="$1"
+DST="$2"
+
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+$SCRIPT_DIR/backup "$DST"
+
+ln -rsfT "$SRC" "$DST"
