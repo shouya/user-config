@@ -4,13 +4,16 @@
 #
 # Usage: $0 <filenames>
 #
-# Only basename part of the filenames are preserved.
-#
 # Options (environment variable):
 #
-# - PREFIX :: specify a prefix for the files to be back'ed up
+# - PREFIX :: specify a prefix for the files to be back'ed up, only
+#   basename part of the filenames are preserved.
 #
 # Usage example:
+#
+# $ ./utils/backup ~/.config/khal
+#
+# Simply backup ~/.config/khal if it exists.
 #
 # $ PREFIX=~/.config ./utils/backup tools/xdg_config/*
 #
@@ -19,8 +22,13 @@
 # and are not symlinks.
 #
 
+
 backup() {
   local DST="$1"
+
+  if [[ ! -e "$DST" ]]; then
+    return
+  fi
 
   if [[ ! -L "$DST" ]]; then
     echo "Backing up $DST before installing"
@@ -29,9 +37,10 @@ backup() {
 }
 
 for f in "$@"; do
-  full_name="${f##*/}"
+  full_name="$f"
 
   if [[ ! -z "$PREFIX" ]]; then
+    full_name="${full_name##*/}"
     full_name="${PREFIX%/}/$full_name"
   fi
 

@@ -42,9 +42,15 @@ tools:
 	mkdir -p ~/.calendar
 
 systemd:
-	mv -f ~/.config/systemd{,.bak}
-	ln -rsf systemd ~/.config/systemd
-	echo "Please run [systemctl --user daemon-reload]"
-	echo "Also [systemctl enable <unit>]"
+	./utils/backup ~/.config/systemd/user
+	./utils/backup ~/.config/systemd/user-tmpfiles.d
+
+	mkdir -p ~/.config/systemd
+	ln -rsf systemd/user ~/.config/systemd/user
+
+	ln -rsf systemd/user-tmpfiles.d ~/.config/user-tmpfiles.d
+
+	@echo "Please run [systemctl --user daemon-reload]"
+	@echo "Also [systemctl enable <unit>]"
 
 .PHONY : $(MAKECMDGOALS)
