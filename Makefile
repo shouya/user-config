@@ -35,10 +35,14 @@ emacs: # Emacs config (requires git-crypt)
 	ln -rsf emacs/* ~/.emacs.d
 
 shell: # Zsh config (requires git-crypt)
+	./utils/backup ~/.config/starship.toml
+	ln -rsf xdg/starship.toml ~/.config
+
 	git clone --recursive git@git.lain.li:shouya/dot-shell.git shell
 	cd shell && git crypt unlock
 	ln -Trsf shell ~/.shell
 	ln -rsf ~/.shell/zshrc ~/.zshrc
+
 
 calendar: # Khal and vdirsyncer
 	./utils/backup ~/.config/{khal,vdirsyncer}

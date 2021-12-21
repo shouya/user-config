@@ -1,0 +1,65 @@
+format = """
+$username\
+$hostname\
+$shlvl\
+$kubernetes\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$package\
+$elixir\
+$rust\
+$env_var\
+$custom\
+$cmd_duration\
+$status\
+$line_break\
+$jobs\
+$time\
+$character"""
+
+command_timeout = 1000
+
+[character]
+success_symbol = "[\\$](bold green)"
+error_symbol = "[\\$](bold red)"
+
+[status]
+format = "\\[[\\$?=$int]($style)\\]"
+disabled = false
+
+[shlvl]
+symbol = "SHLVL "
+disabled = false
+
+[cmd_duration]
+min_time = 500
+show_milliseconds = true
+show_notifications = true
+min_time_to_notify = 60_000
+
+[directory]
+truncate_to_repo = false
+
+[git_status]
+staged = "A"
+modified = "M"
+ahead = "aH"
+behind = "bH"
+diverged = "V"
+renamed = "R"
+untracked = "?"
+stashed = "S"
+deleted = "D"
+
+[package]
+symbol = "pkg "
+
+[elixir]
+disabled = true
+
+# [time]
+# disabled = false
