@@ -18,8 +18,7 @@ set $term /home/shou/.cargo/bin/alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu "rofi -show combi -modi calc,filebrowser"
-
+set $menu rofi -show combi -no-history -calc-command "echo -n '{result}' | wl-copy; notify-send 'copied {result}'"
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
