@@ -1,0 +1,8 @@
+[Unit]
+Description=Kanshi monitor configuration auto loader
+
+[Service]
+ExecStart=/usr/bin/kanshi
+
+[Install]
+WantedBy=sway-session.target
