@@ -97,4 +97,9 @@ network:
 
 clock:
   interval: 1
-  format: "{:%a %F %T}"
+  format: "{:%a %F %T (%Z)}"
+  timezone: Etc/UTC
+  timezones:
+    - Asia/Shanghai
+    - Etc/UTC
+  tooltip-format: "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"

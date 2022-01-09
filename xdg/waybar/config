@@ -112,6 +112,12 @@
   },
   "clock": {
     "interval": 1,
-    "format": "{:%a %F %T}"
+    "format": "{:%a %F %T (%Z)}",
+    "timezone": "Asia/Shanghai",
+    "timezones": [
+      "Etc/UTC",
+      "Etc/UTC"
+    ],
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
   }
 }
