@@ -1,12 +1,8 @@
 [Unit]
 Description=Start swayidle after boot up
-PartOf=graphical-session.target
 
 [Service]
-Environment=WAYLAND_DISPLAY=wayland-1
-# workaround to make sure the graphical session is ready
-ExecStartPre=/bin/sleep 30
 ExecStart=/home/shou/.config/sway/scripts/idle.sh
 
 [Install]
-WantedBy=default.target
+WantedBy=sway-session.target
