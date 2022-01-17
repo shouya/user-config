@@ -98,7 +98,6 @@ network:
 clock:
   interval: 1
   format: "{:%a %F %T (%Z)}"
-  timezone: Etc/UTC
   timezones:
     - Asia/Shanghai
     - Etc/UTC
