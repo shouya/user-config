@@ -59,6 +59,7 @@ deleted = "D"
 
 [package]
 symbol = "pkg "
+disabled = true
 
 [elixir]
 disabled = true
