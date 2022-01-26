@@ -75,12 +75,14 @@ signingkey = 7287CB6DB65E82C5094CF34CD5020D9FAD55DEE5
 [core]
 excludesfile = ~/.gitignore
 editor = vim
-pager = delta
+pager = delta --color-only
 
 [color "diff"]
 whitespace = red reverse
 
 [diff]
+  # https://blog.jcoglan.com/2017/09/19/the-patience-diff-algorithm/
+  algorithm = patience
 # tool = icdiff
 # colorMoved = default
 
@@ -117,7 +119,7 @@ prAllowMaintainersToSubmit = allow
 submitPR = allow
 
 [interactive]
-diffFilter = delta --color-only
+# diffFilter = delta --color-only
 
 [delta]
 features = side-by-side line-numbers decorations
