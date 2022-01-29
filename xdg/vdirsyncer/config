@@ -1,9 +1,16 @@
 [general]
 status_path = "~/.local/share/vdirsyncer/status/"
 
-[pair time_blocking]
+[pair pair_time_blocking_fastmail]
 a = "time_blocking_local"
 b = "time_blocking_fastmail"
+# The calendar name is an uuid from fastmail, but I want a more
+# sensible calendar name to use locally.
+collections = [["fastmail", "time-blocking", "6a41ddbc-73ad-4180-9ea1-c5ffcf2e464a"]]
+
+[pair pair_time_blocking_nextcloud]
+a = "time_blocking_local"
+b = "time_blocking_nextcloud"
 collections = ["from a", "from b"]
 
 [storage time_blocking_local]
@@ -16,3 +23,9 @@ type = "caldav"
 url = "https://caldav.fastmail.com/dav/calendars/user/shou@lain.li/6a41ddbc-73ad-4180-9ea1-c5ffcf2e464a"
 username = "shou@lain.li"
 password.fetch = ["command", "pass", "show", "fastmail_caldav"]
+
+[storage time_blocking_nextcloud]
+type = "caldav"
+url = "https://nextcloud.lain.li/remote.php/dav/calendars/shou/time-blocking/"
+username = "shou"
+password.fetch = ["command", "pass", "show", "caldav/nextcloud-vdirsyncer"]

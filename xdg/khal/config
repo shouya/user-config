@@ -1,7 +1,7 @@
 [calendars]
 
 [[time-blocking]]
-path = ~/.calendar/6a41ddbc-73ad-4180-9ea1-c5ffcf2e464a
+path = ~/.calendar/time-blocking
 type = calendar
 color = dark green
 
