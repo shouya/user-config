@@ -5,6 +5,11 @@ path = ~/.calendar/time-blocking
 type = calendar
 color = dark green
 
+[[time-blocking-malakal]]
+path = ~/.calendar/time-blocking-malakal
+type = calendar
+color = yellow
+
 [default]
 default_calendar = time-blocking
 # highlight_event_days = yes
