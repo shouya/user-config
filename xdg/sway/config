@@ -210,8 +210,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # have to use a CJK font because otherwise the title bar height is inconsistent between non-CJK and CJK texts
-font "Noto Sans Mono CJK TC"
+font "pango:Noto Sans Mono CJK TC 10"
 
 
-include /etc/sway/config.d/*
 include ~/.config/sway/custom.d/*.conf
