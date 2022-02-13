@@ -52,6 +52,10 @@ sway: # Sway, waybar, kanshi, rofi
 	./utils/backup ~/.config/{rofi,kanshi,sway,waybar}
 	ln -rsf xdg/{rofi,kanshi,sway,waybar} ~/.config
 
+fcitx5: # Fcitx 5
+	./utils/backup ~/.config/fcitx5
+	ln -rsf xdg/fcitx5 ~/.config
+
 systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	./utils/backup ~/.config/systemd
 	ln -Trsf xdg/systemd-laptop ~/.config/systemd
