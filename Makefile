@@ -19,6 +19,13 @@ ifndef NO_GIT_CRYPT
 	mkdir -p ~/.ssh
 	chmod 700 ~/.ssh
 	ln -frs base/ssh_config.private ~/.ssh/config
+	mkdir -p ~/.ssh/config.d
+ifeq ($(OS),Darwin)
+	ln -rs base/ssh_config_macos.private ~/.ssh/config.d/macos.conf
+endif
+ifeq ($(OS),Linux)
+	ln -rs base/ssh_config_linux.private ~/.ssh/config.d/linux.conf
+endif
 endif
 
 vim: # Vim RC
