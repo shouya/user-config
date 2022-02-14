@@ -1,3 +1,5 @@
+UNAME := $(shell uname)
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?# .*$$' $(MAKEFILE_LIST) \
 	| sort \
@@ -20,10 +22,10 @@ ifndef NO_GIT_CRYPT
 	chmod 700 ~/.ssh
 	ln -frs base/ssh_config.private ~/.ssh/config
 	mkdir -p ~/.ssh/config.d
-ifeq ($(OS),Darwin)
+ifeq ($(UNAME),Darwin)
 	ln -rs base/ssh_config_macos.private ~/.ssh/config.d/macos.conf
 endif
-ifeq ($(OS),Linux)
+ifeq ($(UNAME),Linux)
 	ln -rs base/ssh_config_linux.private ~/.ssh/config.d/linux.conf
 endif
 endif
