@@ -1,6 +1,6 @@
 conf/cached_layouts
 conf/*
-!conf/chttrans.conf
+# !conf/chttrans.conf
 !conf/classicui.conf
 
 
