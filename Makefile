@@ -61,6 +61,10 @@ sway: # Sway, waybar, kanshi, rofi
 	./utils/backup ~/.config/{rofi,kanshi,sway,waybar}
 	ln -rsf xdg/{rofi,kanshi,sway,waybar} ~/.config
 
+i3: # i3
+	./utils/backup ~/.config/i3
+	ln -rsf xdg/i3 ~/.config
+
 fcitx5: # Fcitx 5
 	./utils/backup ~/.config/fcitx5
 	ln -rsf xdg/fcitx5 ~/.config
