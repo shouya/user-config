@@ -54,12 +54,20 @@ shell: # Zsh config (requires git-crypt)
 
 
 calendar: # Khal and vdirsyncer
-	./utils/backup ~/.config/{khal,vdirsyncer}
-	ln -rsf xdg/{khal,vdirsyncer} ~/.config
+	./utils/backup ~/.config/khal
+	./utils/backup ~/.config/vdirsyncer
+	ln -rsf xdg/khal ~/.config
+	ln -rsf xdg/vdirsyncer ~/.config
 
 sway: # Sway, waybar, kanshi, rofi
-	./utils/backup ~/.config/{rofi,kanshi,sway,waybar}
-	ln -rsf xdg/{rofi,kanshi,sway,waybar} ~/.config
+	./utils/backup ~/.config/rofi
+	./utils/backup ~/.config/kanshi
+	./utils/backup ~/.config/sway
+	./utils/backup ~/.config/waybar
+	ln -rsf xdg/rofi ~/.config
+	ln -rsf xdg/kanshi ~/.config
+	ln -rsf xdg/sway ~/.config
+	ln -rsf xdg/waybar ~/.config
 
 i3: # i3
 	./utils/backup ~/.config/i3
