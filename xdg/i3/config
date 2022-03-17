@@ -25,6 +25,9 @@ exec --no-startup-id setxkbmap -option ctrl:nocaps,altwin:swap_lalt_lwin
 # Adjust natural scroll direction
 exec --no-startup-id xinput set-prop 13 319 1
 
+# Use GPU for composition
+exec --no-startup-id compton --shadow --no-dock-shadow --fading --backend glx --daemon --fade-in-step=0.1 --fade-out-step=0.05
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
