@@ -1,4 +1,6 @@
 set $mod Mod4
+set $HOME /home/shou
+
 font pango:Noto Sans Mono 13
 
 # Start XDG autostart .desktop files using dex. See also
@@ -16,11 +18,8 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
-# Adjust key repeat rate
-exec --no-startup-id xset r rate 200 45
-
-# Keyboard configuration
-exec --no-startup-id setxkbmap -option ctrl:nocaps,altwin:swap_lalt_lwin
+# Adjust key repeat rate and modifier key swapping
+exec --no-startup-id inputplug -0 --command "$HOME/.config/i3/scripts/new-keyboard.sh"
 
 # Adjust natural scroll direction
 exec --no-startup-id xinput set-prop 13 319 1
