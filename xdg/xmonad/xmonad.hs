@@ -15,10 +15,16 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Util.NamedScratchpad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
 import XMonad.Operations
 
+import XMonad.Layout.Circle
+import XMonad.Layout.Spacing
+import XMonad.Layout.Roledex
+import XMonad.Layout.Spiral
 
 import qualified XMonad.Config.Gnome as Gnome
 import qualified XMonad.StackSet as W
@@ -39,12 +45,14 @@ myConfiguration conf = do
   xmonadLogAppletModifier <- xmonadLogApplet
 
   pure $ gnomeIntegration
-       $ myKeybinding
        $ myAppKeys
        $ myScratchpad
        $ myStartupPrograms
        $ myLayout
+       $ myFloatingRules
        $ xmonadLogAppletModifier
+       $ myKeybinding
+       $ ewmh
        $ conf
 
 replaceKeysP :: XConfig l -> [(String, X ())] -> XConfig l
@@ -77,6 +85,7 @@ myKeybinding conf = conf
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
+          , ("<Print>", spawn "flameshot gui")
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
@@ -100,12 +109,18 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
           -- touchpad natural scroll mode
           spawnOnce "~/.xmonad/scripts/touchpad-natural-scroll.sh"
           -- compton
-          spawnOnce "compton --shadow --no-dock-shadow --fading --backend glx"
+          spawnOnce "compton --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
+          -- nm-applet
+          spawnOnce "nm-applet &"
 
           startupHook conf
 
 -- myLayout :: XConfig a -> XConfig _
-myLayout conf = docks $ conf { layoutHook = avoidStruts (layoutHook conf) }
+myLayout conf = docks $ conf { layoutHook = layout }
+  where layout = avoidStruts tallLayouts ||| Full
+        tall = smartSpacingWithEdge 5 (Tall 1 (3/100) (1/2))
+        tallLayouts = tall ||| Mirror tall
+        fancy = Circle ||| spiral (3/4) ||| Roledex
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
@@ -114,8 +129,8 @@ myAppKeys conf = conf
 
   where appKeys =
           [ ("<F1>", "firefox", className =? "Firefox-esr")
-          , ("<F2>", "alacritty", className =? "Alacritty")
-          , ("<F3>", "emacs", className =? "Emacs")
+          , ("<F2>", "emacs", className =? "Emacs")
+          , ("<F3>", "alacritty", className =? "Alacritty")
           , ("<F4>", "malakal", className =? "malakal")
           ]
         launchOrFocus (key, cmd, query) = ("M-" ++ key, runOrRaise cmd query)
@@ -145,11 +160,12 @@ myScratchpad conf =
 prettyPrinter :: D.Client -> PP
 prettyPrinter dbus = defaultPP
   { ppOutput = dbusOutput dbus
-  , ppTitle = pangoSanitize
-  , ppCurrent = pangoColor "green" . wrap "[" "]" . pangoSanitize
-  , ppVisible = pangoColor "yellow" . wrap "(" ")" . pangoSanitize
-  , ppHidden = const ""
-  , ppUrgent = pangoColor "red"
+  , ppTitle = id
+  , ppTitleSanitize = pangoSanitize
+  , ppCurrent = pangoColor "green" . wsNameFull
+  , ppVisible = pangoColor "yellow" . wsNameFull
+  , ppHidden = pangoColor "gray" . wsNameFull
+  , ppUrgent = pangoColor "red" . wsNameFull
   , ppLayout = const ""
   , ppSep = " "
   }
@@ -182,3 +198,23 @@ dbusSession = do
 xmonadLogApplet = do
   dbus <- dbusSession
   pure $ \conf -> conf { logHook = dynamicLogWithPP (prettyPrinter dbus) }
+
+
+wsName :: WorkspaceId -> String
+wsName "5" = "Slack"
+wsName "6" = "Email"
+wsName "7" = "Conn"
+wsName _ = ""
+
+wsNameFull :: WorkspaceId -> String
+wsNameFull "NSP" = ""
+wsNameFull x = (circledNumber x) ++ "<sub>" ++ wsName x ++ "</sub>"
+
+circledNumber :: WorkspaceId -> String
+circledNumber n = ["X⓵⓶⓷⓸⓹⓺⓻⓼⓽" !! read n]
+
+
+--- myFloatingRules :: XConfig a -> XConfig a
+myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
+  where hooks = composeAll [ title =? "zoom" --> doFloat
+                           ]
