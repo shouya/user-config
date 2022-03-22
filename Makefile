@@ -73,9 +73,12 @@ i3: # i3
 	./utils/backup ~/.config/i3
 	ln -rsf xdg/i3 ~/.config
 
-xmonad: # XMonad
+xmonad: # XMonad and Xmobar
 	./utils/backup ~/.xmonad
 	ln -rsf xdg/xmonad ~/.xmonad
+
+	./utils/backup ~/.config/xmobar
+	ln -rsf xdg/xmobar ~/.config/xmobar
 
 fcitx5: # Fcitx 5
 	./utils/backup ~/.config/fcitx5
