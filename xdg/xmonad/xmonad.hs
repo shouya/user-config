@@ -2,6 +2,25 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts #-}
 
+{- External deps:
+
+ * gnome-session-flashback (DE)
+ * dmenu (app launcher with M-<space>
+ * flameshot (prtscr)
+ * notify-send (misc)
+ * inputplug (startup hook)
+ * compton (startup hook)
+ * nm-applet (startup hook)
+ * alacritty (app key/scratchpad/term)
+ * emacs (app key)
+ * malakal (app key)
+ * qalculate-gtk (scratchpad)
+ * stardict (scratchpad)
+
+  /sys/class/backlight/intel_backlight/brightness needs to be writable
+  (See https://superuser.com/a/1393488)
+ -}
+
 import Data.Monoid
 import Control.Monad
 import System.Exit
@@ -19,6 +38,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
+import XMonad.Actions.Volume
 import XMonad.Operations
 
 import XMonad.Layout.Circle
@@ -27,6 +47,7 @@ import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
 
 import qualified XMonad.Config.Gnome as Gnome
+import qualified XMonad.Util.Brightness as Brightness
 import qualified XMonad.StackSet as W
 
 import qualified DBus as D
@@ -86,6 +107,11 @@ myKeybinding conf = conf
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
           , ("<Print>", spawn "flameshot gui")
+          , ("<XF86AudioLowerVolume>", lowerVolume 5 >> pure ())
+          , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> pure ())
+          , ("<XF86AudioMute>", toggleMute >> pure ())
+          , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
+          , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
