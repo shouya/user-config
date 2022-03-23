@@ -57,7 +57,12 @@ import Codec.Binary.UTF8.String as UTF8
 
 main :: IO ()
 main = do
-  let conf = def { modMask = mod4Mask, focusFollowsMouse = False }
+  let conf = def { modMask = mod4Mask
+                 , focusFollowsMouse = False
+                 , borderWidth = 3
+                 , focusedBorderColor = "#01a495"
+                 , normalBorderColor = "#1f2626"
+                 }
   myConf <- myConfiguration conf
   xmonad myConf
 

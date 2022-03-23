@@ -72,3 +72,4 @@ node_modules/
 /erl_crash.dump
 
 flamegraph.svg
+*.coverdata
