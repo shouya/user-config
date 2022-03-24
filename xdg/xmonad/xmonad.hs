@@ -35,6 +35,7 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.FadeWindows (isFloating)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
@@ -135,6 +136,10 @@ myTerminal = "alacritty"
 -- myStartupPrograms :: XConfig a -> XConfig a
 myStartupPrograms conf = conf { startupHook = newStartupHook }
   where newStartupHook = do
+          -- X11 config
+          spawnOnce "xrdb -merge ~/.Xresources"
+          spawnOnce "xset b off"
+
           -- swap ctrl and caps lock; swap windows and alt key
           spawnOnce "inputplug -0 --command \"$HOME/.xmonad/scripts/new-keyboard.sh\""
           -- touchpad natural scroll mode
@@ -143,6 +148,8 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
           spawnOnce "compton --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
           -- nm-applet
           spawnOnce "nm-applet &"
+          -- mate panel
+          spawnOnce "mate-panel &"
 
           startupHook conf
 
@@ -159,7 +166,8 @@ myAppKeys conf = conf
                  `replaceKeysP` (map bringToCurrentWS appKeys)
 
   where appKeys =
-          [ ("<F1>", "firefox", className =? "Firefox-esr")
+          [ ("<F1>", "firefox", className =? "Firefox-esr"
+                           <||> className =? "Firefox")
           , ("<F2>", "emacs", className =? "Emacs")
           , ("<F3>", "alacritty", className =? "Alacritty")
           , ("<F4>", "malakal", className =? "malakal")
@@ -174,17 +182,22 @@ forWindows q f g = ifWindows q (flip forM_ f) g
 
 -- myScratchpad :: XConfig a -> XConfig a
 myScratchpad conf =
-  conf { manageHook = manageHook conf <+> namedScratchpadManageHook sps }
+  conf { manageHook = manageHook conf
+                   <+> namedScratchpadManageHook sps
+                   <+> extraHook
+       }
   `replaceKeysP` [ ("M-c", namedScratchpadAction sps "calc")
                  , ("M-d", namedScratchpadAction sps "dict")
                  , ("M-m", namedScratchpadAction sps "term")
                  ]
   where sps =  [ NS "term" "alacritty --class=scratch-term"
-                    (resource =? "scratch-term") float
+                    (resource =? "scratch-term" <&&> isFloating) float
                , NS "dict" "stardict" (className =? "Stardict") float
                , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") float
                ]
         float = customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
+        -- this allows me to dock a scratch term to become a normal term.
+        extraHook = resource =? "scratch-term" --> float
 
 
 -- copied from alexay/xmonad-log-applet
