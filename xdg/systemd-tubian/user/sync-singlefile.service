@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync SingleFile archive to NAS
+RequiresMountsFor=/mnt/storage/archive/web/
+
+[Service]
+Type=oneshot
+Environment=KUBECONFIG=/home/shou/.kube/config.d/k3s-lan
+Environment=DST=/mnt/storage/archive/web/SingleFile
+ExecStart=/home/shou/projects/scripts/common/sync-singlefile.sh

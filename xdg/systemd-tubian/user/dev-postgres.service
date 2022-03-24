@@ -1,0 +1,14 @@
+[Unit]
+Description=Postgres for development
+
+[Service]
+Restart=always
+# Init with:
+# podman run -it -p 5432:5432 --name dev-postgres -e POSTGRES_PASSWORD=postgres postgres:14-alpine
+Type=forking
+ExecStart=/usr/bin/podman start dev-postgres
+ExecStop=/usr/bin/podman stop -t 10 dev-postgres
+
+[Install]
+WantedBy=default.target
+

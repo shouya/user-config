@@ -1,0 +1,8 @@
+[Unit]
+Description=Sync unison files with NAS
+RequiresMountsFor=/mnt/storage/archive/backup
+
+[Service]
+Type=oneshot
+ExecStart=/home/shou/projects/scripts/linux/manual-unison-sync.sh
+

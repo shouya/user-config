@@ -91,6 +91,13 @@ systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	@echo "Please run [systemctl --user daemon-reload]"
 	@echo "Also [systemctl enable <unit>]"
 
+systemd-tubian: # Systemd for graphical laptop running debian/gnome-flashback
+	./utils/backup ~/.config/systemd
+	ln -Trsf xdg/systemd-tubian ~/.config/systemd
+	@echo "Please run [systemctl --user daemon-reload]"
+	@echo "Also [systemctl enable <unit>]"
+
+
 gpg: # GnuPG agent config
 	mkdir -p ~/.gnupg
 	chmod 700 ~/.gnupg

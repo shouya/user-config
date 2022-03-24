@@ -1,0 +1,9 @@
+[Unit]
+Description=Telegram
+
+[Service]
+ExecStart=/usr/bin/telegram-desktop
+
+[Install]
+WantedBy=graphical-session.target
+

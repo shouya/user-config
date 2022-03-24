@@ -1,0 +1,8 @@
+[Unit]
+Description=Fcitx input method framework
+
+[Service]
+ExecStart=/usr/bin/fcitx5 -r
+
+[Install]
+WantedBy=graphical-session.target
