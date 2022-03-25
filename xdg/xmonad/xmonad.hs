@@ -25,6 +25,7 @@ import Data.Monoid
 import Control.Monad
 import System.Exit
 import qualified Data.Map as M
+import Text.Printf
 
 import XMonad
 import XMonad.Util.EZConfig
@@ -69,7 +70,7 @@ main = do
 
 -- myConfiguration :: XConfig a -> IO (XConfig b)
 myConfiguration conf = do
-  xmonadLogAppletModifier <- xmonadLogApplet
+  channel <- createPolybarChannel
 
   pure $ gnomeIntegration
        $ myAppKeys
@@ -77,7 +78,7 @@ myConfiguration conf = do
        $ myStartupPrograms
        $ myLayout
        $ myFloatingRules
-       $ xmonadLogAppletModifier
+       $ myPolybar channel
        $ myKeybinding
        $ ewmh
        $ conf
@@ -196,7 +197,7 @@ myScratchpad conf =
                , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") float
                ]
         float = customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
-        -- this allows me to dock a scratch term to become a normal term.
+        -- this allows me to park a scratch term to become a normal term.
         extraHook = resource =? "scratch-term" --> float
 
 
@@ -229,6 +230,10 @@ prettyPrinter dbus = defaultPP
           D.emit dbus signal
 
 
+writeLog :: String -> IO ()
+writeLog log = do
+  appendFile "/tmp/.xmonad-log" log
+
 dbusSession :: IO D.Client
 dbusSession = do
   dbus <- D.connectSession
@@ -257,6 +262,59 @@ wsNameFull x = (circledNumber x) ++ "<sub>" ++ wsName x ++ "</sub>"
 circledNumber :: WorkspaceId -> String
 circledNumber n = ["X⓵⓶⓷⓸⓹⓺⓻⓼⓽" !! read n]
 
+--
+data PolybarChannel = PolybarChannel { titleLogPipe :: FilePath
+                                     , workspaceLogPipe :: FilePath
+                                     }
+
+createPolybarChannel :: IO PolybarChannel
+createPolybarChannel = do
+  spawn "mkfifo /tmp/xmonad-title-log"
+  spawn "mkfifo /tmp/xmonad-workspace-log"
+  pure $ PolybarChannel "/tmp/xmonad-title-log" "/tmp/xmonad-workspace-log"
+
+myPolybar :: PolybarChannel -> XConfig a -> XConfig a
+myPolybar (PolybarChannel titlePipe wsPipe) conf =
+  conf { logHook = dynamicLogWithPP titlePP >> dynamicLogWithPP wsPP }
+  where titlePP = defaultPP
+                  { ppOutput = output titlePipe
+                  , ppTitle = id
+                  , ppTitleSanitize = id
+                  , ppCurrent = const ""
+                  , ppVisible = const ""
+                  , ppHidden = const ""
+                  , ppUrgent = const ""
+                  , ppLayout = const ""
+                  , ppSep = ""
+                  }
+        wsPP = defaultPP
+               { ppOutput = output wsPipe
+               , ppTitle = const ""
+               , ppCurrent = color "EAE" . wsNameFull
+               , ppVisible = color "AFA" . wsNameFull
+               , ppHidden = color "AAA" . wsNameFull
+               , ppUrgent = color "E00" . wsNameFull
+               , ppLayout = const ""
+               , ppSep = " "
+               , ppWsSep = " "
+               }
+        color c t = printf "%%{F#%s}%s%%{F-}" (c :: String) (t :: String)
+        output pipe str = do
+          let s = printf "%%{T2}%s%%{T-}\n" (str :: String)
+          appendFile pipe (UTF8.decodeString s)
+
+        wsName :: WorkspaceId -> String
+        wsName "5" = "Slack"
+        wsName "6" = "Email"
+        wsName "7" = "Conn"
+        wsName _ = ""
+
+        wsNameFull :: WorkspaceId -> String
+        wsNameFull "NSP" = ""
+        wsNameFull x = (circledNumber x) ++ "" ++ wsName x ++ ""
+
+        circledNumber :: WorkspaceId -> String
+        circledNumber n = printf "%c" ("X①②③④⑤⑥⑦⑧⑨" !! read n)
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
