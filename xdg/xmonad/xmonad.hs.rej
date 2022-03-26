@@ -1,0 +1,19 @@
+diff a/xdg/xmonad/xmonad.hs b/xdg/xmonad/xmonad.hs	(rejected hunks)
+@@ -83,7 +83,17 @@ myConfiguration conf = do
+        $ ewmh
+        $ conf
+ 
++fixedScreenWS = [ (0, "1")
++                , (0, "2")
++                , (0, "3")
++                , (0, "4")
++                , (0, "5")
++                , (0, "6")
++                , (1, "7")
++                , (1, "8")
++                , (1, "9")
++                ]
+ 
+ replaceKeysP :: XConfig l -> [(String, X ())] -> XConfig l
+ replaceKeysP conf keys = conf
+                          `removeKeysP` (map fst keys)

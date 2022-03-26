@@ -41,8 +41,10 @@ import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.Volume
+import XMonad.Actions.CycleWS
+import XMonad.Actions.OnScreen
 import XMonad.Operations
-
+import XMonad.Layout.IndependentScreens
 import XMonad.Layout.Circle
 import XMonad.Layout.Spacing
 import XMonad.Layout.Roledex
@@ -56,6 +58,9 @@ import qualified DBus as D
 import qualified DBus.Client as D
 
 import Codec.Binary.UTF8.String as UTF8
+
+
+import FixedWorkspace
 
 main :: IO ()
 main = do
@@ -83,6 +88,7 @@ myConfiguration conf = do
        $ ewmh
        $ conf
 
+
 replaceKeysP :: XConfig l -> [(String, X ())] -> XConfig l
 replaceKeysP conf keys = conf
                          `removeKeysP` (map fst keys)
@@ -101,6 +107,9 @@ myKeybinding conf = conf
                     `removeKeysP` (map oldkey repurposedKeys)
                     `replaceKeysP` (map newkey repurposedKeys)
                     `replaceKeysP` extraKeys
+                    `replaceKeysP` wsKeys
+                    `replaceKeysP` wsShiftKeys
+                    `replaceKeysP` screenKeys
   where repurposedKeys =
           [ ("M-S-c", "M-S-q", kill)
           , ("M-S-<Return>", "M-<Return>", spawn myTerminal)
@@ -109,6 +118,7 @@ myKeybinding conf = conf
           , ("M-q", "M-S-r", reloadXMonad)
           , ("M-p", "M-<Space>", spawn "dmenu_run")
           , ("M-<Space>", "M-0", sendMessage NextLayout)
+          -- replaced by gnome-session-quit
           -- , ("M-S-q", "M-S-e", io (exitWith ExitSuccess))
           ]
         extraKeys =
@@ -120,6 +130,16 @@ myKeybinding conf = conf
           , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
           , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
           ]
+        wsKeys = [ ("M-" ++ ws, windows $ W.greedyView ws)
+                 | ws <- workspaces conf
+                 ]
+        wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws)
+                      | ws <- workspaces conf
+                      ]
+        screenKeys = [ ("M-q", prevScreen)
+                     , ("M-e", nextScreen)
+                     -- , ("M-w", moveCurrentWorkspaceToOtherScreen)
+                     ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
         reloadXMonad = spawn "xmonad --recompile && xmonad --restart && notify-send Reloaded."
@@ -229,11 +249,6 @@ prettyPrinter dbus = defaultPP
                        { D.signalBody = body }
           D.emit dbus signal
 
-
-writeLog :: String -> IO ()
-writeLog log = do
-  appendFile "/tmp/.xmonad-log" log
-
 dbusSession :: IO D.Client
 dbusSession = do
   dbus <- D.connectSession
@@ -277,7 +292,7 @@ myPolybar :: PolybarChannel -> XConfig a -> XConfig a
 myPolybar (PolybarChannel titlePipe wsPipe) conf =
   conf { logHook = dynamicLogWithPP titlePP >> dynamicLogWithPP wsPP }
   where titlePP = defaultPP
-                  { ppOutput = output titlePipe
+                  { ppOutput = output titlePipe . fontSans
                   , ppTitle = id
                   , ppTitleSanitize = id
                   , ppCurrent = const ""
@@ -286,21 +301,26 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
                   , ppUrgent = const ""
                   , ppLayout = const ""
                   , ppSep = ""
+                  , ppWsSep = ""
                   }
         wsPP = defaultPP
-               { ppOutput = output wsPipe
+               { ppOutput = output wsPipe . fontMono
                , ppTitle = const ""
-               , ppCurrent = color "EAE" . wsNameFull
+               , ppCurrent = color "EAE" . wrap "[" "]" . wsNameFull
                , ppVisible = color "AFA" . wsNameFull
                , ppHidden = color "AAA" . wsNameFull
                , ppUrgent = color "E00" . wsNameFull
                , ppLayout = const ""
-               , ppSep = " "
-               , ppWsSep = " "
+               , ppSep = ""
+               , ppWsSep = ""
                }
+
+        fontMono x = printf "%%{T1}%s%%{T-}" (x :: String)
+        fontSans x = printf "%%{T2}%s%%{T-}" (x :: String)
+
         color c t = printf "%%{F#%s}%s%%{F-}" (c :: String) (t :: String)
         output pipe str = do
-          let s = printf "%%{T2}%s%%{T-}\n" (str :: String)
+          let s = str ++ "\n"
           appendFile pipe (UTF8.decodeString s)
 
         wsName :: WorkspaceId -> String
@@ -311,10 +331,11 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
 
         wsNameFull :: WorkspaceId -> String
         wsNameFull "NSP" = ""
-        wsNameFull x = (circledNumber x) ++ "" ++ wsName x ++ ""
+        wsNameFull x = case wsName x of
+                         "" -> x
+                         n -> x ++ ":" ++ n
 
-        circledNumber :: WorkspaceId -> String
-        circledNumber n = printf "%c" ("X①②③④⑤⑥⑦⑧⑨" !! read n)
+        wrap l r x = l ++ x ++ r
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
