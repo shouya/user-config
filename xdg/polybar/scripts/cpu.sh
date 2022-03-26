@@ -36,6 +36,8 @@ run() {
     performance)
       short_governor="PF"
       ;;
+    *)
+      short_governor="$governor"
   esac
 
   load_color=green
@@ -50,7 +52,27 @@ run() {
   fi
 
   echo -n "$(fg "$load_color" "$load")"
-  echo " ($freq $(action_arg "$ZSH_ARGZERO" "set-policy" $short_governor))"
+  echo " ($freq $(action_arg "$ZSH_ARGZERO" "change_policy" $short_governor))"
+}
+
+change_policy() {
+  curr_governor="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
+  new_governor=""
+  case "$curr_governor" in
+    powersave)
+      new_governor="performance"
+      ;;
+    performance)
+      new_governor="powersave"
+      ;;
+    *)
+      new_governor="powersave"
+      ;;
+  esac
+
+  echo "$new_governor" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+
+  notify-send "switching cpu governor policy to $new_governor"
 }
 
 case "$1" in
@@ -62,23 +84,7 @@ case "$1" in
     run
     ;;
 
-  set-policy)
-    curr_governor="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
-    new_governor=""
-    case "$curr_governor" in
-      powersave)
-        new_governor="performance"
-        ;;
-      performance)
-        new_governor="powersave"
-        ;;
-      *)
-        new_governor="powersave"
-        ;;
-    esac
-
-    echo "$new_governor" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-
-    notify-send "switching cpu governor policy to $new_governor"
+  change_policy)
+    change_policy
     ;;
 esac
