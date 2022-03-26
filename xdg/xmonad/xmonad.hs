@@ -60,7 +60,8 @@ import qualified DBus.Client as D
 import Codec.Binary.UTF8.String as UTF8
 
 
-import FixedWorkspace
+-- custom libs
+import XMonad.Actions.FixedWorkspace
 
 main :: IO ()
 main = do
@@ -84,6 +85,7 @@ myConfiguration conf = do
        $ myLayout
        $ myFloatingRules
        $ myPolybar channel
+       $ myWorkspaces
        $ myKeybinding
        $ ewmh
        $ conf
@@ -102,14 +104,30 @@ gnomeIntegration conf =
        }
   where gnomeKeys conf = mkKeymap conf [("M-S-e", spawn "gnome-session-quit --logout")]
 
+
+-- myWorkspaces :: XConfig a -> XConfig a
+myWorkspaces conf = conf { workspaces = myWorkspaces
+                         , startupHook = wsStartupHook >> startupHook conf }
+                    `replaceKeysP` wsKeys
+                    `replaceKeysP` wsShiftKeys
+                    `replaceKeysP` screenKeys
+  where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- myWorkspaces]
+        wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- myWorkspaces]
+        screenKeys = [ ("M-q", prevScreen)
+                     , ("M-e", nextScreen)
+                     , ("M-w", moveCurrentWorkspaceToOtherScreen)
+                     ]
+        myWorkspaces = map (:[]) "123456789"
+        defaultScreen = 0
+        extraScreen = 1
+        wsStartupHook = do
+          windows $ greedyViewOnScreen extraScreen "9"
+
 -- myKeybinding :: XConfig a -> XConfig a
 myKeybinding conf = conf
                     `removeKeysP` (map oldkey repurposedKeys)
                     `replaceKeysP` (map newkey repurposedKeys)
                     `replaceKeysP` extraKeys
-                    `replaceKeysP` wsKeys
-                    `replaceKeysP` wsShiftKeys
-                    `replaceKeysP` screenKeys
   where repurposedKeys =
           [ ("M-S-c", "M-S-q", kill)
           , ("M-S-<Return>", "M-<Return>", spawn myTerminal)
@@ -130,16 +148,6 @@ myKeybinding conf = conf
           , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
           , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
           ]
-        wsKeys = [ ("M-" ++ ws, windows $ W.greedyView ws)
-                 | ws <- workspaces conf
-                 ]
-        wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws)
-                      | ws <- workspaces conf
-                      ]
-        screenKeys = [ ("M-q", prevScreen)
-                     , ("M-e", nextScreen)
-                     -- , ("M-w", moveCurrentWorkspaceToOtherScreen)
-                     ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
         reloadXMonad = spawn "xmonad --recompile && xmonad --restart && notify-send Reloaded."
@@ -147,10 +155,6 @@ myKeybinding conf = conf
                                   then W.sink w s
                                   else (W.float w floatingRect s))
         floatingRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
-
--- ifFloat :: X () -> X () -> X ()
--- ifFloat = withFocused (M.member w (W.floating s))
-
 
 myTerminal = "alacritty"
 
