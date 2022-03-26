@@ -81,6 +81,10 @@ polybar: # Polybar
 	./utils/backup ~/.config/polybar
 	ln -rsf xdg/polybar ~/.config/polybar
 
+dunst: # Dunst
+	./utils/backup ~/.config/dunst
+	ln -rsf xdg/dunst ~/.config/dunst
+
 fcitx5: # Fcitx 5
 	./utils/backup ~/.config/fcitx5
 	ln -rsf xdg/fcitx5 ~/.config

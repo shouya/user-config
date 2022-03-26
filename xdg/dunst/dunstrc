@@ -1,0 +1,44 @@
+# -*- conf -*-
+
+# Theme stolen from https://gist.github.com/NNBnh/5f6e601a6a82a6ed43b1959698758141
+
+[global]
+font               = "Noto Sans Mono 11"
+# geometry           = 0x0-62-62
+geometry           = 0x0-10+62
+separator_height   = 2
+padding            = 2
+horizontal_padding = 2
+frame_width        = 2
+
+markup           = full
+format           = "<b>%a: %s</b>\n%b"
+icon_path        = "/usr/share/icons/gnome/48x48/status:/usr/share/icons/gnome/48x48/devices"
+icon_position    = left
+max_icon_size    = 64
+show_indicators  = false
+separator_color  = frame
+
+lf  = #D8D8D8
+nf  = #D8D8D8
+cf  = #D8D8D8
+lb  = #181818E5
+nb  = #181818E5
+cb  = #181818E5
+lfr = #585858
+nfr = #585858
+cfr = #AB4642
+lto = 1
+nto = 3
+cto = 5
+
+mouse_left_click   = do_action
+mouse_right_click  = close_current
+mouse_middle_click = close_current
+
+progress_bar = true
+progress_bar_height = 10
+
+[shortcuts]
+history = mod4+bracketleft
+close_all = mod4+brakcetright
