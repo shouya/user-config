@@ -173,8 +173,8 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
           spawnOnce "compton --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
           -- nm-applet
           spawnOnce "nm-applet &"
-          -- mate panel
-          spawnOnce "mate-panel &"
+          -- polybar
+          spawnOnce "~/.config/polybar/start.sh"
 
           startupHook conf
 
