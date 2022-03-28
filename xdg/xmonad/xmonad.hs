@@ -25,6 +25,7 @@ import Data.Monoid
 import Control.Monad
 import System.Exit
 import qualified Data.Map as M
+import Data.List
 import Text.Printf
 
 import XMonad
@@ -33,10 +34,13 @@ import XMonad.Util.Ungrab
 import XMonad.Util.Run (safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Util.NamedScratchpad
+import XMonad.Util.WindowProperties ( Property (..)
+                                    , propertyToQuery)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FadeWindows (isFloating)
+import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
@@ -142,8 +146,8 @@ myKeybinding conf = conf
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
           , ("<Print>", spawn "flameshot gui")
-          , ("<XF86AudioLowerVolume>", lowerVolume 5 >> pure ())
-          , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> pure ())
+          , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
+          , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
           , ("<XF86AudioMute>", toggleMute >> pure ())
           , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
           , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
@@ -155,6 +159,7 @@ myKeybinding conf = conf
                                   then W.sink w s
                                   else (W.float w floatingRect s))
         floatingRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
+        playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
 
 myTerminal = "alacritty"
 
@@ -170,7 +175,7 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
           -- touchpad natural scroll mode
           spawnOnce "~/.xmonad/scripts/touchpad-natural-scroll.sh"
           -- compton
-          spawnOnce "compton --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
+          -- spawnOnce "compton --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
           -- nm-applet
           spawnOnce "nm-applet &"
           -- polybar
@@ -344,4 +349,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
   where hooks = composeAll [ title =? "zoom" --> doFloat
+                           , isDialog --> doFloat
+                           , propertyToQuery (Role "About") --> doFloat
+                           , isPrefixOf "About " <$> (stringProperty "WM_ICON_NAME") --> doFloat
                            ]
