@@ -58,8 +58,6 @@ rls/
 
 wt-*/
 
-.dir-locals.el
-
 .tabnine_root
 
 .projectile
