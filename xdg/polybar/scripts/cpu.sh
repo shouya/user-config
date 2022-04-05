@@ -21,10 +21,25 @@ check() {
   exit 0
 }
 
+get_freq() {
+  if command -v cpufreq-info &>/dev/null ; then
+    cpufreq-info -c0 -m -f
+    return
+  fi
+
+  if command -v cpupower &>/dev/null ; then
+    cpupower frequency-info | \
+      grep -E -o "frequency: ([^ ]+ [^ ]+)" | \
+      grep -v Unable | \
+      sed 's/frequency: //'
+    return
+  fi
+}
+
 run() {
   local freq load governor short_governor load_color
 
-  freq="$(cpufreq-info -c0 -m -f)"
+  freq="$(get_freq)"
   load="$(cat /proc/loadavg | cut -d' ' -f1)"
   governor="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
 
