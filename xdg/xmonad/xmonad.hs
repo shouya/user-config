@@ -44,7 +44,7 @@ import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
-import XMonad.Actions.Volume
+-- import XMonad.Actions.Volume
 import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
 import XMonad.Operations
@@ -55,7 +55,7 @@ import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
 
 import qualified XMonad.Config.Gnome as Gnome
-import qualified XMonad.Util.Brightness as Brightness
+-- import qualified XMonad.Util.Brightness as Brightness
 import qualified XMonad.StackSet as W
 
 import qualified DBus as D
@@ -146,11 +146,11 @@ myKeybinding conf = conf
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
           , ("<Print>", spawn "flameshot gui")
-          , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
-          , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
-          , ("<XF86AudioMute>", toggleMute >> pure ())
-          , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
-          , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
+          -- , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
+          -- , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
+          -- , ("<XF86AudioMute>", toggleMute >> pure ())
+          -- , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
+          -- , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
@@ -159,7 +159,7 @@ myKeybinding conf = conf
                                   then W.sink w s
                                   else (W.float w floatingRect s))
         floatingRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
-        playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
+        -- playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
 
 myTerminal = "alacritty"
 
@@ -175,9 +175,9 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
           -- touchpad natural scroll mode
           spawnOnce "~/.xmonad/scripts/touchpad-natural-scroll.sh"
           -- compton
-          -- spawnOnce "compton --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
+          spawnOnce "picom --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
           -- nm-applet
-          spawnOnce "nm-applet &"
+          -- spawnOnce "nm-applet &"
           -- polybar
           spawnOnce "~/.config/polybar/start.sh"
 
@@ -197,7 +197,8 @@ myAppKeys conf = conf
 
   where appKeys =
           [ ("<F1>", "firefox", className =? "Firefox-esr"
-                           <||> className =? "Firefox")
+                           <||> className =? "Firefox"
+                           <||> className =? "firefox")
           , ("<F2>", "emacs", className =? "Emacs")
           , ("<F3>", "alacritty", className =? "Alacritty")
           , ("<F4>", "malakal", className =? "malakal")
