@@ -58,9 +58,6 @@ import qualified XMonad.Config.Gnome as Gnome
 -- import qualified XMonad.Util.Brightness as Brightness
 import qualified XMonad.StackSet as W
 
-import qualified DBus as D
-import qualified DBus.Client as D
-
 import Codec.Binary.UTF8.String as UTF8
 
 
@@ -172,12 +169,16 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
 
           -- swap ctrl and caps lock; swap windows and alt key
           spawnOnce "inputplug -0 --command \"$HOME/.xmonad/scripts/new-keyboard.sh\""
+
           -- touchpad natural scroll mode
           spawnOnce "~/.xmonad/scripts/touchpad-natural-scroll.sh"
+
           -- compton
-          spawnOnce "picom --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx &"
+          spawnOnce "picom --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx --daemon"
+
           -- nm-applet
-          -- spawnOnce "nm-applet &"
+          spawnOnce "nm-applet &"
+
           -- polybar
           spawnOnce "~/.config/polybar/start.sh"
 
@@ -229,50 +230,6 @@ myScratchpad conf =
         float = customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
         -- this allows me to park a scratch term to become a normal term.
         extraHook = resource =? "scratch-term" --> float
-
-
--- copied from alexay/xmonad-log-applet
-prettyPrinter :: D.Client -> PP
-prettyPrinter dbus = defaultPP
-  { ppOutput = dbusOutput dbus
-  , ppTitle = id
-  , ppTitleSanitize = pangoSanitize
-  , ppCurrent = pangoColor "green" . wsNameFull
-  , ppVisible = pangoColor "yellow" . wsNameFull
-  , ppHidden = pangoColor "gray" . wsNameFull
-  , ppUrgent = pangoColor "red" . wsNameFull
-  , ppLayout = const ""
-  , ppSep = " "
-  }
-  where pangoSanitize = concatMap sanitize
-          where sanitize '>' = "&gt;"
-                sanitize '<' = "&lt;"
-                sanitize '\"' = "&quot;"
-                sanitize '&' = "&amp;"
-                sanitize c = [c]
-        pangoColor fg = wrap left right
-          where left = "<span foreground=\"" ++ fg ++ "\">"
-                right = "</span>"
-        dbusOutput dbus str = do
-          let body = [D.toVariant ("<b>" ++ UTF8.decodeString str ++ "</b>")]
-          let signal = (D.signal "/org/xmonad/Log" "org.xmonad.Log" "Update")
-                       { D.signalBody = body }
-          D.emit dbus signal
-
-dbusSession :: IO D.Client
-dbusSession = do
-  dbus <- D.connectSession
-  D.requestName dbus (D.busName_ "org.xmonad.Log") [ D.nameAllowReplacement
-                                                   , D.nameReplaceExisting
-                                                   , D.nameDoNotQueue
-                                                   ]
-  pure dbus
-
--- xmonadLogApplet :: IO (XConfig a -> XConfig a)
-xmonadLogApplet = do
-  dbus <- dbusSession
-  pure $ \conf -> conf { logHook = dynamicLogWithPP (prettyPrinter dbus) }
-
 
 wsName :: WorkspaceId -> String
 wsName "5" = "Slack"
