@@ -294,6 +294,7 @@ data PolybarChannel = PolybarChannel { titleLogPipe :: FilePath
 
 createPolybarChannel :: IO PolybarChannel
 createPolybarChannel = do
+  spawn "rm -f /tmp/xmonad-title-log /tmp/xmonad-workspace-log"
   spawn "mkfifo /tmp/xmonad-title-log"
   spawn "mkfifo /tmp/xmonad-workspace-log"
   pure $ PolybarChannel "/tmp/xmonad-title-log" "/tmp/xmonad-workspace-log"
