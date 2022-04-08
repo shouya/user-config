@@ -9,13 +9,14 @@
  * flameshot (prtscr)
  * notify-send (misc)
  * inputplug (startup hook)
- * compton (startup hook)
+ * picom (startup hook)
  * nm-applet (startup hook)
  * alacritty (app key/scratchpad/term)
  * emacs (app key)
  * malakal (app key)
  * qalculate-gtk (scratchpad)
  * stardict (scratchpad)
+ * amixer (volume adjust)
 
   /sys/class/backlight/intel_backlight/brightness needs to be writable
   (See https://superuser.com/a/1393488)
@@ -44,7 +45,6 @@ import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
--- import XMonad.Actions.Volume
 import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
 import XMonad.Operations
@@ -55,7 +55,6 @@ import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
 
 import qualified XMonad.Config.Gnome as Gnome
--- import qualified XMonad.Util.Brightness as Brightness
 import qualified XMonad.StackSet as W
 
 import Codec.Binary.UTF8.String as UTF8
@@ -181,7 +180,7 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
           spawnOnce "nm-applet &"
 
           -- polybar
-          spawnOnce "~/.config/polybar/start.sh"
+          spawnOnce "~/.config/polybar/start.sh &"
 
           startupHook conf
 
