@@ -2,3 +2,4 @@
 *.errors
 *.o
 xmonad-x86_64-linux
+prompt-history

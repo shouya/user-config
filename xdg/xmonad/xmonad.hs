@@ -49,11 +49,14 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
 import XMonad.Actions.FloatKeys
 import XMonad.Operations
+
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.Circle
 import XMonad.Layout.Spacing
 import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.Tabbed
 
 import qualified XMonad.Config.Gnome as Gnome
 import qualified XMonad.StackSet as W
@@ -131,6 +134,7 @@ myKeybinding conf = conf
                     `replaceKeysP` (map newkey repurposedKeys)
                     `replaceKeysP` extraKeys
                     `replaceKeysP` floatingKeys
+                    `replaceKeysP` resizeKeys
   where repurposedKeys =
           [ ("M-S-c", "M-S-q", kill)
           , ("M-S-<Return>", "M-<Return>", spawn myTerminal)
@@ -151,6 +155,10 @@ myKeybinding conf = conf
           , ("M-S-<Right>", withFocused (keysResizeWindow (20, 0) (0,0)))
           , ("M-S-<Up>",    withFocused (keysResizeWindow (0, -20) (0,0)))
           , ("M-S-<Down>",  withFocused (keysResizeWindow (0, 20) (0,0)))
+          ]
+        resizeKeys =
+          [ ("M-S-h", sendMessage MirrorShrink)
+          , ("M-S-l", sendMessage MirrorExpand)
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
@@ -198,9 +206,10 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
 
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
-  where layout = avoidStruts tallLayouts ||| Full
-        tall = smartSpacingWithEdge 5 (Tall 1 (3/100) (1/2))
+  where layout = avoidStruts (tallLayouts ||| tabLayout) ||| Full
+        tall = smartSpacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
         tallLayouts = tall ||| Mirror tall
+        tabLayout = simpleTabbed
         fancy = Circle ||| spiral (3/4) ||| Roledex
 
 -- myAppKeys :: XConfig a -> XConfig a
