@@ -60,9 +60,10 @@ import qualified XMonad.StackSet as W
 
 import Codec.Binary.UTF8.String as UTF8
 
-
 -- custom libs
 import XMonad.Actions.FixedWorkspace
+import XMonad.Actions.Volume
+import XMonad.Actions.Backlight
 
 main :: IO ()
 main = do
@@ -143,11 +144,11 @@ myKeybinding conf = conf
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
           , ("<Print>", spawn "flameshot gui")
-          -- , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
-          -- , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
-          -- , ("<XF86AudioMute>", toggleMute >> pure ())
-          -- , ("<XF86MonBrightnessUp>", liftIO (Brightness.change (+8)) >> pure ())
-          -- , ("<XF86MonBrightnessDown>", liftIO (Brightness.change (subtract 8)) >> pure ())
+          , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
+          , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
+          , ("<XF86AudioMute>", toggleMute >> pure ())
+          , ("<XF86MonBrightnessUp>", raiseBrightness "intel_backlight" 5)
+          , ("<XF86MonBrightnessDown>", lowerBrightness "intel_backlight" 5)
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
@@ -156,7 +157,7 @@ myKeybinding conf = conf
                                   then W.sink w s
                                   else (W.float w floatingRect s))
         floatingRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
-        -- playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
+        playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
 
 myTerminal = "alacritty"
 
@@ -251,9 +252,8 @@ data PolybarChannel = PolybarChannel { titleLogPipe :: FilePath
 
 createPolybarChannel :: IO PolybarChannel
 createPolybarChannel = do
-  spawn "rm -f /tmp/xmonad-title-log /tmp/xmonad-workspace-log"
-  spawn "mkfifo /tmp/xmonad-title-log"
-  spawn "mkfifo /tmp/xmonad-workspace-log"
+  spawn "mkfifo /tmp/xmonad-title-log || true"
+  spawn "mkfifo /tmp/xmonad-workspace-log || true"
   pure $ PolybarChannel "/tmp/xmonad-title-log" "/tmp/xmonad-workspace-log"
 
 myPolybar :: PolybarChannel -> XConfig a -> XConfig a
