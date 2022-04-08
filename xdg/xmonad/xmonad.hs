@@ -69,7 +69,7 @@ main :: IO ()
 main = do
   let conf = def { modMask = mod4Mask
                  , focusFollowsMouse = False
-                 , borderWidth = 3
+                 , borderWidth = 5
                  , focusedBorderColor = "#01a495"
                  , normalBorderColor = "#1f2626"
                  }
