@@ -47,6 +47,7 @@ import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
+import XMonad.Actions.FloatKeys
 import XMonad.Operations
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.Circle
@@ -129,6 +130,7 @@ myKeybinding conf = conf
                     `removeKeysP` (map oldkey repurposedKeys)
                     `replaceKeysP` (map newkey repurposedKeys)
                     `replaceKeysP` extraKeys
+                    `replaceKeysP` floatingKeys
   where repurposedKeys =
           [ ("M-S-c", "M-S-q", kill)
           , ("M-S-<Return>", "M-<Return>", spawn myTerminal)
@@ -139,6 +141,16 @@ myKeybinding conf = conf
           , ("M-<Space>", "M-0", sendMessage NextLayout)
           -- replaced by gnome-session-quit
           -- , ("M-S-q", "M-S-e", io (exitWith ExitSuccess))
+          ]
+        floatingKeys =
+          [ ("M-<Left>",  withFocused (keysMoveWindow (-20, 0)))
+          , ("M-<Right>", withFocused (keysMoveWindow (20, 0)))
+          , ("M-<Up>",    withFocused (keysMoveWindow (0, -20)))
+          , ("M-<Down>",  withFocused (keysMoveWindow (0, 20)))
+          , ("M-S-<Left>",  withFocused (keysResizeWindow (-20, 0) (0,0)))
+          , ("M-S-<Right>", withFocused (keysResizeWindow (20, 0) (0,0)))
+          , ("M-S-<Up>",    withFocused (keysResizeWindow (0, -20) (0,0)))
+          , ("M-S-<Down>",  withFocused (keysResizeWindow (0, 20) (0,0)))
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
