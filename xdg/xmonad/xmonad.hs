@@ -71,6 +71,10 @@ import XMonad.Actions.Backlight
 main :: IO ()
 main = do
   let conf = def { modMask = mod4Mask
+                 -- Disabling focusFollowMouse will make first click
+                 -- on unfocused window only focus it, not passing the
+                 -- click through to the window.
+                 --
                  , focusFollowsMouse = False
                  , borderWidth = 5
                  , focusedBorderColor = "#01a495"
@@ -245,7 +249,7 @@ myScratchpad conf =
                  ]
   where sps =  [ NS "term" "alacritty --class=scratch-term"
                     (resource =? "scratch-term" <&&> isFloating) float
-               , NS "dict" "stardict" (className =? "Stardict") float
+               , NS "dict" "goldendict" (className =? "GoldenDict") float
                , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") float
                ]
         float = customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
