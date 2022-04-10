@@ -17,6 +17,8 @@
  * qalculate-gtk (scratchpad)
  * stardict (scratchpad)
  * amixer (volume adjust)
+ * copyq (clipboard manager)
+ * autocutsel (primary/clipboard sync)
 
   /sys/class/backlight/intel_backlight/brightness needs to be writable
   (See https://superuser.com/a/1393488)
@@ -202,6 +204,10 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
 
           -- nm-applet
           spawnOnce "nm-applet &"
+
+          -- clipboard
+          spawnOnce "copyq &"
+          spawnOnce "autocutsel -fork"
 
           -- polybar
           spawnOnce "~/.config/polybar/start.sh &"
