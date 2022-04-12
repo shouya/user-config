@@ -46,7 +46,6 @@ import XMonad.Hooks.FadeWindows (isFloating)
 import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
-import XMonad.Actions.WindowBringer
 import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
 import XMonad.Actions.FloatKeys
@@ -104,7 +103,7 @@ myConfiguration conf = do
 
 replaceKeysP :: XConfig l -> [(String, X ())] -> XConfig l
 replaceKeysP conf keys = conf
-                         `removeKeysP` (map fst keys)
+                         `removeKeysP` map fst keys
                          `additionalKeysP` keys
 
 -- gnomeIntegration :: XConfig a -> XConfig b
@@ -136,8 +135,8 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
 
 -- myKeybinding :: XConfig a -> XConfig a
 myKeybinding conf = conf
-                    `removeKeysP` (map oldkey repurposedKeys)
-                    `replaceKeysP` (map newkey repurposedKeys)
+                    `removeKeysP` map oldkey repurposedKeys
+                    `replaceKeysP` map newkey repurposedKeys
                     `replaceKeysP` extraKeys
                     `replaceKeysP` floatingKeys
                     `replaceKeysP` resizeKeys
@@ -180,7 +179,7 @@ myKeybinding conf = conf
         reloadXMonad = spawn "xmonad --recompile && xmonad --restart && notify-send Reloaded."
         toggleFloat w = windows (\s -> if M.member w (W.floating s)
                                   then W.sink w s
-                                  else (W.float w floatingRect s))
+                                  else W.float w floatingRect s)
         floatingRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
         playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
 
@@ -224,8 +223,8 @@ myLayout conf = docks $ conf { layoutHook = layout }
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
-                 `replaceKeysP` (map launchOrFocus appKeys)
-                 `replaceKeysP` (map bringToCurrentWS appKeys)
+                 `replaceKeysP` map launchOrFocus appKeys
+                 `replaceKeysP` map bringToCurrentWS appKeys
 
   where appKeys =
           [ ("<F1>", "firefox", className =? "Firefox-esr"
@@ -237,11 +236,22 @@ myAppKeys conf = conf
           ]
         launchOrFocus (key, cmd, query) = ("M-" ++ key, runOrRaise cmd query)
         bringToCurrentWS (key, cmd, query) = ("M-S-" ++ key, runOrBring cmd query)
-        runOrBring cmd query = forWindows query (windows . bringWindow) (runApp cmd)
+        runOrBring cmd query = forWindows query bringWindow (runApp cmd)
+        runOrRaise cmd query = forWindows query focusWindow (runApp cmd)
         runApp cmd = spawn cmd
 
 forWindows :: Query Bool -> (Window -> X ()) -> X () -> X ()
-forWindows q f g = ifWindows q (flip forM_ f) g
+forWindows q f = ifWindows q (mapM_ f)
+
+bringWindow :: Window -> X ()
+bringWindow w = do
+  windows $ \ss -> W.shiftWin (W.currentTag ss) w ss
+
+focusWindow :: Window -> X ()
+focusWindow w = do
+  ss <- windowset <$> get
+  maybe (pure ()) viewWorkspace (W.findTag w ss)
+
 
 -- myScratchpad :: XConfig a -> XConfig a
 myScratchpad conf =
@@ -270,7 +280,7 @@ wsName _ = ""
 
 wsNameFull :: WorkspaceId -> String
 wsNameFull "NSP" = ""
-wsNameFull x = (circledNumber x) ++ "<sub>" ++ wsName x ++ "</sub>"
+wsNameFull x = circledNumber x ++ "<sub>" ++ wsName x ++ "</sub>"
 
 circledNumber :: WorkspaceId -> String
 circledNumber n = ["X⓵⓶⓷⓸⓹⓺⓻⓼⓽" !! read n]
@@ -340,5 +350,5 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
   where hooks = composeAll [ title =? "zoom" --> doFloat
                            , isDialog --> doFloat
                            , propertyToQuery (Role "About") --> doFloat
-                           , isPrefixOf "About " <$> (stringProperty "WM_ICON_NAME") --> doFloat
+                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> doFloat
                            ]
