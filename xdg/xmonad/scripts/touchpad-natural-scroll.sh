@@ -1,37 +1,11 @@
 #!/bin/bash
 
-get_touchpad_id() {
-  xinput list | grep TouchPad | grep -E -o "id=[0-9]+" | sed 's/id=//'
-}
+# Cheatsheet:
+#
+# - xinput list
+# - xinput list-prop "$dev_id"
 
-get_prop_id() {
-  device="$1"
-  xinput list-props "$device" |
-    grep 'Natural' |
-    grep -v 'Default' |
-    grep -o -E '\([0-9]+\)' |
-    tr -d '()'
-}
+dev="$SynPS/2 Synaptics TouchPad"
 
-set_natural_mode() {
-  device="$1"
-  prop="$2"
-  value="$3"
-
-  xinput set-prop "$device" "$prop" "$value"
-}
-
-
-device="$(get_touchpad_id)"
-if [[ -z "$device" ]]; then
-  echo "Device not found"
-  exit 1
-fi
-
-prop="$(get_prop_id "$device")"
-if [[ -z "$prop" ]]; then
-  echo "Property not found for device $device"
-  exit 1
-fi
-
-set_natural_mode "$device" "$prop" 1
+xinput set-prop "$dev" 'libinput Tapping Enabled' 1
+xinput set-prop "$dev" 'libinput Natural Scrolling Enabled' 1
