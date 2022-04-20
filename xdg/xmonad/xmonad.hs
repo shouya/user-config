@@ -19,6 +19,7 @@
  * amixer (volume adjust)
  * copyq (clipboard manager)
  * autocutsel (primary/clipboard sync)
+ * xscreensaver
 
   /sys/class/backlight/intel_backlight/brightness needs to be writable
   (See https://superuser.com/a/1393488)
@@ -210,6 +211,9 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
 
           -- polybar
           spawnOnce "~/.config/polybar/start.sh &"
+
+          -- screensaver
+          spawnOnce "xscreensaver --no-splash &"
 
           startupHook conf
 
