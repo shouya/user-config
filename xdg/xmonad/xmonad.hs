@@ -130,6 +130,17 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
         extraScreen = 1
         wsStartupHook = do
           windows $ greedyViewOnScreen extraScreen "9"
+          initWorkscreenAssignment $
+            M.fromList [ ("1", defaultScreen)
+                       , ("2", defaultScreen)
+                       , ("3", defaultScreen)
+                       , ("4", defaultScreen)
+                       , ("5", defaultScreen)
+                       , ("6", defaultScreen)
+                       , ("7", defaultScreen)
+                       , ("8", defaultScreen)
+                       , ("9", extraScreen)
+                       ]
 
 -- myKeybinding :: XConfig a -> XConfig a
 myKeybinding conf = conf

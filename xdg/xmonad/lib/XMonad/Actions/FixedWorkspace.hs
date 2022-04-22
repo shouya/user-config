@@ -46,6 +46,7 @@ module XMonad.Actions.FixedWorkspace
   , moveCurrentWorkspaceToScreen
   , moveWorkspaceToScreen
   , viewWorkspace
+  , initWorkscreenAssignment
   ) where
 
 import qualified XMonad.Util.ExtensibleState as XS
@@ -105,3 +106,6 @@ setWorkspaceScreen :: WorkspaceId -> ScreenId -> X ()
 setWorkspaceScreen ws s = XS.modify updateRecord
   where updateRecord (WorkspaceScreenMapping mapping) =
           WorkspaceScreenMapping (M.insert ws s mapping)
+
+initWorkscreenAssignment :: M.Map WorkspaceId ScreenId -> X ()
+initWorkscreenAssignment map = XS.put (WorkspaceScreenMapping map)
