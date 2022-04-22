@@ -73,11 +73,8 @@ import XMonad.Actions.Backlight
 main :: IO ()
 main = do
   let conf = def { modMask = mod4Mask
-                 -- Disabling focusFollowMouse will make first click
-                 -- on unfocused window only focus it, not passing the
-                 -- click through to the window.
-                 --
                  , focusFollowsMouse = False
+                 , clickJustFocuses = False
                  , borderWidth = 5
                  , focusedBorderColor = "#01a495"
                  , normalBorderColor = "#1f2626"
