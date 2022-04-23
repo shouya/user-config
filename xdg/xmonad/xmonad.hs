@@ -4,7 +4,6 @@
 
 {- External deps:
 
- * gnome-session-flashback (DE)
  * dmenu (app launcher with M-<space>
  * flameshot (prtscr)
  * notify-send (misc)
@@ -60,7 +59,6 @@ import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 
-import qualified XMonad.Config.Gnome as Gnome
 import qualified XMonad.StackSet as W
 
 import Codec.Binary.UTF8.String as UTF8
@@ -86,7 +84,7 @@ main = do
 myConfiguration conf = do
   channel <- createPolybarChannel
 
-  pure $ gnomeIntegration
+  pure $ desktopIntegration
        $ myAppKeys
        $ myScratchpad
        $ myStartupPrograms
@@ -104,13 +102,12 @@ replaceKeysP conf keys = conf
                          `removeKeysP` map fst keys
                          `additionalKeysP` keys
 
--- gnomeIntegration :: XConfig a -> XConfig b
-gnomeIntegration conf =
-  conf { manageHook = manageHook Gnome.gnomeConfig <+> manageHook conf
-       , startupHook = Gnome.gnomeRegister >> startupHook conf
-       , keys = gnomeKeys <+> keys conf
+-- desktopIntegration :: XConfig a -> XConfig b
+desktopIntegration conf =
+  conf { manageHook = manageHook desktopConfig <+> manageHook conf
+       , startupHook = startupHook desktopConfig >> startupHook conf
+       , layoutHook = desktopLayoutModifiers (layoutHook conf)
        }
-  where gnomeKeys conf = mkKeymap conf [("M-S-e", spawn "gnome-session-quit --logout")]
 
 
 -- myWorkspaces :: XConfig a -> XConfig a
@@ -196,34 +193,7 @@ myTerminal = "alacritty"
 
 -- myStartupPrograms :: XConfig a -> XConfig a
 myStartupPrograms conf = conf { startupHook = newStartupHook }
-  where newStartupHook = do
-          -- X11 config
-          spawnOnce "xrdb -merge ~/.Xresources"
-          spawnOnce "xset b off"
-
-          -- swap ctrl and caps lock; swap windows and alt key
-          spawnOnce "inputplug -0 --command \"$HOME/.xmonad/scripts/new-keyboard.sh\""
-
-          -- touchpad natural scroll mode
-          spawnOnce "~/.xmonad/scripts/touchpad-natural-scroll.sh"
-
-          -- compton
-          spawnOnce "picom --shadow --no-dock-shadow --no-dnd-shadow --shadow-ignore-shaped --fading --backend glx --daemon"
-
-          -- nm-applet
-          spawnOnce "nm-applet &"
-
-          -- clipboard
-          spawnOnce "copyq &"
-          spawnOnce "autocutsel -fork"
-
-          -- polybar
-          spawnOnce "~/.config/polybar/start.sh &"
-
-          -- screensaver
-          spawnOnce "xscreensaver --no-splash &"
-
-          startupHook conf
+  where newStartupHook = return ()
 
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
