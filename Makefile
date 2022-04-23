@@ -1,7 +1,8 @@
 UNAME := $(shell uname)
+HOSTNAME := $(shell hostname)
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?# .*$$' $(MAKEFILE_LIST) \
+	@grep -E '^[a-zA-Z0-9_-]+:.*?# .*$$' $(MAKEFILE_LIST) \
 	| sort \
 	| awk 'BEGIN {FS = ":.*?# "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
@@ -52,7 +53,6 @@ shell: # Zsh config (requires git-crypt)
 	ln -Trsf shell ~/.shell
 	ln -rsf ~/.shell/zshrc ~/.zshrc
 
-
 calendar: # Khal and vdirsyncer
 	./utils/backup ~/.config/khal
 	./utils/backup ~/.config/vdirsyncer
@@ -102,6 +102,15 @@ systemd-tubian: # Systemd for graphical laptop running debian/gnome-flashback
 	@echo "Please run [systemctl --user daemon-reload]"
 	@echo "Also [systemctl enable <unit>]"
 
+x11: # User x11 config (deps on fcitx and xmonad)
+ifneq (,$(wildcard x11/Xresources.$(HOSTNAME)))
+	ln -rsf x11/Xresources.$(HOSTNAME) ~/.Xresources
+else
+	@echo "Xresources not found for $(HOSTNAME), skipping"
+endif
+	ln -rsf x11/xsession ~/.xsession
+	ln -rsf x11/xsession ~/.xinitrc
+	sudo install -m 644 x11/Xsession.desktop /usr/share/xsessions/Xsession.desktop
 
 gpg: # GnuPG agent config
 	mkdir -p ~/.gnupg

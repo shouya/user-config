@@ -1,0 +1,61 @@
+#!/bin/bash
+
+export PATH=/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/home/shou/.local/bin:/home/shou/.shell/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+
+exec 2> ~/.xsession-errors > ~/.xsession-log
+
+# x11 configs
+[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
+xset b off
+
+# automatically swap ctrl/capslock on pluggable keyboards
+~/.xmonad/scripts/new-keyboard.sh
+inputplug -0 --command ~/.xmonad/scripts/new-keyboard.sh &
+
+# pointer configs
+~/.xmonad/scripts/touchpad-natural-scroll.sh
+
+# wallpaper
+if [ -d ~/Pictures/wallpapers ]; then
+  # sometimes feh random to a non-png wallpaper and fails to load, give it a few more chances.
+  ( while ! feh --bg-fill ~/Pictures/wallpapers/ -zr; do :; done ) &
+else
+  echo "~/Pictures/wallpapers not found, skipping wallpaper"
+fi
+
+# compositor
+picom --daemon
+
+# hidpi setting for gtk 3 apps
+GDK_SCALE=2
+GDK_DPI_SCALE=0.5
+
+# status bar
+polybar --reload default-bar &
+
+# network manager applet
+(sleep 1; nm-applet) &
+
+# clipboard
+copyq &
+autocutsel -fork
+
+# volume control
+pasystray &
+
+# autokey
+autokey &
+
+# screensaver
+xscreensaver --no-splash &
+
+# gnome keyring
+export $(gnome-keyring-daemon --start)
+
+export XDG_CURRENT_DESKTOP=GNOME
+
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+	exec dbus-launch --exit-with-session xmonad
+else
+	exec xmonad
+fi
