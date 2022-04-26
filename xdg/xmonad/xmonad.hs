@@ -59,6 +59,7 @@ import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
+import XMonad.Layout.Renamed
 
 import qualified XMonad.StackSet as W
 
@@ -196,11 +197,13 @@ myStartupPrograms conf = conf { startupHook = newStartupHook }
 
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
-  where layout = avoidStruts (tallLayouts ||| tabLayout) ||| Full
+  where layout = avoidStruts (tallLayouts ||| tabLayout) ||| full
         tall = smartSpacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
-        tallLayouts = tall ||| Mirror tall
-        tabLayout = simpleTabbed
-        fancy = Circle ||| spiral (3/4) ||| Roledex
+        tallLayouts = name "(|)" tall ||| name "(-)" (Mirror tall)
+        tabLayout = name "(T)" simpleTabbed
+        fancy = name "(~)" (Circle ||| spiral (3/4) ||| Roledex)
+        full = name "(F)" Full
+        name x = renamed [Replace x]
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
@@ -299,7 +302,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
                , ppVisible = color "AFA" . wsNameFull
                , ppHidden = color "AAA" . wsNameFull
                , ppUrgent = color "E00" . wsNameFull
-               , ppLayout = const ""
+               , ppLayout = id
                , ppSep = ""
                , ppWsSep = ""
                }
