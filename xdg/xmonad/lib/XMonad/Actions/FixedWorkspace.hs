@@ -47,6 +47,7 @@ module XMonad.Actions.FixedWorkspace
   , moveWorkspaceToScreen
   , viewWorkspace
   , setWorkspaceScreen
+  , getWorkspaceScreen
   ) where
 
 import qualified XMonad.Util.ExtensibleState as XS

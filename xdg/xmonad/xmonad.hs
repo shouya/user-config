@@ -49,6 +49,7 @@ import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
 import XMonad.Actions.FloatKeys
+import XMonad.Actions.CycleRecentWS
 import XMonad.Operations
 
 import XMonad.Layout.IndependentScreens
@@ -123,18 +124,17 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
                      , ("M-w", moveCurrentWorkspaceToOtherScreen)
                      ]
         myWorkspaces = map (:[]) "123456789"
-        defaultScreen = 0
-        extraScreen = 1
         wsStartupHook = do
-          setWorkspaceScreen "1" defaultScreen
-          setWorkspaceScreen "2" defaultScreen
-          setWorkspaceScreen "3" defaultScreen
-          setWorkspaceScreen "4" defaultScreen
-          setWorkspaceScreen "5" defaultScreen
-          setWorkspaceScreen "6" defaultScreen
-          setWorkspaceScreen "7" defaultScreen
-          setWorkspaceScreen "8" defaultScreen
-          setWorkspaceScreen "9" extraScreen
+          _ <- getWorkspaceScreen "1"
+          setWorkspaceScreen "1" 1
+          setWorkspaceScreen "2" 1
+          setWorkspaceScreen "3" 1
+          setWorkspaceScreen "4" 1
+          setWorkspaceScreen "5" 1
+          setWorkspaceScreen "6" 1
+          setWorkspaceScreen "7" 1
+          setWorkspaceScreen "8" 1
+          setWorkspaceScreen "9" 2
 
 
 -- myKeybinding :: XConfig a -> XConfig a
@@ -171,6 +171,7 @@ myKeybinding conf = conf
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
+          , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab (xK_Shift_L .|. xK_Tab))
           , ("<Print>", spawn "flameshot gui")
           , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
           , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
