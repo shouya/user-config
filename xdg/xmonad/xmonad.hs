@@ -114,7 +114,8 @@ desktopIntegration conf =
 
 -- myWorkspaces :: XConfig a -> XConfig a
 myWorkspaces conf = conf { workspaces = myWorkspaces
-                         , startupHook = wsStartupHook >> startupHook conf }
+                         , startupHook = startupHook conf >> wsStartupHook
+                         }
                     `replaceKeysP` wsKeys
                     `replaceKeysP` wsShiftKeys
                     `replaceKeysP` screenKeys
@@ -127,15 +128,15 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
         myWorkspaces = map (:[]) "123456789"
         wsStartupHook = do
           _ <- getWorkspaceScreen "1"
-          setWorkspaceScreen "1" 1
-          setWorkspaceScreen "2" 1
-          setWorkspaceScreen "3" 1
-          setWorkspaceScreen "4" 1
-          setWorkspaceScreen "5" 1
-          setWorkspaceScreen "6" 1
-          setWorkspaceScreen "7" 1
-          setWorkspaceScreen "8" 1
-          setWorkspaceScreen "9" 2
+          setWorkspaceScreen "1" 0
+          setWorkspaceScreen "2" 0
+          setWorkspaceScreen "3" 0
+          setWorkspaceScreen "4" 0
+          setWorkspaceScreen "5" 0
+          setWorkspaceScreen "6" 0
+          setWorkspaceScreen "7" 0
+          setWorkspaceScreen "8" 0
+          setWorkspaceScreen "9" 1
 
 
 -- myKeybinding :: XConfig a -> XConfig a
@@ -192,7 +193,7 @@ myKeybinding conf = conf
 myTerminal = "alacritty"
 
 -- myStartupPrograms :: XConfig a -> XConfig a
-myStartupPrograms conf = conf { startupHook = newStartupHook }
+myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf }
   where newStartupHook = return ()
 
 -- myLayout :: XConfig a -> XConfig _
