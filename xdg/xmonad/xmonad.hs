@@ -336,4 +336,5 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , isDialog --> doFloat
                            , propertyToQuery (Role "About") --> doFloat
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> doFloat
+                           , className =? "flameshot" --> doFloat
                            ]
