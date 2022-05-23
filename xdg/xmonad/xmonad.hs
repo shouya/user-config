@@ -121,8 +121,8 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
                     `replaceKeysP` screenKeys
   where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- myWorkspaces]
         wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- myWorkspaces]
-        screenKeys = [ ("M-q", prevScreen)
-                     , ("M-e", nextScreen)
+        screenKeys = [ ("M-e", nextScreen)
+                     , ("M-S-e", shiftNextScreen)
                      , ("M-w", moveCurrentWorkspaceToOtherScreen)
                      ]
         myWorkspaces = map (:[]) "123456789"
