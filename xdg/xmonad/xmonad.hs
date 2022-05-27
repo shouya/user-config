@@ -332,7 +332,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
-  where hooks = composeAll [ title =? "zoom" --> doFloat
+  where hooks = composeAll [ title =? "zoom " --> doFloat
                            , isDialog --> doFloat
                            , propertyToQuery (Role "About") --> doFloat
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> doFloat
