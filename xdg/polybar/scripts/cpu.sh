@@ -87,7 +87,16 @@ change_policy() {
 
   echo "$new_governor" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 
-  notify-send "switching cpu governor policy to $new_governor"
+  notify-send "Switching cpu governor policy to $new_governor"
+
+  if [[ "$new_governor" = "performance" ]]; then
+    # automatically switch governor to powersave after 5 minutes
+    (
+      sleep $((5 * 60));
+      sh -c "$ZSH_ARGZERO change_policy";
+      notify-send "CPU governor policy restored."
+    ) &
+  fi
 }
 
 case "$1" in
