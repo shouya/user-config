@@ -180,6 +180,7 @@ myKeybinding conf = conf
           , ("<XF86AudioMute>", toggleMute >> pure ())
           , ("<XF86MonBrightnessUp>", raiseBrightness "intel_backlight" 5)
           , ("<XF86MonBrightnessDown>", lowerBrightness "intel_backlight" 5)
+          , ("<XF86AudioMicMute>", toggleMuteMicrophone >> pure())
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
