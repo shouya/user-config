@@ -86,7 +86,8 @@ main = do
 myConfiguration conf = do
   channel <- createPolybarChannel
 
-  pure $ desktopIntegration
+  pure $ ewmh
+       $ desktopIntegration
        $ myAppKeys
        $ myScratchpad
        $ myStartupPrograms
@@ -95,8 +96,7 @@ myConfiguration conf = do
        $ myPolybar channel
        $ myWorkspaces
        $ myKeybinding
-       $ ewmh
-       $ conf
+       conf
 
 
 replaceKeysP :: XConfig l -> [(String, X ())] -> XConfig l
@@ -284,7 +284,7 @@ createPolybarChannel = do
 
 myPolybar :: PolybarChannel -> XConfig a -> XConfig a
 myPolybar (PolybarChannel titlePipe wsPipe) conf =
-  conf { logHook = dynamicLogWithPP titlePP >> dynamicLogWithPP wsPP }
+  conf { logHook = dynamicLogWithPP titlePP >> dynamicLogWithPP wsPP >> logHook conf }
   where titlePP = defaultPP
                   { ppOutput = output titlePipe . fontSans
                   , ppTitle = id
