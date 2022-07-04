@@ -71,3 +71,5 @@ node_modules/
 
 flamegraph.svg
 *.coverdata
+
+scratch/
