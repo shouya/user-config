@@ -73,3 +73,5 @@ flamegraph.svg
 *.coverdata
 
 scratch/
+
+.stack-work/

@@ -1,0 +1,6 @@
+resolver: lts-19.14
+packages:
+- xmonad
+- xmonad-contrib
+- xmonad-extras
+

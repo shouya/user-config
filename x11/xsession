@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/home/shou/.local/bin:/home/shou/.shell/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+export PATH=/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/home/shou/.local/bin:/home/shou/.cabal/bin:/home/shou/.shell/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
 
 exec 2> ~/.xsession-errors > ~/.xsession-log
 
@@ -59,3 +59,4 @@ if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 else
 	exec xmonad
 fi
+

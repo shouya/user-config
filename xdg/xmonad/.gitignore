@@ -3,3 +3,7 @@
 *.o
 xmonad-x86_64-linux
 prompt-history
+xmonad
+xmonad-contrib
+xmonad-extras
+

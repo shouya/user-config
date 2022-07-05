@@ -286,7 +286,7 @@ createPolybarChannel = do
 myPolybar :: PolybarChannel -> XConfig a -> XConfig a
 myPolybar (PolybarChannel titlePipe wsPipe) conf =
   conf { logHook = dynamicLogWithPP titlePP >> dynamicLogWithPP wsPP >> logHook conf }
-  where titlePP = defaultPP
+  where titlePP = def
                   { ppOutput = output titlePipe . fontSans
                   , ppTitle = id
                   , ppTitleSanitize = id
@@ -298,7 +298,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
                   , ppSep = ""
                   , ppWsSep = ""
                   }
-        wsPP = defaultPP
+        wsPP = def
                { ppOutput = output wsPipe . fontMono
                , ppTitle = const ""
                , ppCurrent = color "EAE" . wrap "[" "]" . wsNameFull
@@ -339,4 +339,5 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , propertyToQuery (Role "About") --> doFloat
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> doFloat
                            , className =? "flameshot" --> doFloat
+                           , className =? "copyq" --> doFloat
                            ]
