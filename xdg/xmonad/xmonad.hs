@@ -30,6 +30,7 @@ import System.Exit
 import qualified Data.Map as M
 import Data.List
 import Text.Printf
+import qualified Data.Text as T
 
 import XMonad
 import XMonad.Util.EZConfig
@@ -62,8 +63,6 @@ import XMonad.Layout.Tabbed
 import XMonad.Layout.Renamed
 
 import qualified XMonad.StackSet as W
-
-import Codec.Binary.UTF8.String as UTF8
 
 -- custom libs
 import XMonad.Actions.FixedWorkspace
@@ -289,7 +288,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
   where titlePP = def
                   { ppOutput = output titlePipe . fontSans
                   , ppTitle = id
-                  , ppTitleSanitize = id
+                  , ppTitleSanitize = escapeTitle
                   , ppCurrent = const ""
                   , ppVisible = const ""
                   , ppHidden = const ""
@@ -316,7 +315,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
         color c t = printf "%%{F#%s}%s%%{F-}" (c :: String) (t :: String)
         output pipe str = do
           let s = str ++ "\n"
-          appendFile pipe (UTF8.decodeString s)
+          appendFile pipe s
 
         wsName :: WorkspaceId -> String
         wsName "5" = "Slack"
@@ -331,6 +330,13 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
                          n -> x ++ ":" ++ n
 
         wrap l r x = l ++ x ++ r
+
+        escapeTitle title = T.unpack $
+                            T.replace "%" "\\%" $
+                            T.replace "{" "\\{" $
+                            T.replace "}" "\\}" $
+                            T.pack title
+
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
