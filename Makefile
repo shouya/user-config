@@ -131,5 +131,9 @@ pass: # Password store
 	git clone git@git.lain.li:shouya/pass.git ~/.password-store || true
 	cd ~/.password-store; git pull --rebase
 
+offlineimap: # Software to sync email via imap
+	ln -rsf mail/offlineimaprc ~/.offlineimaprc
+	ln -rsf mail/offlineimap.py ~/.offlineimap.py
+	@echo You may want to install mu/mu4e.
 
 .PHONY : $(MAKECMDGOALS)

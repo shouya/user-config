@@ -1,0 +1,43 @@
+[general]
+accounts = tubi, private
+pythonfile = ~/.offlineimap.py
+
+[Account tubi]
+localrepository = local-tubi
+remoterepository = remote-tubi
+autorefresh = 5
+quick = 10
+postsynchook = pkill -INT mu; sleep 1; XAPIAN_CJK_NGRAM=1 mu index
+
+[Repository local-tubi]
+type = Maildir
+localfolders = ~/.mailbox/tubi
+
+[Repository remote-tubi]
+maxconnections = 5
+type = IMAP
+remotehost = imap.gmail.com
+remoteusereval = pass_show("tubi/email")
+remotepasseval = pass_show("tubi/gmail/mu4e-app-password")
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail', '[Gmail]/Important']
+
+[Account private]
+localrepository = local-private
+remoterepository = remote-private
+autorefresh = 5
+quick = 10
+postsynchook = pkill -INT mu; sleep 1; XAPIAN_CJK_NGRAM=1 mu index
+
+[Repository local-private]
+type = Maildir
+localfolders = ~/.mailbox/private
+
+[Repository remote-private]
+maxconnections = 5
+type = IMAP
+remotehost = imap.fastmail.com
+remoteusereval = pass_show("fastmail/email")
+remotepasseval = pass_show("fastmail/mu4e-app-password")
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+folderfilter = lambda name: name in ['INBOX', 'Sent', 'Trash', 'Spam', 'Archive', 'Drafts']
