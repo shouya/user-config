@@ -346,4 +346,5 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> doFloat
                            , className =? "flameshot" --> doFloat
                            , className =? "copyq" --> doFloat
+                           , className =? "pavucontrol" --> doFloat
                            ]
