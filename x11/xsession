@@ -27,8 +27,8 @@ fi
 picom --daemon
 
 # hidpi setting for gtk 3 apps
-GDK_SCALE=2
-GDK_DPI_SCALE=0.5
+export GDK_SCALE=2
+export GDK_DPI_SCALE=0.5
 
 # status bar
 polybar --reload default-bar &
