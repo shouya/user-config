@@ -136,4 +136,8 @@ offlineimap: # Software to sync email via imap
 	ln -rsf mail/offlineimap.py ~/.offlineimap.py
 	@echo You may want to install mu/mu4e.
 
+picom: # Picom, an X compositor
+	./utils/backup ~/.config/picom
+	ln -rsf xdg/picom ~/.config
+
 .PHONY : $(MAKECMDGOALS)
