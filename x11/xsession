@@ -54,9 +54,11 @@ export $(gnome-keyring-daemon --start)
 
 export XDG_CURRENT_DESKTOP=GNOME
 
-if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+exec 1<> /tmp/xmonad.stdout
+exec 2<> /tmp/xmonad.stderr
+
+if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
 	exec dbus-launch --exit-with-session xmonad
 else
 	exec xmonad
 fi
-
