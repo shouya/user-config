@@ -64,6 +64,9 @@ disabled = true
 [elixir]
 disabled = true
 
+[rust]
+disabled = true
+
 [hostname]
 ssh_only = false
 
