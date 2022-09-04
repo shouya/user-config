@@ -15,10 +15,10 @@ $rust\
 $env_var\
 $custom\
 $cmd_duration\
+$time\
 $status\
 $line_break\
 $jobs\
-$time\
 $character"""
 
 command_timeout = 1000
@@ -70,5 +70,5 @@ disabled = true
 [hostname]
 ssh_only = false
 
-# [time]
-# disabled = false
+[time]
+disabled = false
