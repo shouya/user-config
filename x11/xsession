@@ -54,6 +54,9 @@ export $(gnome-keyring-daemon --start)
 
 export XDG_CURRENT_DESKTOP=GNOME
 
+# See https://blog.ando.fyi/posts/diagnosing-an-unsual-wifi-issue/
+export QT_BEARER_POLL_TIMEOUT=-1
+
 exec 1<> /tmp/xmonad.stdout
 exec 2<> /tmp/xmonad.stderr
 
