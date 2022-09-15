@@ -24,7 +24,8 @@ cp = cherry-pick
 f = fetch
 d = diff
 lg = log --color --graph --oneline --abbrev-commit
-lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit
+# lg with author and date
+lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%ad%Creset' --abbrev-commit
 dc = diff --cached
 dh = diff HEAD
 rsh = reset --hard
