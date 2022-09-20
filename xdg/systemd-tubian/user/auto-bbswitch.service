@@ -1,0 +1,8 @@
+[Unit]
+Description=Auto bbswitch
+
+[Service]
+ExecStart=/home/shou/projects/scripts/shou-tubian/auto-bbswitch
+
+[Install]
+WantedBy=graphical-session.target
