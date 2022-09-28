@@ -6,6 +6,7 @@
 
  * dmenu (app launcher with M-<space>
  * flameshot (prtscr)
+ * slop (select window for prtscr)
  * notify-send (misc)
  * inputplug (startup hook)
  * picom (startup hook)
