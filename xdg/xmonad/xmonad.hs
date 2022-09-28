@@ -121,6 +121,7 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
   where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- myWorkspaces]
         wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- myWorkspaces]
         screenKeys = [ ("M-e", nextScreen)
+                     , ("M-q", nextScreen)
                      , ("M-S-e", shiftNextScreen)
                      , ("M-w", moveCurrentWorkspaceToOtherScreen)
                      ]
