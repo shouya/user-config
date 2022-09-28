@@ -203,7 +203,7 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 myLayout conf = docks $ conf { layoutHook = layout }
   where layout = avoidStruts (tallLayouts ||| tabLayout) ||| full
         tall = smartSpacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
-        tallLayouts = name "(|)" tall ||| name "(-)" (Mirror tall)
+        tallLayouts = name "(|)" tall
         tabLayout = name "(T)" simpleTabbed
         fancy = name "(~)" (Circle ||| spiral (3/4) ||| Roledex)
         full = name "(F)" Full
