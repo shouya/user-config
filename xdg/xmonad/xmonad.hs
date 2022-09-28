@@ -177,7 +177,7 @@ myKeybinding conf = conf
           [ ("C-M-f", withFocused toggleFloat)
           , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab (xK_Shift_L .|. xK_Tab))
           , ("<Print>", spawn "flameshot gui")
-          , ("C-<Print>", spawn "flameshot gui --region $(slop)")
+          , ("C-<Print>", spawn "flameshot gui --region $(slop -b 5 -p -5)")
           , ("<XF86AudioLowerVolume>", lowerVolume 5 >> playVolume)
           , ("<XF86AudioRaiseVolume>", raiseVolume 5 >> playVolume)
           , ("<XF86AudioMute>", toggleMute >> pure ())
