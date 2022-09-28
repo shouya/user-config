@@ -74,7 +74,7 @@ main = do
   let conf = def { modMask = mod4Mask
                  , focusFollowsMouse = False
                  , clickJustFocuses = False
-                 , borderWidth = 5
+                 , borderWidth = 12
                  , focusedBorderColor = "#01a495"
                  , normalBorderColor = "#1f2626"
                  }
