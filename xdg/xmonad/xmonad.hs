@@ -69,6 +69,7 @@ import qualified XMonad.StackSet as W
 import XMonad.Actions.FixedWorkspace
 import XMonad.Actions.Volume
 import XMonad.Actions.Backlight
+import XMonad.Actions.AbsWS
 
 main :: IO ()
 main = do
@@ -121,8 +122,8 @@ myWorkspaces conf = conf { workspaces = myWorkspaces
                     `replaceKeysP` screenKeys
   where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- myWorkspaces]
         wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- myWorkspaces]
-        screenKeys = [ ("M-e", nextScreen)
-                     , ("M-q", nextScreen)
+        screenKeys = [ ("M-e", nextScreenCapped)
+                     , ("M-q", prevScreenCapped)
                      , ("M-S-e", shiftNextScreen)
                      , ("M-w", moveCurrentWorkspaceToOtherScreen)
                      ]
