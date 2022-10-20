@@ -133,3 +133,7 @@ defaultBranch = master
 
 [pull]
 rebase = true
+
+[rebase]
+autostash = true
+
