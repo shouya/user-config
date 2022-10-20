@@ -17,6 +17,8 @@ EnumerateGroupBackwardKeys=
 ActivateKeys=
 # Deactivate Input Method
 DeactivateKeys=
+# Toggle embedded preedit
+TogglePreedit=
 
 [Hotkey/TriggerKeys]
 0=Alt+space
@@ -32,9 +34,6 @@ DeactivateKeys=
 
 [Hotkey/NextCandidate]
 0=Tab
-
-[Hotkey/TogglePreedit]
-0=Control+Alt+P
 
 [Behavior]
 # Active By Default
