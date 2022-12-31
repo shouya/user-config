@@ -236,12 +236,13 @@ forWindows q f = ifWindows q (mapM_ f)
 bringWindow :: Window -> X ()
 bringWindow w = do
   windows $ \ss -> W.shiftWin (W.currentTag ss) w ss
+  focus w
 
 focusWindow :: Window -> X ()
 focusWindow w = do
   ss <- windowset <$> get
   maybe (pure ()) viewWorkspace (W.findTag w ss)
-
+  focus w
 
 -- myScratchpad :: XConfig a -> XConfig a
 myScratchpad conf =
