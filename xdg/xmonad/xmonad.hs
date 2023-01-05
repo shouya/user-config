@@ -223,6 +223,7 @@ myAppKeys conf = conf
           , ("<F2>", "emacs", className =? "Emacs")
           , ("<F3>", "alacritty", className =? "Alacritty")
           , ("<F4>", "malakal", className =? "malakal")
+          , ("<F5>", "slack", className =? "Slack")
           ]
         launchOrFocus (key, cmd, query) = ("M-" ++ key, runOrRaise cmd query)
         bringToCurrentWS (key, cmd, query) = ("M-S-" ++ key, runOrBring cmd query)
