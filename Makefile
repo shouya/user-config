@@ -89,6 +89,10 @@ fcitx5: # Fcitx 5
 	./utils/backup ~/.config/fcitx5
 	ln -rsf xdg/fcitx5 ~/.config
 
+hime: # Hime input method
+	./utils/backup ~/.config/hime
+	ln -rsf xdg/hime ~/.config
+
 systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	./utils/backup ~/.config/systemd
 	ln -Trsf xdg/systemd-laptop ~/.config/systemd

@@ -1,0 +1,8 @@
+*.tab2
+*.tab2.old
+*.tab2.version
+*.idx
+*tsin32
+tsin
+config/*
+tsin-1.src
