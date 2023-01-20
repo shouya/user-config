@@ -70,6 +70,7 @@ import XMonad.Actions.FixedWorkspace
 import XMonad.Actions.Volume
 import XMonad.Actions.Backlight
 import XMonad.Actions.AbsWS
+import XMonad.Hooks.EwwLog
 
 main :: IO ()
 main = do
@@ -85,8 +86,6 @@ main = do
 
 -- myConfiguration :: XConfig a -> IO (XConfig b)
 myConfiguration conf = do
-  channel <- createX11BarChannel
-
   pure $ ewmh
        $ desktopIntegration
        $ myAppKeys
@@ -94,7 +93,7 @@ myConfiguration conf = do
        $ myStartupPrograms
        $ myLayout
        $ myFloatingRules
-       $ myX11Bar channel
+       $ myStatusBar
        $ myWorkspaces
        $ myKeybinding
        conf
@@ -113,21 +112,23 @@ desktopIntegration conf =
        }
 
 
+allWorkspaces :: [WorkspaceId]
+allWorkspaces = map (:[]) "123456789"
+
 -- myWorkspaces :: XConfig a -> XConfig a
-myWorkspaces conf = conf { workspaces = myWorkspaces
+myWorkspaces conf = conf { workspaces = allWorkspaces
                          , startupHook = startupHook conf >> wsStartupHook
                          }
                     `replaceKeysP` wsKeys
                     `replaceKeysP` wsShiftKeys
                     `replaceKeysP` screenKeys
   where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- myWorkspaces]
-        wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- myWorkspaces]
+        wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- allWorkspaces]
         screenKeys = [ ("M-e", nextScreenCapped)
                      , ("M-q", prevScreenCapped)
                      , ("M-S-e", shiftNextScreen)
                      , ("M-w", moveCurrentWorkspaceToOtherScreen)
                      ]
-        myWorkspaces = map (:[]) "123456789"
         wsStartupHook = do
           _ <- getWorkspaceScreen "1"
           setWorkspaceScreen "1" 0
@@ -205,10 +206,10 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 myLayout conf = docks $ conf { layoutHook = layout }
   where layout = avoidStruts (tallLayouts ||| tabLayout) ||| full
         tall = smartSpacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
-        tallLayouts = name "(|)" tall
-        tabLayout = name "(T)" simpleTabbed
-        fancy = name "(~)" (Circle ||| spiral (3/4) ||| Roledex)
-        full = name "(F)" Full
+        tallLayouts = name "tall" tall
+        tabLayout = name "tab" simpleTabbed
+        fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
+        full = name "full" Full
         name x = renamed [Replace x]
 
 -- myAppKeys :: XConfig a -> XConfig a
@@ -245,6 +246,8 @@ focusWindow w = do
   maybe (pure ()) viewWorkspace (W.findTag w ss)
   focus w
 
+myStatusBar = withSB ewwStatusBar
+
 -- myScratchpad :: XConfig a -> XConfig a
 myScratchpad conf =
   conf { manageHook = manageHook conf
@@ -263,80 +266,6 @@ myScratchpad conf =
         float = customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
         -- this allows me to park a scratch term to become a normal term.
         extraHook = resource =? "scratch-term" --> float
-
-wsName :: WorkspaceId -> String
-wsName "5" = "Slack"
-wsName "6" = "Email"
-wsName "7" = "Conn"
-wsName _ = ""
-
-wsNameFull :: WorkspaceId -> String
-wsNameFull "NSP" = ""
-wsNameFull x = circledNumber x ++ "<sub>" ++ wsName x ++ "</sub>"
-
-circledNumber :: WorkspaceId -> String
-circledNumber n = ["X⓵⓶⓷⓸⓹⓺⓻⓼⓽" !! read n]
-
---
-data X11BarChannel = X11BarChannel { titleLogPipe :: FilePath
-                                   , workspaceLogPipe :: FilePath
-                                   }
-
-createX11BarChannel :: IO X11BarChannel
-createX11BarChannel = do
-  spawn "touch /tmp/xmonad-title-log"
-  spawn "touch /tmp/xmonad-workspace-log"
-  pure $ X11BarChannel "/tmp/xmonad-title-log" "/tmp/xmonad-workspace-log"
-
-myX11Bar :: X11BarChannel -> XConfig a -> XConfig a
-myX11Bar (X11BarChannel titlePipe wsPipe) conf =
-  conf { logHook = dynamicLogWithPP titlePP >>
-                   dynamicLogWithPP wsPP >>
-                   logHook conf
-       }
-  where titlePP = def
-                  { ppOutput = output titlePipe
-                  , ppTitle = id
-                  , ppTitleSanitize = escapeTitle
-                  , ppCurrent = const ""
-                  , ppVisible = const ""
-                  , ppHidden = const ""
-                  , ppUrgent = const ""
-                  , ppLayout = const ""
-                  , ppSep = ""
-                  , ppWsSep = ""
-                  }
-        wsPP = def
-               { ppOutput = output wsPipe
-               , ppTitle = const ""
-               , ppCurrent = wsNameFull
-               , ppVisible = wsNameFull
-               , ppHidden = wsNameFull
-               , ppUrgent = wsNameFull
-               , ppLayout = id
-               , ppSep = ""
-               , ppWsSep = ""
-               }
-
-        wsName :: WorkspaceId -> String
-        wsName "5" = "Slack"
-        wsName "6" = "Email"
-        wsName "7" = "Conn"
-        wsName _ = ""
-
-        wsNameFull :: WorkspaceId -> String
-        wsNameFull "NSP" = ""
-        wsNameFull x = case wsName x of
-                         "" -> x
-                         n -> x ++ ":" ++ n
-
-        wrap l r x = l ++ x ++ r
-        output pipe str = let s = str ++ "\n" in writeFile pipe s
-
-        escapeTitle title = T.unpack $
-                            T.replace "\"" "\\\"" $
-                            T.pack title
-
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
