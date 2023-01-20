@@ -85,7 +85,7 @@ main = do
 
 -- myConfiguration :: XConfig a -> IO (XConfig b)
 myConfiguration conf = do
-  channel <- createPolybarChannel
+  channel <- createX11BarChannel
 
   pure $ ewmh
        $ desktopIntegration
@@ -94,7 +94,7 @@ myConfiguration conf = do
        $ myStartupPrograms
        $ myLayout
        $ myFloatingRules
-       $ myPolybar channel
+       $ myX11Bar channel
        $ myWorkspaces
        $ myKeybinding
        conf
@@ -278,19 +278,22 @@ circledNumber :: WorkspaceId -> String
 circledNumber n = ["X⓵⓶⓷⓸⓹⓺⓻⓼⓽" !! read n]
 
 --
-data PolybarChannel = PolybarChannel { titleLogPipe :: FilePath
-                                     , workspaceLogPipe :: FilePath
-                                     }
+data X11BarChannel = X11BarChannel { titleLogPipe :: FilePath
+                                   , workspaceLogPipe :: FilePath
+                                   }
 
-createPolybarChannel :: IO PolybarChannel
-createPolybarChannel = do
-  spawn "mkfifo /tmp/xmonad-title-log || true"
-  spawn "mkfifo /tmp/xmonad-workspace-log || true"
-  pure $ PolybarChannel "/tmp/xmonad-title-log" "/tmp/xmonad-workspace-log"
+createX11BarChannel :: IO X11BarChannel
+createX11BarChannel = do
+  spawn "touch /tmp/xmonad-title-log"
+  spawn "touch /tmp/xmonad-workspace-log"
+  pure $ X11BarChannel "/tmp/xmonad-title-log" "/tmp/xmonad-workspace-log"
 
-myPolybar :: PolybarChannel -> XConfig a -> XConfig a
-myPolybar (PolybarChannel titlePipe wsPipe) conf =
-  conf { logHook = dynamicLogWithPP titlePP >> dynamicLogWithPP wsPP >> logHook conf }
+myX11Bar :: X11BarChannel -> XConfig a -> XConfig a
+myX11Bar (X11BarChannel titlePipe wsPipe) conf =
+  conf { logHook = dynamicLogWithPP titlePP >>
+                   dynamicLogWithPP wsPP >>
+                   logHook conf
+       }
   where titlePP = def
                   { ppOutput = output titlePipe . fontSans
                   , ppTitle = id
@@ -321,7 +324,7 @@ myPolybar (PolybarChannel titlePipe wsPipe) conf =
         color c t = printf "%%{F#%s}%s%%{F-}" (c :: String) (t :: String)
         output pipe str = do
           let s = str ++ "\n"
-          appendFile pipe s
+          writeFile pipe s
 
         wsName :: WorkspaceId -> String
         wsName "5" = "Slack"
