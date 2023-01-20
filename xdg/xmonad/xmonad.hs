@@ -295,7 +295,7 @@ myX11Bar (X11BarChannel titlePipe wsPipe) conf =
                    logHook conf
        }
   where titlePP = def
-                  { ppOutput = output titlePipe . fontSans
+                  { ppOutput = output titlePipe
                   , ppTitle = id
                   , ppTitleSanitize = escapeTitle
                   , ppCurrent = const ""
@@ -307,24 +307,16 @@ myX11Bar (X11BarChannel titlePipe wsPipe) conf =
                   , ppWsSep = ""
                   }
         wsPP = def
-               { ppOutput = output wsPipe . fontMono
+               { ppOutput = output wsPipe
                , ppTitle = const ""
-               , ppCurrent = color "EAE" . wrap "[" "]" . wsNameFull
-               , ppVisible = color "AFA" . wsNameFull
-               , ppHidden = color "AAA" . wsNameFull
-               , ppUrgent = color "E00" . wsNameFull
+               , ppCurrent = wsNameFull
+               , ppVisible = wsNameFull
+               , ppHidden = wsNameFull
+               , ppUrgent = wsNameFull
                , ppLayout = id
                , ppSep = ""
                , ppWsSep = ""
                }
-
-        fontMono x = printf "%%{T1}%s%%{T-}" (x :: String)
-        fontSans x = printf "%%{T2}%s%%{T-}" (x :: String)
-
-        color c t = printf "%%{F#%s}%s%%{F-}" (c :: String) (t :: String)
-        output pipe str = do
-          let s = str ++ "\n"
-          writeFile pipe s
 
         wsName :: WorkspaceId -> String
         wsName "5" = "Slack"
@@ -339,11 +331,10 @@ myX11Bar (X11BarChannel titlePipe wsPipe) conf =
                          n -> x ++ ":" ++ n
 
         wrap l r x = l ++ x ++ r
+        output pipe str = let s = str ++ "\n" in writeFile pipe s
 
         escapeTitle title = T.unpack $
-                            T.replace "%" "\\%" $
-                            T.replace "{" "\\{" $
-                            T.replace "}" "\\}" $
+                            T.replace "\"" "\\\"" $
                             T.pack title
 
 
