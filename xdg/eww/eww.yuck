@@ -1,8 +1,6 @@
 (include "./combinator.yuck")
 
-(deflisten date
-    :initial "{}"
-    `./scripts/clock.sh`)
+(deflisten date :initial "{}" `./scripts/clock.sh`)
 
 (defvar reveal false)
 
@@ -19,6 +17,16 @@
 (deflisten active-window-title
     `./scripts/active-window-title.sh`)
 
+(defpoll cpu
+    :interval "5s"
+    :initial "{}"
+    `./scripts/cpu.sh run`)
+
+(defpoll battery
+    :interval "5s"
+    :initial "[{},{}]"
+    `./scripts/battery.sh`)
+
 
 (defwidget xmonad-workspace-button [entry]
   (eventbox
@@ -26,7 +34,6 @@
    ;; :visible {entry.current || entry.visible || entry.hidden}
    :class "ws ws-curr-${entry.current} ws-vis-${entry.visible} ws-hid-${entry.hidden} ws-urg-${entry.urgent} ws-name-${entry.name}"
    :onclick "wmctrl -s ${entry.index}"
-   :vexpand true
    :width 12
    :height 30
    {entry.name}))
@@ -49,45 +56,129 @@
    (xmonad-workspace-button :entry {workspaces[8]})
    ))
 
-(defwidget xmonad-active-window-title []
-  (label
-   :class "active-window-title"
-   :visible { active-window-title != "" }
-   :text active-window-title)
+(defwidget xmonad-active-window-title [max-len]
+  (fix-sized
+   :width 600
+   (label
+    :class "active-window-title"
+    :visible { active-window-title != "" }
+    :text active-window-title
+    :show-truncated true
+    :limit-width max-len
+    :xalign "0"
+    :wrap false
+    :tooltip {strlength(active-window-title) > max-len ? active-window-title : ""}
+    ))
   )
 
 (defwidget left []
   (box
-   :halign "start"
    :spacing 10
    :space-evenly false
    :valign "center"
+   :hexpand true
    :visible {arraylength(workspaces) > 1}
    (xmonad-ws-switcher)
-   (xmonad-active-window-title)))
+   (xmonad-active-window-title :max-len 100)))
 
-(defvar clock-reveal false)
+(defwidget clock []
+  (box
+   (label
+    :class "clock"
+    :text {date.short}
+    :tooltip {date.long}
+    )))
+
+(defvar cpu-reveal false)
+
+(defwidget cpu-widget []
+  (cpu-circular
+   :class "cpu"
+   :level {cpu.load_level}
+   :percent { (cpu.load ?: 1.0) / 16.0 * 100.0 }
+   :value {cpu.load}
+   :revealer-var cpu-reveal
+   :revealer-var-name "cpu-reveal"
+   :freq {cpu.freq}
+   ))
+
+(defwidget cpu-circular
+    [class level percent freq ?value revealer-var revealer-var-name]
+    (revealer-on-hover
+     :var revealer-var
+     :var-name revealer-var-name
+     :class "monitor ${class} ${level} cpu-${level}"
+
+     (circular-progress
+      :width 30
+      :value percent
+      :start-at 75
+      :thickness 5
+      (label :text "${round(value ?: percent,1)}"))
+     (label :text freq)))
+
+
+(defwidget battery-widget [name index reveal-var reveal-var-name]
+  (battery-circular
+   :class "battery"
+   :name name
+   :level { (battery[index]?.capacity ?: 0) > 80 ? "ok" :
+            (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
+   :percent { battery[index]?.capacity ?: 0 }
+   :value "${battery[index]?.capacity ?: 0}"
+   :revealer-var reveal-var
+   :revealer-var-name reveal-var-name
+   :battery-status "${battery[index]?.rate}"
+   ))
+
+(defwidget battery-circular
+    [name class level percent battery-status ?value revealer-var revealer-var-name]
+    (revealer-on-hover
+     :var revealer-var
+     :var-name revealer-var-name
+     :class "monitor ${class} ${level} battery-${level}"
+
+     (circular-progress
+      :width 30
+      :value percent
+      :start-at 75
+      :thickness 5
+      :tooltip "${name}: ${battery-status}"
+      (label :text "${value ?: percent}"))
+     ))
+
+(defvar battery-reveal false)
+(defvar battery-reveal-hid false)
+
+(defwidget monitors []
+  (box
+   :space-evenly false
+   (cpu-widget)
+   (battery-widget :name "Laptop battery"
+                   :index 0
+                   :reveal-var battery-reveal
+                   :reveal-var-name "battery-reveal")
+   (box
+    :visible { (battery[1]?.capacity ?: 0) > 1}
+    (battery-widget :name "HID battery"
+                    :index 1
+                    :reveal-var battery-reveal-hid
+                    :reveal-var-name "battery-reveal-hid"
+                    ))
+   ))
+
 
 (defwidget right []
   (box
-   :halign "end"
-   (hover-label
-    :var clock-reveal
-    :var-name "clock-reveal"
-    :text-short "${date.month}-${date.date} ${date.hour}:${date.min}:${date.sec}"
-    :text-long "${date.year}-${date.month}-${date.date} ${date.hour}:${date.min}:${date.sec}"
-    )))
-
-(defwidget center []
-  (box
-   :halign "center"
-   (label :text "center")))
+   :space-evenly false
+   (monitors)
+   (clock)))
 
 (defwidget main []
   (box
    :class "main"
+   :space-evenly false
    (left)
-   (center)
    (right)))
 
 

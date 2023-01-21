@@ -1,12 +1,10 @@
 #!/bin/bash
 
-update() {
-  if ! xdotool getactivewindow getwindowname 2>/dev/null; then
-    echo ""
-  fi
-}
+PROP=_XMONAD_TITLE_LOG
 
-tail -f /tmp/xmonad-title-log 2>&- | \
-  while read -r ignore; do
-  update
-done
+stdbuf -oL xprop -spy -notype -root -f "$PROP" 8t '!$0\n' "$PROP" | \
+  stdbuf -oL cut -d! -f2 | \
+  stdbuf -oL sed \
+         -e 's/^<field not available>$//' \
+         -e 's/^.//' \
+         -e 's/.$//'

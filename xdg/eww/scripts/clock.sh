@@ -9,6 +9,6 @@ sleep_to_next_second(){
 
 
 while true; do
-  date +'{"year":"%Y", "month":"%m", "date": "%d", "hour":"%H","min":"%M","sec":"%S", "nanos": "%N"}'
+  date +'{"short":"%a %b %e %H:%M:%S", "long": "%c"}'
   sleep_to_next_second
 done
