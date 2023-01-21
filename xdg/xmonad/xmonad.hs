@@ -205,8 +205,8 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
-  where layout = avoidStruts (tallLayouts ||| tabLayout) ||| full
-        tall = spacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
+  where layout = avoidStruts (spacingWithEdge 5 (tallLayouts ||| tabLayout)) ||| full
+        tall = ResizableTall 1 (3/100) (1/2) []
         tallLayouts = name "tall" tall
         tabLayout = name "tab" (tabbedAlways shrinkText tabConf)
         fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
