@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mkdir -p ~/.xmonad/target
+stack --local-bin-path ~/.xmonad/target/ install my \
+	&& mv ~/.xmonad/target/xmonad "$1"

@@ -46,6 +46,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FadeWindows (isFloating)
 import XMonad.Hooks.ManageHelpers (isDialog)
+import XMonad.Hooks.StatusBar (withSB)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWS
@@ -122,7 +123,7 @@ myWorkspaces conf = conf { workspaces = allWorkspaces
                     `replaceKeysP` wsKeys
                     `replaceKeysP` wsShiftKeys
                     `replaceKeysP` screenKeys
-  where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- myWorkspaces]
+  where wsKeys = [ ("M-" ++ ws, viewWorkspace ws) | ws <- allWorkspaces]
         wsShiftKeys = [ ("M-S-" ++ ws, windows $ W.shift ws) | ws <- allWorkspaces]
         screenKeys = [ ("M-e", nextScreenCapped)
                      , ("M-q", prevScreenCapped)

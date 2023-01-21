@@ -1,6 +1,8 @@
 *.hi
 *.errors
 *.o
+*.dyn_o
+*.dyn_hi
 xmonad-x86_64-linux
 prompt-history
 xmonad

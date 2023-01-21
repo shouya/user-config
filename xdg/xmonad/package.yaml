@@ -1,0 +1,19 @@
+name: my
+
+dependencies:
+  - base
+  - containers
+  - xmonad
+  - xmonad-contrib
+  - xmonad-extras
+  - aeson
+  - bytestring
+  - text
+
+source-dirs:
+  - lib/
+  - ./
+
+executables:
+  xmonad:
+    main: xmonad.hs
