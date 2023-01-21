@@ -4,3 +4,7 @@ packages:
   - xmonad-contrib
   - xmonad-extras
   - .
+
+flags:
+  xmonad-contrib:
+    use_xft: True

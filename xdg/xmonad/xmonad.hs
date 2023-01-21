@@ -79,8 +79,8 @@ main = do
                  , focusFollowsMouse = False
                  , clickJustFocuses = False
                  , borderWidth = 12
-                 , focusedBorderColor = "#01a495"
-                 , normalBorderColor = "#1f2626"
+                 , focusedBorderColor = "#a9b1d6"
+                 , normalBorderColor = "#efeff8"
                  }
   myConf <- myConfiguration conf
   xmonad myConf
@@ -206,12 +206,18 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
   where layout = avoidStruts (tallLayouts ||| tabLayout) ||| full
-        tall = smartSpacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
+        tall = spacingWithEdge 5 (ResizableTall 1 (3/100) (1/2) [])
         tallLayouts = name "tall" tall
-        tabLayout = name "tab" simpleTabbed
+        tabLayout = name "tab" (tabbedAlways shrinkText tabConf)
         fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
         full = name "full" Full
         name x = renamed [Replace x]
+        tabConf = def
+          { fontName = "xft:Noto Sans CJK TC:size=9"
+          , inactiveBorderWidth = 0
+          , activeBorderWidth = 0
+          , decoHeight = 33
+          }
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
