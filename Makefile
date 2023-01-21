@@ -93,6 +93,10 @@ hime: # Hime input method
 	./utils/backup ~/.config/hime
 	ln -rsf xdg/hime ~/.config
 
+eww: # Eww status bar and widgets
+	./utils/backup ~/.config/eww
+	ln -rsf xdg/eww ~/.config
+
 systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	./utils/backup ~/.config/systemd
 	ln -Trsf xdg/systemd-laptop ~/.config/systemd

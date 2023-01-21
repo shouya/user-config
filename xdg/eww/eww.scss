@@ -1,0 +1,52 @@
+* {
+    // transition: linear 0.5s;
+}
+
+
+// Variable Color's
+$background: #183e4b;
+$foreground: #8ba0a4;
+$darken: #305054;
+$lighten: #a1b5a8;
+
+$black: #24283B;
+$gray: #565F89;
+$red: #F7768E;
+$green: #3fb36d;
+$yellow: #E0AF68;
+$blue: #7AA2F7;
+$magenta: #BB9AF7;
+$cyan: #7DCFFF;
+$white: $foreground;
+
+window {
+    border-radius: 15px;
+    background: $background;
+    color: $foreground;
+    text-shadow: 0.2px 0.2px rgba(0,0,0,1);
+    font: 1em "Noto Sans Condensed"
+}
+
+.main {
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+.ws {
+    transition: 0.1s;
+    color: $foreground;
+}
+.ws-curr-true {
+    color: $green;
+    // transform: translateY(1);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.ws-hid-false:not(.ws-curr-true) {
+    color: $darken;
+    text-shadow: 0px 0px $foreground;
+    font-size: 0.9em;
+}
+
+.active-window-title {
+}

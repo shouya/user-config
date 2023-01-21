@@ -1,0 +1,102 @@
+(include "./combinator.yuck")
+
+(deflisten date
+    :initial "{}"
+    `./scripts/clock.sh`)
+
+(defvar reveal false)
+
+(deflisten workspaces
+    ;; so it doesn't spit out a long
+    ;; error every time I reload
+    :initial "[{},{},{},{},{},{},{},{},{},{}]"
+    `./scripts/workspaces.sh`)
+
+(deflisten current-workspace
+    :initial "0"
+    `xprop -spy -root _NET_CURRENT_DESKTOP`)
+
+(deflisten active-window-title
+    `./scripts/active-window-title.sh`)
+
+
+(defwidget xmonad-workspace-button [entry]
+  (eventbox
+   :cursor "hand"
+   ;; :visible {entry.current || entry.visible || entry.hidden}
+   :class "ws ws-curr-${entry.current} ws-vis-${entry.visible} ws-hid-${entry.hidden} ws-urg-${entry.urgent} ws-name-${entry.name}"
+   :onclick "wmctrl -s ${entry.index}"
+   :vexpand true
+   :width 12
+   :height 30
+   {entry.name}))
+
+(defwidget xmonad-ws-switcher []
+  (box
+   :class "workspaces"
+   :spacing 2
+   :space-evenly false
+   :width 100
+   :valign "baseline"
+   (xmonad-workspace-button :entry {workspaces[0]})
+   (xmonad-workspace-button :entry {workspaces[1]})
+   (xmonad-workspace-button :entry {workspaces[2]})
+   (xmonad-workspace-button :entry {workspaces[3]})
+   (xmonad-workspace-button :entry {workspaces[4]})
+   (xmonad-workspace-button :entry {workspaces[5]})
+   (xmonad-workspace-button :entry {workspaces[6]})
+   (xmonad-workspace-button :entry {workspaces[7]})
+   (xmonad-workspace-button :entry {workspaces[8]})
+   ))
+
+(defwidget xmonad-active-window-title []
+  (label
+   :class "active-window-title"
+   :visible { active-window-title != "" }
+   :text active-window-title)
+  )
+
+(defwidget left []
+  (box
+   :halign "start"
+   :spacing 10
+   :space-evenly false
+   :valign "center"
+   :visible {arraylength(workspaces) > 1}
+   (xmonad-ws-switcher)
+   (xmonad-active-window-title)))
+
+(defvar clock-reveal false)
+
+(defwidget right []
+  (box
+   :halign "end"
+   (hover-label
+    :var clock-reveal
+    :var-name "clock-reveal"
+    :text-short "${date.month}-${date.date} ${date.hour}:${date.min}:${date.sec}"
+    :text-long "${date.year}-${date.month}-${date.date} ${date.hour}:${date.min}:${date.sec}"
+    )))
+
+(defwidget center []
+  (box
+   :halign "center"
+   (label :text "center")))
+
+(defwidget main []
+  (box
+   :class "main"
+   (left)
+   (center)
+   (right)))
+
+
+(defwindow main-window
+    :stacking "fg"
+    :windowtype "dock"
+    :reserve (struts :distance "60" :side "top")
+    :geometry (geometry :width "60%"
+                        :height "30px"
+                        :y "2"
+                        :anchor "top center")
+    (main))
