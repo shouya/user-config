@@ -54,6 +54,7 @@ window {
 
 circular-progress {
     background-color: $darken;
+    transition: 0.5s;
 }
 
 circular-progress > label {

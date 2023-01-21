@@ -13,12 +13,15 @@
 (deflisten current-workspace
     :initial "0"
     `xprop -spy -root _NET_CURRENT_DESKTOP`)
+(defpoll load-avg
+    :interval "1s"
+    `uptime | awk '{print $10 $11 $12}'`)
 
 (deflisten active-window-title
     `./scripts/active-window-title.sh`)
 
 (defpoll cpu
-    :interval "5s"
+    :interval "1s"
     :initial "{}"
     `./scripts/cpu.sh run`)
 
@@ -95,7 +98,7 @@
   (cpu-circular
    :class "cpu"
    :level {cpu.load_level}
-   :percent { (cpu.load ?: 1.0) / 16.0 * 100.0 }
+   :percent { (cpu.load ?: 1.0) / 10.0 * 100.0 }
    :value {cpu.load}
    :revealer-var cpu-reveal
    :revealer-var-name "cpu-reveal"
@@ -115,7 +118,18 @@
       :start-at 75
       :thickness 5
       (label :text "${round(value ?: percent,1)}"))
-     (label :text freq)))
+     (box
+      :space-evenly false
+      (label :text ""
+             :tooltip "CPU")
+      (graph :value percent
+             :min 0
+             :max 100
+             :time-range "30s"
+             :width 40
+             :thickness 2
+             :tooltip "Load: ${load-avg}, ${freq}, ${EWW_TEMPS.CORETEMP_CORE_0}℃"
+             ))))
 
 
 (defwidget battery-widget [name index reveal-var reveal-var-name]
@@ -133,9 +147,9 @@
 
 (defwidget battery-circular
     [name class level percent battery-status ?value revealer-var revealer-var-name]
-    (revealer-on-hover
-     :var revealer-var
-     :var-name revealer-var-name
+    (box
+     ;; :var revealer-var
+     ;; :var-name revealer-var-name
      :class "monitor ${class} ${level} battery-${level}"
 
      (circular-progress
@@ -159,7 +173,7 @@
                    :reveal-var battery-reveal
                    :reveal-var-name "battery-reveal")
    (box
-    :visible { (battery[1]?.capacity ?: 0) > 1}
+    :visible { arraylength(battery)>0 && (battery[1]?.capacity ?: 0) > 1}
     (battery-widget :name "HID battery"
                     :index 1
                     :reveal-var battery-reveal-hid
