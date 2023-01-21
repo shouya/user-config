@@ -2,8 +2,6 @@
 
 (deflisten date :initial "{}" `./scripts/clock.sh`)
 
-(defvar reveal false)
-
 (deflisten workspaces
     ;; so it doesn't spit out a long
     ;; error every time I reload
@@ -13,9 +11,18 @@
 (deflisten current-workspace
     :initial "0"
     `xprop -spy -root _NET_CURRENT_DESKTOP`)
+
+(deflisten network-speed
+    :initial "{}"
+    `./scripts/net.sh wlp0s20f3`)
+(deflisten wifi
+    :initial '{"ssid": "", "addr": "", "freq": ""}'
+    `./scripts/wifi.sh wlp0s20f3`)
+;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
+
 (defpoll load-avg
     :interval "1s"
-    `uptime | awk '{print $10 $11 $12}'`)
+    "uptime | awk '{print $10 $11 $12}'")
 
 (deflisten active-window-title
     `./scripts/active-window-title.sh`)
@@ -30,6 +37,8 @@
     :initial "[{},{}]"
     `./scripts/battery.sh`)
 
+(defwidget sep []
+  (label :yalign "0"  :class "sep" :text "|"))
 
 (defwidget xmonad-workspace-button [entry]
   (eventbox
@@ -105,6 +114,18 @@
    :freq {cpu.freq}
    ))
 
+(defwidget network-widget [device]
+  (box
+   :space-evenly false
+   (label :visible {wifi.ssid != ""}
+          :text "${network-speed.tx}⇅${network-speed.rx}"
+          :tooltip "Connected to ${wifi.ssid} (${wifi.freq})
+${wifi.addr}
+${wifi.signal}"
+          )
+   (label :visible {wifi.ssid == ""}
+          :text "Disconnected")))
+
 (defwidget cpu-circular
     [class level percent freq ?value revealer-var revealer-var-name]
     (revealer-on-hover
@@ -139,7 +160,8 @@
    :level { (battery[index]?.capacity ?: 0) > 80 ? "ok" :
             (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
    :percent { battery[index]?.capacity ?: 0 }
-   :value "${battery[index]?.capacity ?: 0}"
+   :value { battery[index]?.capacity == 100 ? "F" :
+            "${battery[index]?.capacity}" }
    :revealer-var reveal-var
    :revealer-var-name reveal-var-name
    :battery-status "${battery[index]?.rate}"
@@ -185,7 +207,10 @@
 (defwidget right []
   (box
    :space-evenly false
+   (network-widget :device "wlp0s20f3")
+   (sep)
    (monitors)
+   (sep)
    (clock)))
 
 (defwidget main []

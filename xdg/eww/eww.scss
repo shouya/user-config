@@ -55,6 +55,7 @@ window {
 circular-progress {
     background-color: $darken;
     transition: 0.5s;
+    box-shadow: 3px 3px green;
 }
 
 circular-progress > label {
@@ -67,11 +68,16 @@ circular-progress > label {
 .ok    circular-progress {color: $foreground;}
 
 .monitor {
-    margin-left: 5px;
     margin-top: 2px;
     margin-bottom: 2px;
 }
 
+.sep {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: $darken;
+    text-shadow: -1px 1px $lighten;
+}
+
 .clock {
-    margin-left: 20px;
 }
