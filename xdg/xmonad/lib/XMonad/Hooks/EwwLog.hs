@@ -27,6 +27,7 @@ import XMonad
 import qualified XMonad.StackSet as S
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.UrgencyHook
+import XMonad.Util.NamedWindows (getName)
 import XMonad.Hooks.StatusBar.PP (WS(..))
 
 
@@ -87,7 +88,11 @@ ewwLayoutLog :: X ()
 ewwLayoutLog = pure ()
 
 ewwTitleLog :: X ()
-ewwTitleLog = pure ()
+ewwTitleLog = do
+  winset <- gets windowset
+  title <- maybe (pure "") (fmap show . getName) . S.peek $ winset
+  xmonadPropLog' "_XMONAD_TITLE_LOG" title
+
 
 ewwWorkspaceLog :: X ()
 ewwWorkspaceLog = do
