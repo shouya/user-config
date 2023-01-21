@@ -1,4 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE RecordWildCards #-}
+
+
 module XMonad.Hooks.EwwLog
   ( ewwStatusBar
   , ewwLayoutLog
@@ -7,72 +11,145 @@ module XMonad.Hooks.EwwLog
   )
 where
 
-import Data.Function
+import GHC.Generics
 
-import Data.Aeson
-import Data.Aeson.TH
+import Data.Function
+import Data.Ord
+import Data.Maybe
+import Data.List
+import qualified Data.ByteString.Lazy as BS
+import qualified Data.ByteString.Lazy.Char8 as LBC8
+
+import qualified Data.Aeson as JS
+import Data.Aeson.Types
 
 import XMonad
 import qualified XMonad.StackSet as S
 import XMonad.Hooks.StatusBar
-import qualified XMonad.Hooks.StatusBar.PP as PP
+import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.StatusBar.PP (WS(..))
 
-
-ewwStatusBar :: StatusBarConfig
-ewwStatusBar = StatusBarConfig log (pure ()) (pure ())
-  where log = ewwLayoutLog <> ewwTitleLog <> ewwWorkspaceLog
 
 data WorkspaceDesc = WorkspaceDesc
-  { index     :: Int
-  , name      :: String
-  , visible   :: Bool
-  , current   :: Bool
-  , urgent    :: Bool
+  { index      :: Int
+  , name       :: String
+  , visible    :: Bool
+  , current    :: Bool
+  , hidden     :: Bool
+  , urgent     :: Bool
+  , visibleNoW :: Bool
   }
+  deriving (Show, Generic)
 
-deriveJSON defaultOptions ''WorkspaceDesc
 
-makePPWS :: X PP.WS
+instance ToJSON WorkspaceDesc where
+    toEncoding = genericToEncoding defaultOptions
+
+makePPWS :: X WS
 makePPWS = do
   winset <- gets windowset
   urgents <- readUrgents
 
-  PP.WS { wsWindowSet = winset
-        , wsUrgents = urgents
-        , wsWS = S.workspace $ S.current winset
-        , wsPP = def
-        }
+  pure $ WS { wsWindowSet = winset
+            , wsUrgents = urgents
+            , wsWS = S.workspace $ S.current winset
+            , wsPP = def
+            }
 
 workspaceDescriptions :: X [WorkspaceDesc]
 workspaceDescriptions = do
   ppws <- makePPWS
-
   s <- gets windowset
 
-  allWorkspaceTags <- gets (workspaces . config)
-  workspaces <- (S.current s : S.visible s) ++
-                S.hidden s
-  let wsIndex = \ws -> fromJust $ elemIndex (S.tag ws) allWorkspaceTags
-  let workspaces = sortBy (comparing `on` wsIndex) workspaces
+  allWorkspaceTags <- asks (workspaces . config)
+  let workspaces = map S.workspace (S.current s : S.visible s) ++ S.hidden s
+  let wsIndex ws = fromMaybe (length allWorkspaceTags) $
+                   elemIndex (S.tag ws) allWorkspaceTags
+  let workspaces' = sortBy (comparing wsIndex) workspaces
 
-  let parseWs = \ws -> toDesc (wsIndex ws) <$> ppws {wsWs = ws}
-  pure $ map parseWs workspaces
+  let parseWs ws = toDesc (wsIndex ws) (ppws {wsWS = ws})
 
-  where toDesc :: Int -> PP.WS -> WorkspaceDesc
+  pure $ map parseWs workspaces'
+
+  where toDesc :: Int -> WS -> WorkspaceDesc
         toDesc index ppws =
-          WorkspaceDesc { index   = index
-                        , name    = S.tag (PP.wsWS ppws)
-                        , visible = isVisible' ppws
-                        , urgent  = isUrgent ppws
-                        , current = isCurrent' ppws
+          WorkspaceDesc { index      = index
+                        , name       = S.tag (wsWS ppws)
+                        , visible    = isVisible' ppws
+                        , urgent     = isUrgent ppws
+                        , current    = isCurrent' ppws
+                        , hidden     = isHidden' ppws
+                        , visibleNoW = isVisibleNoWindows' ppws
                         }
 
 
 ewwLayoutLog :: X ()
 ewwLayoutLog = pure ()
+
 ewwTitleLog :: X ()
 ewwTitleLog = pure ()
+
 ewwWorkspaceLog :: X ()
 ewwWorkspaceLog = do
   wsDescs <- workspaceDescriptions
-  xmonadPropLog' "_XMONAD_WORKSPACE_LOG" (encode wsDesc)
+  xmonadPropLog' "_XMONAD_WORKSPACE_LOG" (LBC8.unpack $ JS.encode wsDescs)
+
+
+ewwStatusBar :: StatusBarConfig
+ewwStatusBar = StatusBarConfig log (start) (pure ())
+  where log = ewwLayoutLog <> ewwTitleLog <> ewwWorkspaceLog
+        start = xmonadPropLog "helloworld"
+
+----------------------
+--- stolen from XMonad.Hooks.StatusBar.PP
+
+
+-- | Predicate for urgent workspaces.
+isUrgent :: WS -> Bool
+isUrgent WS{..} = any (\x -> (== Just (S.tag wsWS)) (S.findTag x wsWindowSet)) wsUrgents
+
+-- | Predicate for the current workspace. Caution: assumes default
+-- precedence is respected.
+isCurrent' :: WS -> Bool
+isCurrent' WS{..} = S.tag wsWS == S.currentTag wsWindowSet
+
+-- | Predicate for the current workspace.
+isCurrent :: WS -> Bool
+isCurrent = (not <$> isUrgent) <&&> isCurrent'
+
+-- | Predicate for visible workspaces. Caution: assumes default
+-- precedence is respected.
+isVisible' :: WS -> Bool
+isVisible' = isVisibleNoWindows' <&&> isJust . S.stack . wsWS
+
+-- | Predicate for visible workspaces.
+isVisible :: WS -> Bool
+isVisible = (not <$> isUrgent) <&&> (not <$> isCurrent') <&&> isVisible'
+
+-- | Predicate for visible workspaces that have no windows. Caution:
+-- assumes default precedence is respected.
+isVisibleNoWindows' :: WS -> Bool
+isVisibleNoWindows' WS{..} = S.tag wsWS `elem` visibles
+  where visibles = map (S.tag . S.workspace) (S.visible wsWindowSet)
+
+-- | Predicate for visible workspaces that have no windows.
+isVisibleNoWindows :: WS -> Bool
+isVisibleNoWindows =
+    (not <$> isUrgent)
+        <&&> (not <$> isCurrent')
+        <&&> (not <$> isVisible')
+        <&&> isVisibleNoWindows'
+
+-- | Predicate for non-empty hidden workspaces. Caution: assumes default
+-- precedence is respected.
+isHidden' :: WS -> Bool
+isHidden' = isJust . S.stack . wsWS
+
+-- | Predicate for hidden workspaces.
+isHidden :: WS -> Bool
+isHidden =
+    (not <$> isUrgent)
+        <&&> (not <$> isCurrent')
+        <&&> (not <$> isVisible')
+        <&&> (not <$> isVisibleNoWindows')
+        <&&> isHidden'
