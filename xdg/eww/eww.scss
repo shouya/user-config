@@ -79,5 +79,8 @@ circular-progress > label {
     text-shadow: -1px 1px $lighten;
 }
 
-.clock {
+.khal {
+    .upcoming {
+        color: $darken;
+    }
 }

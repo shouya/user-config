@@ -19,6 +19,13 @@
     :initial '{"ssid": "", "addr": "", "freq": ""}'
     `./scripts/wifi.sh wlp0s20f3`)
 ;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
+(deflisten khal
+    :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'
+    `./scripts/khal.sh`)
+(defpoll khal-today
+    :initial ""
+    :interval "1m"
+    `khal list today`)
 
 (defpoll load-avg
     :interval "1s"
@@ -169,7 +176,7 @@ ${wifi.signal}"
                      (battery[index]?.capacity ?: 0) > 80 ? "ok" :
                      (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
             :percent { battery[index]?.capacity ?: 0 }
-            :value { battery[index]?.capacity >= 95 ? "F" :
+            :value { (battery[index]?.capacity ?: 0) >= 95 ? "F" :
             "${battery[index]?.capacity}" }
             :revealer-var reveal-var
             :revealer-var-name reveal-var-name
@@ -214,10 +221,40 @@ ${wifi.signal}"
                     ))
    ))
 
+(defvar khal-reveal false)
+
+(defwidget khal-widget []
+  (eventbox
+   :onhover "eww open khal-window"
+   :onhoverlost "eww close khal-window"
+   :class "khal"
+   (box
+    :space-evenly false
+    :valign "baseline"
+    :class {khal.min_left < 0 ? "upcoming" : "" }
+    :width 30
+    (revealer
+     :reveal {khal.done}
+     :transition "slideright"
+     (label :text "Done for today!"))
+    (revealer
+     :reveal {!khal.done}
+     :transition "slideright"
+     (revealer-on-hover
+      :var khal-reveal
+      :var-name "khal-reveal"
+      :transition "slideleft"
+      (label :text "${khal.name}")
+      (label
+       :style "font-size: .8em; margin-left: 6px;"
+       :text "(${khal.min_left}m)")
+      ))
+    (sep))))
 
 (defwidget right []
   (box
    :space-evenly false
+   (khal-widget)
    (network-widget :device "wlp0s20f3")
    (sep)
    (monitors)
@@ -236,8 +273,25 @@ ${wifi.signal}"
     :stacking "fg"
     :windowtype "dock"
     :reserve (struts :distance "60" :side "top")
-    :geometry (geometry :width "60%"
+    :geometry (geometry :width "80%"
                         :height "30px"
                         :y "2"
                         :anchor "top center")
     (main))
+
+(defwidget khal-detail []
+  (box
+   :style "margin: 20px"
+   :valign "start"
+   (label
+    :style "font-family: monospace; font-size: 0.8em;"
+    :text { khal-today == "" ? "No tasks today!" : "${khal-today}"})))
+
+(defwindow khal-window
+    :geometry (geometry :width "220px"
+                        :height "120px"
+                        :x "-25%"
+                        :y "40"
+                        :anchor "top right"
+               )
+    (khal-detail))

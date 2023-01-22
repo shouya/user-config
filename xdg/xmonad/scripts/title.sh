@@ -11,5 +11,3 @@ khal list now | head -n2 | tail -n1
 
 # if no lines are printed before this, show a message
 echo 'Done for today!'
-
-
