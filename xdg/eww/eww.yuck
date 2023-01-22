@@ -227,11 +227,13 @@ ${wifi.signal}"
   (eventbox
    :onhover "eww open khal-window"
    :onhoverlost "eww close khal-window"
+   :onclick "xdotool key 'super+F4'"
+   :cursor "hand"
    :class "khal"
+   :visible {!khal.redacted}
    (box
     :space-evenly false
     :valign "baseline"
-    :class {khal.min_left < 0 ? "upcoming" : "" }
     :width 30
     (revealer
      :reveal {khal.done}
@@ -240,6 +242,7 @@ ${wifi.signal}"
     (revealer
      :reveal {!khal.done}
      :transition "slideright"
+     :class {khal.min_left < 0 ? "upcoming" : "ongoing" }
      (revealer-on-hover
       :var khal-reveal
       :var-name "khal-reveal"

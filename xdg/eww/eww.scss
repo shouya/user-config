@@ -83,4 +83,8 @@ circular-progress > label {
     .upcoming {
         color: $darken;
     }
+    .ongoing {
+        color: $lighten;
+        font-weight: bold;
+    }
 }
