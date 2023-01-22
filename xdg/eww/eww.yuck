@@ -133,39 +133,47 @@ ${wifi.signal}"
      :var-name revealer-var-name
      :class "monitor ${class} ${level} cpu-${level}"
 
-     (circular-progress
-      :width 30
-      :value percent
-      :start-at 75
-      :thickness 5
-      (label :text "${round(value ?: percent,1)}"))
      (box
       :space-evenly false
-      (label :text ""
-             :tooltip "CPU")
-      (graph :value percent
-             :min 0
-             :max 100
-             :time-range "30s"
-             :width 40
-             :thickness 2
-             :tooltip "Load: ${load-avg}, ${freq}, ${EWW_TEMPS.CORETEMP_CORE_0}℃"
-             ))))
+      :width 70
+
+      (circular-progress
+       :width 30
+       :value {percent > 100 ? 100 : percent}
+       :start-at 75
+       :thickness 5
+       (label :text "${round(value ?: percent,1)}"))
+      (box
+       :orientation "v"
+       :style "font-size: 0.7em; margin: -2px 0; "
+       (label :style "margin-bottom: -2px;"
+              :text "${EWW_TEMPS.CORETEMP_CORE_0}℃")
+       (label :style "margin-top: -2px;"
+              :text "${freq}"))
+      )
+     (graph :value percent
+            :min 0
+            :max 100
+            :time-range "30s"
+            :width 40
+            :thickness 2
+            :tooltip "Load: ${load-avg}, ${freq}, ${EWW_TEMPS.CORETEMP_CORE_0}℃"
+            )))
 
 
 (defwidget battery-widget [name index reveal-var reveal-var-name]
-  (battery-circular
-   :class "battery"
-   :name name
-   :level { (battery[index]?.capacity ?: 0) > 80 ? "ok" :
+           (battery-circular
+            :class "battery"
+            :name name
+            :level { (battery[index]?.capacity ?: 0) > 80 ? "ok" :
             (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
-   :percent { battery[index]?.capacity ?: 0 }
-   :value { battery[index]?.capacity == 100 ? "F" :
+            :percent { battery[index]?.capacity ?: 0 }
+            :value { battery[index]?.capacity >= 95 ? "F" :
             "${battery[index]?.capacity}" }
-   :revealer-var reveal-var
-   :revealer-var-name reveal-var-name
-   :battery-status "${battery[index]?.rate}"
-   ))
+            :revealer-var reveal-var
+            :revealer-var-name reveal-var-name
+            :battery-status "${battery[index]?.rate}"
+            ))
 
 (defwidget battery-circular
     [name class level percent battery-status ?value revealer-var revealer-var-name]
@@ -189,13 +197,15 @@ ${wifi.signal}"
 (defwidget monitors []
   (box
    :space-evenly false
+   :orientation "h"
    (cpu-widget)
    (battery-widget :name "Laptop battery"
                    :index 0
                    :reveal-var battery-reveal
                    :reveal-var-name "battery-reveal")
-   (box
-    :visible { arraylength(battery)>0 && (battery[1]?.capacity ?: 0) > 1}
+   (revealer
+    :reveal false
+    :transition "slideright"
     (battery-widget :name "HID battery"
                     :index 1
                     :reveal-var battery-reveal-hid
