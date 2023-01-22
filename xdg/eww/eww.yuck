@@ -165,8 +165,9 @@ ${wifi.signal}"
            (battery-circular
             :class "battery"
             :name name
-            :level { (battery[index]?.capacity ?: 0) > 80 ? "ok" :
-            (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
+            :level { battery[index].status != "Discharging" ? "ok" :
+                     (battery[index]?.capacity ?: 0) > 80 ? "ok" :
+                     (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
             :percent { battery[index]?.capacity ?: 0 }
             :value { battery[index]?.capacity >= 95 ? "F" :
             "${battery[index]?.capacity}" }
@@ -187,7 +188,7 @@ ${wifi.signal}"
       :value percent
       :start-at 75
       :thickness 5
-      :tooltip "${name}: ${battery-status}"
+      :tooltip {battery-status == "" ? "" : "${name}: ${battery-status}"}
       (label :text "${value ?: percent}"))
      ))
 
