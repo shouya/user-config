@@ -31,7 +31,8 @@ export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
 
 # status bar
-polybar --reload default-bar &
+# polybar --reload default-bar &
+eww open main-window &
 
 # network manager applet
 (sleep 1; nm-applet) &
@@ -40,8 +41,12 @@ polybar --reload default-bar &
 copyq &
 autocutsel -fork
 
-# volume control
+# pulseaudio and volume control
+if ! pulseaudio --check; then
+  systemctl --user start pulseaudio.socket &
+fi
 pasystray &
+
 
 # autokey
 autokey &
