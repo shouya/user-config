@@ -79,7 +79,7 @@ main = do
                  , focusFollowsMouse = False
                  , clickJustFocuses = False
                  , borderWidth = 12
-                 , focusedBorderColor = "#a9b1d6"
+                 , focusedBorderColor = "#7aa2f7"
                  , normalBorderColor = "#efeff8"
                  }
   myConf <- myConfiguration conf
@@ -217,6 +217,9 @@ myLayout conf = docks $ conf { layoutHook = layout }
           , inactiveBorderWidth = 0
           , activeBorderWidth = 0
           , decoHeight = 33
+          , inactiveBorderColor = "#a9b1d6"
+          , activeBorderColor = "#efeff8"
+          , urgentBorderColor = "#e0af68"
           }
 
 -- myAppKeys :: XConfig a -> XConfig a
