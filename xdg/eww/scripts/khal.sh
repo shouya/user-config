@@ -54,7 +54,7 @@ update_khal() {
     done=false
   fi
 
-  name="$(cut -d' ' -f2 <<<"$item")"
+  name="$(cut -d' ' -f2- <<<"$item")"
   start="$(date --date "$(awk -F'-| ' '{print $1}'<<<"$item")" +%s)"
   end="$(date --date "$(awk -F'-| ' '{print $2}'<<<"$item")" +%s)"
   now="$(date +%s)"
