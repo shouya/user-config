@@ -286,18 +286,18 @@ ${wifi.signal}"
    :class { util-stick ? "toggle-enabled" : "toggle-disabled" }
    (box
     :space-evenly false
-    (eventbox
-     :onclick "eww update util-stick=${!util-stick}"
-     :cursor "hand"
-     (icon :text ""))
     (revealer
      :reveal {util-stick || util-reveal}
      :duration "200ms"
-     :transition "slideleft"
+     :transition "slideright"
      (box :space-evenly false
           (tray-toggle)
           (dunst-toggle)
-          )))))
+          ))
+    (eventbox
+     :onclick "eww update util-stick=${!util-stick}"
+     :cursor "hand"
+     (icon :text "")))))
 
 (defwidget right []
   (box
