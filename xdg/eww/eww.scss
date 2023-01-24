@@ -21,11 +21,22 @@ $cyan: #7DCFFF;
 $white: $foreground;
 
 window {
-    border-radius: 15px;
     background: $background;
     color: $foreground;
-    text-shadow: 0.2px 0.2px rgba(0,0,0,1);
-    font: 1em "Noto Sans Condensed"
+    font-family: "Noto Sans Condensed";
+}
+
+window.main-window {
+    border-radius: 15px;
+}
+window.util-window {
+    border-radius: 15px;
+}
+window.khal-window {
+    border-radius: 15px;
+}
+window.battery-window {
+    border-radius: 15px;
 }
 
 .main {
@@ -99,3 +110,25 @@ circular-progress > label {
 .battery-alert {color: red;}
 .battery-warn  {color: orange;}
 .battery-ok    {color: $foreground;}
+
+.tray {
+    image {
+        font-size: 0.2em;
+    }
+}
+
+checkbutton {
+    // disable the tick
+    color: transparent;
+    margin: 1px;
+
+    :not(:checked) {
+        border: 1px solid transparent;
+        background-color: $background;
+    }
+
+    :checked {
+        border: 1px solid $lighten;
+        // background-color: $lighten;
+    }
+}

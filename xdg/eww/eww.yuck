@@ -178,8 +178,8 @@ ${wifi.signal}"
 (defwidget battery-widget [bat]
   (eventbox
    :class "battery"
-   :onhover "eww open battery-detail-window"
-   :onhoverlost "eww close battery-detail-window"
+   :onhover "eww open battery-window"
+   :onhoverlost "eww close battery-window"
    (box
     (battery-discharging :bat bat)
     (battery-charging :bat bat))
@@ -229,6 +229,32 @@ ${wifi.signal}"
       ))
     (sep))))
 
+(defwidget tray-toggle []
+  (box
+   :space-evenly false
+   (overlay
+    (checkbox :tooltip "Open tray"
+              :onchecked "stalonetray 2>/dev/null >/dev/null &"
+              :onunchecked "killall stalonetray"
+              )
+    (icon :text "")
+    ))
+  )
+
+(defvar util-reveal true)
+(defwidget util-switches []
+  (eventbox
+   :onhover "eww update util-reveal=true"
+   :onhoverlost "eww update util-reveal=false"
+   (box
+    :space-evenly false
+    (icon :text "")
+    (revealer
+     :reveal util-reveal
+     :duration "200ms"
+     :transition "slideleft"
+     (box (tray-toggle))))))
+
 (defwidget right []
   (box
    :space-evenly false
@@ -237,7 +263,8 @@ ${wifi.signal}"
    (sep)
    (monitors)
    (sep)
-   (icon :text "")
+   (util-switches)
+   (sep)
    (clock)
    ))
 
@@ -257,16 +284,15 @@ ${wifi.signal}"
                         :height "30px"
                         :y "2"
                         :anchor "top center")
-(main))
+    (main))
 
 (defwidget textual-detail [text ?wrap]
-  (box
-   :style "margin: 20px"
-   :valign "start"
-   (label :style "font-family: monospace; font-size: 0.8em;"
-          :text text
-          :wrap wrap))
-)
+           (box
+            :style "margin: 20px"
+            :valign "start"
+            (label :style "font-family: monospace; font-size: 0.8em;"
+                   :text text
+                   :wrap {wrap ?: false})))
 
 (defwidget khal-detail []
   (textual-detail
@@ -286,7 +312,7 @@ ${wifi.signal}"
                )
     (khal-detail))
 
-(defwindow battery-detail-window
+(defwindow battery-window
     :geometry (geometry :width "420px"
                         :height "100px"
                         :x "-3%"
