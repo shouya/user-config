@@ -28,8 +28,9 @@
 (defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
 
 (defwidget icon [text]
-  (label :class "icon" :text text))
-
+  (overlay
+   (box :width 24 :height 24)
+   (label :class "icon" :text text)))
 
 (defwidget xmonad-workspace-button [entry]
   (eventbox
@@ -243,13 +244,14 @@ ${wifi.signal}"
    :enable-var-name "tray-enabled"
    :curr "pgrep stalonetray >/dev/null && echo true || echo false"
    :on "stalonetray 2>/dev/null >/dev/null &"
-   :off "killall stalonetray"))
+   :off "pkill stalonetray"))
 
 (defwidget util-toggle
     [icon ?icon-off enabled enable-var-name tooltip curr on off]
     (overlay
      (eventbox :class { enabled ? "toggle-enabled" : "toggle-disabled" }
                :tooltip tooltip
+               :cursor "hand"
                :onclick { enabled
                         ? "( ${off} ); eww update ${enable-var-name}=$(${curr})"
                         : "( ${on} ); eww update ${enable-var-name}=$(${curr})" }
@@ -274,17 +276,22 @@ ${wifi.signal}"
    :off "dunstctl set-paused true")
   )
 
-(defvar util-reveal true)
+(defvar util-reveal false)
+(defvar util-stick false)
 
 (defwidget util-switches []
   (eventbox
    :onhover "eww update util-reveal=true"
    :onhoverlost "eww update util-reveal=false"
+   :class { util-stick ? "toggle-enabled" : "toggle-disabled" }
    (box
     :space-evenly false
-    (icon :text "")
+    (eventbox
+     :onclick "eww update util-stick=${!util-stick}"
+     :cursor "hand"
+     (icon :text ""))
     (revealer
-     :reveal util-reveal
+     :reveal {util-stick || util-reveal}
      :duration "200ms"
      :transition "slideleft"
      (box :space-evenly false
