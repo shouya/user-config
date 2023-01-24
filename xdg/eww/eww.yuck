@@ -229,19 +229,53 @@ ${wifi.signal}"
       ))
     (sep))))
 
+(defpoll tray-enabled
+    :run-while util-reveal
+    :initial "false"
+    :interval "10m"
+    "pgrep stalonetray >/dev/null && echo true || echo false")
+
 (defwidget tray-toggle []
-  (box
-   :space-evenly false
-   (overlay
-    (checkbox :tooltip "Open tray"
-              :onchecked "stalonetray 2>/dev/null >/dev/null &"
-              :onunchecked "killall stalonetray"
-              )
-    (icon :text "")
-    ))
+  (util-toggle
+   :icon ""
+   :tooltip "Open tray"
+   :enabled tray-enabled
+   :enable-var-name "tray-enabled"
+   :curr "pgrep stalonetray >/dev/null && echo true || echo false"
+   :on "stalonetray 2>/dev/null >/dev/null &"
+   :off "killall stalonetray"))
+
+(defwidget util-toggle
+    [icon ?icon-off enabled enable-var-name tooltip curr on off]
+    (overlay
+     (eventbox :class { enabled ? "toggle-enabled" : "toggle-disabled" }
+               :tooltip tooltip
+               :onclick { enabled
+                        ? "( ${off} ); eww update ${enable-var-name}=$(${curr})"
+                        : "( ${on} ); eww update ${enable-var-name}=$(${curr})" }
+               (icon :text { enabled ? icon : (icon-off ?: icon) }))
+     ))
+
+
+(defpoll dunst-enabled
+    :initial "false"
+    :interval "10m"
+    "test `dunstctl is-paused` = true && echo false || echo true" )
+
+(defwidget dunst-toggle []
+  (util-toggle
+   :icon ""
+   :icon-off ""
+   :tooltip "Dunst"
+   :enabled dunst-enabled
+   :enable-var-name "dunst-enabled"
+   :curr "test $(dunstctl is-paused) = true && echo false || echo true"
+   :on "dunstctl set-paused false"
+   :off "dunstctl set-paused true")
   )
 
 (defvar util-reveal true)
+
 (defwidget util-switches []
   (eventbox
    :onhover "eww update util-reveal=true"
@@ -253,7 +287,10 @@ ${wifi.signal}"
      :reveal util-reveal
      :duration "200ms"
      :transition "slideleft"
-     (box (tray-toggle))))))
+     (box :space-evenly false
+          (tray-toggle)
+          (dunst-toggle)
+          )))))
 
 (defwidget right []
   (box
@@ -294,6 +331,7 @@ ${wifi.signal}"
                    :text text
                    :wrap {wrap ?: false})))
 
+
 (defwidget khal-detail []
   (textual-detail
    :text { khal-today == "" ? "No tasks today!" : "${khal-today}"}))
@@ -309,7 +347,7 @@ ${wifi.signal}"
                         :x "-25%"
                         :y "40"
                         :anchor "top right"
-               )
+                        )
     (khal-detail))
 
 (defwindow battery-window
@@ -318,5 +356,5 @@ ${wifi.signal}"
                         :x "-3%"
                         :y "40"
                         :anchor "top right"
-               )
+                        )
     (battery-detail))
