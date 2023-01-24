@@ -63,6 +63,7 @@ import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Renamed
+import XMonad.Layout.NoBorders (smartBorders)
 
 import qualified XMonad.StackSet as W
 
@@ -205,7 +206,11 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
-  where layout = avoidStruts (spacingWithEdge 5 (tallLayouts ||| tabLayout)) ||| full
+  where layout = notFull ||| full
+        notFull = smartBorders $
+                  avoidStruts $
+                  spacingWithEdge 5 $
+                  (tallLayouts ||| tabLayout)
         tall = ResizableTall 1 (3/100) (1/2) []
         tallLayouts = name "tall" tall
         tabLayout = name "tab" (tabbedAlways shrinkText tabConf)
