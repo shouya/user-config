@@ -88,3 +88,14 @@ circular-progress > label {
         font-weight: bold;
     }
 }
+
+.icon {
+    font-family: "Font Awesome";
+    padding-top: 0.15em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.battery-alert {color: red;}
+.battery-warn  {color: orange;}
+.battery-ok    {color: $foreground;}

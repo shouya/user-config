@@ -12,40 +12,24 @@
     :initial "0"
     `xprop -spy -root _NET_CURRENT_DESKTOP`)
 
-(deflisten network-speed
-    :initial "{}"
-    `./scripts/net.sh wlp0s20f3`)
-(deflisten wifi
-    :initial '{"ssid": "", "addr": "", "freq": ""}'
-    `./scripts/wifi.sh wlp0s20f3`)
+(deflisten network-speed :initial "{}" `./scripts/net.sh wlp0s20f3`)
+(deflisten wifi :initial '{"ssid": "", "addr": "", "freq": ""}'`./scripts/wifi.sh wlp0s20f3`)
 ;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
-(deflisten khal
-    :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'
-    `./scripts/khal.sh`)
-(defpoll khal-today
-    :initial ""
+(deflisten khal :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'`./scripts/khal.sh`)
+(defpoll khal-today :initial "" :interval "1m" `khal list today`)
+(defpoll load-avg :interval "1s" "uptime | awk '{print $10 $11 $12}'")
+(deflisten active-window-title `./scripts/active-window-title.sh`)
+(defpoll cpu :interval "1s" :initial "{}" `./scripts/cpu.sh run`)
+(defpoll acpi-bat-info
     :interval "1m"
-    `khal list today`)
+    "acpi -b -a -i | grep -v unavailable")
 
-(defpoll load-avg
-    :interval "1s"
-    "uptime | awk '{print $10 $11 $12}'")
 
-(deflisten active-window-title
-    `./scripts/active-window-title.sh`)
+(defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
 
-(defpoll cpu
-    :interval "1s"
-    :initial "{}"
-    `./scripts/cpu.sh run`)
+(defwidget icon [text]
+  (label :class "icon" :text text))
 
-(defpoll battery
-    :interval "5s"
-    :initial "[{},{}]"
-    `./scripts/battery.sh`)
-
-(defwidget sep []
-  (label :yalign "0"  :class "sep" :text "|"))
 
 (defwidget xmonad-workspace-button [entry]
   (eventbox
@@ -167,37 +151,39 @@ ${wifi.signal}"
             :tooltip "Load: ${load-avg}, ${freq}, ${EWW_TEMPS.CORETEMP_CORE_0}℃"
             )))
 
+(defwidget battery-icon [percent]
+  (icon :text { percent > 85 ? "" :
+                percent > 60 ? "" :
+                percent > 30 ? "" :
+                percent > 10 ? "" : "" }))
 
-(defwidget battery-widget [name index reveal-var reveal-var-name]
-           (battery-circular
-            :class "battery"
-            :name name
-            :level { battery[index].status != "Discharging" ? "ok" :
-                     (battery[index]?.capacity ?: 0) > 80 ? "ok" :
-                     (battery[index]?.capacity ?: 0) > 40 ? "warn" : "alert" }
-            :percent { battery[index]?.capacity ?: 0 }
-            :value { (battery[index]?.capacity ?: 0) >= 95 ? "F" :
-            "${battery[index]?.capacity}" }
-            :revealer-var reveal-var
-            :revealer-var-name reveal-var-name
-            :battery-status "${battery[index]?.rate}"
-            ))
+(defwidget battery-charging [bat]
+  (box
+   :space-evenly false
+   :class "battery"
+   :visible {bat.status != "Discharging"}
+   (icon :text "")
+   (label :visible {bat.capacity < 80}
+          :text "${bat.capacity}")))
 
-(defwidget battery-circular
-    [name class level percent battery-status ?value revealer-var revealer-var-name]
-    (box
-     ;; :var revealer-var
-     ;; :var-name revealer-var-name
-     :class "monitor ${class} ${level} battery-${level}"
+(defwidget battery-discharging [bat]
+  (box
+   :space-evenly false
+   :class { bat.capacity < 40 ? 'battery-warn' :
+            bat.capacity < 10 ? 'battery-alert' : '' }
+   :visible {bat.status == "Discharging"}
+   (battery-icon :percent {bat.capacity})
+   (label :text "${bat.capacity}")))
 
-     (circular-progress
-      :width 30
-      :value percent
-      :start-at 75
-      :thickness 5
-      :tooltip {battery-status == "" ? "" : "${name}: ${battery-status}"}
-      (label :text "${value ?: percent}"))
-     ))
+(defwidget battery-widget [bat]
+  (eventbox
+   :class "battery"
+   :onhover "eww open battery-detail-window"
+   :onhoverlost "eww close battery-detail-window"
+   (box
+    (battery-discharging :bat bat)
+    (battery-charging :bat bat))
+   ))
 
 (defvar battery-reveal false)
 (defvar battery-reveal-hid false)
@@ -207,18 +193,7 @@ ${wifi.signal}"
    :space-evenly false
    :orientation "h"
    (cpu-widget)
-   (battery-widget :name "Laptop battery"
-                   :index 0
-                   :reveal-var battery-reveal
-                   :reveal-var-name "battery-reveal")
-   (revealer
-    :reveal false
-    :transition "slideright"
-    (battery-widget :name "HID battery"
-                    :index 1
-                    :reveal-var battery-reveal-hid
-                    :reveal-var-name "battery-reveal-hid"
-                    ))
+   (battery-widget :bat {EWW_BATTERY.BAT0})
    ))
 
 (defvar khal-reveal false)
@@ -262,7 +237,9 @@ ${wifi.signal}"
    (sep)
    (monitors)
    (sep)
-   (clock)))
+   (icon :text "")
+   (clock)
+   ))
 
 (defwidget main []
   (box
@@ -280,15 +257,25 @@ ${wifi.signal}"
                         :height "30px"
                         :y "2"
                         :anchor "top center")
-    (main))
+(main))
 
-(defwidget khal-detail []
+(defwidget textual-detail [text ?wrap]
   (box
    :style "margin: 20px"
    :valign "start"
-   (label
-    :style "font-family: monospace; font-size: 0.8em;"
-    :text { khal-today == "" ? "No tasks today!" : "${khal-today}"})))
+   (label :style "font-family: monospace; font-size: 0.8em;"
+          :text text
+          :wrap wrap))
+)
+
+(defwidget khal-detail []
+  (textual-detail
+   :text { khal-today == "" ? "No tasks today!" : "${khal-today}"}))
+
+(defwidget battery-detail []
+  (textual-detail
+   :text acpi-bat-info
+   :wrap true))
 
 (defwindow khal-window
     :geometry (geometry :width "220px"
@@ -298,3 +285,12 @@ ${wifi.signal}"
                         :anchor "top right"
                )
     (khal-detail))
+
+(defwindow battery-detail-window
+    :geometry (geometry :width "420px"
+                        :height "100px"
+                        :x "-3%"
+                        :y "40"
+                        :anchor "top right"
+               )
+    (battery-detail))
