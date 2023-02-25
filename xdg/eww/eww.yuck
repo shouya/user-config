@@ -219,10 +219,8 @@ ${wifi.signal}"
      :reveal {!khal.done}
      :transition "slideright"
      :class {khal.min_left < 0 ? "upcoming" : "ongoing" }
-     (revealer-on-hover
-      :var khal-reveal
-      :var-name "khal-reveal"
-      :transition "slideleft"
+     (box
+      :space-evenly false
       (label :text "${khal.name}")
       (label
        :style "font-size: .8em; margin-left: 6px;"
