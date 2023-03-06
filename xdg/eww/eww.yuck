@@ -23,7 +23,7 @@
 (defpoll acpi-bat-info
     :interval "1m"
     "acpi -b -a -i | grep -v unavailable")
-
+(defpoll calendar :interval "1m" `cal -3`)
 
 (defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
 
@@ -86,7 +86,9 @@
    (xmonad-active-window-title :max-len 100)))
 
 (defwidget clock []
-  (box
+  (eventbox
+   :onhover "eww open date-time-window"
+   :onhoverlost "eww close date-time-window"
    (label
     :class "clock"
     :text {date.short}
@@ -346,6 +348,11 @@ ${wifi.signal}"
    :text acpi-bat-info
    :wrap true))
 
+(defwidget date-time-detail []
+  (textual-detail
+   :text calendar
+   :wrap false))
+
 (defwindow khal-window
     :geometry (geometry :width "220px"
                         :height "120px"
@@ -358,8 +365,17 @@ ${wifi.signal}"
 (defwindow battery-window
     :geometry (geometry :width "420px"
                         :height "100px"
-                        :x "-3%"
+                        :x "-10%"
                         :y "40"
                         :anchor "top right"
                         )
     (battery-detail))
+
+(defwindow date-time-window
+    :geometry (geometry :width "420px"
+                        :height "100px"
+                        :x "-3%"
+                        :y "40"
+                        :anchor "top right"
+                        )
+    (date-time-detail))
