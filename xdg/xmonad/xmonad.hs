@@ -210,10 +210,9 @@ myLayout conf = docks $ conf { layoutHook = layout }
         notFull = smartBorders $
                   avoidStruts $
                   spacingWithEdge 5 $
-                  (tallLayouts ||| tabLayout)
-        tall = ResizableTall 1 (3/100) (1/2) []
-        tallLayouts = name "tall" tall
-        tabLayout = name "tab" (tabbedAlways shrinkText tabConf)
+                  (tallLayout ||| tabLayout)
+        tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
+        tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
         fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
         full = name "full" Full
         name x = renamed [Replace x]
@@ -239,7 +238,7 @@ myAppKeys conf = conf
           , ("<F2>", "emacs", className =? "Emacs")
           , ("<F3>", "alacritty", className =? "Alacritty")
           , ("<F4>", "malakal", className =? "malakal")
-          , ("<F5>", "slack", className =? "Slack")
+          , ("<F5>", "switch-to-slack", className =? "Slack")
           ]
         launchOrFocus (key, cmd, query) = ("M-" ++ key, runOrRaise cmd query)
         bringToCurrentWS (key, cmd, query) = ("M-S-" ++ key, runOrBring cmd query)
