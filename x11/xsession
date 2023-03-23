@@ -42,9 +42,9 @@ copyq &
 autocutsel -fork
 
 # pulseaudio and volume control
-if ! pulseaudio --check; then
-  systemctl --user start pulseaudio.socket &
-fi
+# if ! pulseaudio --check; then
+#   systemctl --user start pulseaudio.socket &
+# fi
 pasystray &
 
 
