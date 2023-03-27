@@ -188,7 +188,7 @@ ${wifi.signal}"
    :space-evenly false
    :orientation "h"
    (cpu-widget)
-   ;; (battery-widget :bat {EWW_BATTERY.BAT0})
+   (battery-widget :bat {EWW_BATTERY.BAT0})
    ))
 
 (defvar khal-reveal false)
