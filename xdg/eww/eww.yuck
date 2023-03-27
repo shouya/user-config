@@ -16,9 +16,8 @@
 (deflisten network-speed :initial "{}" `./scripts/net.py wlp0s20f3`)
 (deflisten wifi :initial '{"ssid": "", "addr": "", "freq": ""}'`./scripts/wifi.sh wlp0s20f3`)
 ;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
-(deflisten khal :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'`./scripts/khal.sh`)
+(deflisten khal :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'`./scripts/khal.py`)
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
-(defpoll load-avg :interval "1s" "uptime | awk '{print $10 $11 $12}'")
 (deflisten active-window-title `./scripts/active-window-title.sh`)
 (defpoll acpi-bat-info
     :interval "1m"

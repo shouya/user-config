@@ -44,5 +44,5 @@ while True:
         "tx_bytes": tx_speed,
         "rx": rx_human,
         "tx": tx_human
-    }))
+    }), flush=True)
     tx, rx = tx_new, rx_new
