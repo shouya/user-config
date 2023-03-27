@@ -11,15 +11,15 @@
 (deflisten current-workspace
     :initial "0"
     `xprop -spy -root _NET_CURRENT_DESKTOP`)
+(deflisten cpu :initial "{}" `./scripts/cpu.py run_forever`)
 
-(deflisten network-speed :initial "{}" `./scripts/net.sh wlp0s20f3`)
+(deflisten network-speed :initial "{}" `./scripts/net.py wlp0s20f3`)
 (deflisten wifi :initial '{"ssid": "", "addr": "", "freq": ""}'`./scripts/wifi.sh wlp0s20f3`)
 ;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
 (deflisten khal :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'`./scripts/khal.sh`)
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
 (defpoll load-avg :interval "1s" "uptime | awk '{print $10 $11 $12}'")
 (deflisten active-window-title `./scripts/active-window-title.sh`)
-(defpoll cpu :interval "1s" :initial "{}" `./scripts/cpu.sh run`)
 (defpoll acpi-bat-info
     :interval "1m"
     "acpi -b -a -i | grep -v unavailable")
@@ -106,6 +106,7 @@
    :revealer-var cpu-reveal
    :revealer-var-name "cpu-reveal"
    :freq {cpu.freq}
+   :temp {cpu.temp}
    ))
 
 (defwidget network-widget [device]
@@ -121,7 +122,7 @@ ${wifi.signal}"
           :text "Disconnected")))
 
 (defwidget cpu-circular
-    [class level percent freq ?value revealer-var revealer-var-name]
+    [class level percent freq temp ?value revealer-var revealer-var-name]
     (revealer-on-hover
      :var revealer-var
      :var-name revealer-var-name
@@ -130,7 +131,6 @@ ${wifi.signal}"
      (box
       :space-evenly false
       :width 70
-
       (circular-progress
        :width 30
        :value {percent > 100 ? 100 : percent}
@@ -141,18 +141,11 @@ ${wifi.signal}"
        :orientation "v"
        :style "font-size: 0.7em; margin: -2px 0; "
        (label :style "margin-bottom: -2px;"
-              :text "${EWW_TEMPS.CORETEMP_CORE_0}℃")
+              :text "${temp}℃")
        (label :style "margin-top: -2px;"
               :text "${freq}"))
       )
-     (graph :value percent
-            :min 0
-            :max 100
-            :time-range "30s"
-            :width 40
-            :thickness 2
-            :tooltip "Load: ${load-avg}, ${freq}, ${EWW_TEMPS.CORETEMP_CORE_0}℃"
-            )))
+     ))
 
 (defwidget battery-icon [percent]
   (icon :text { percent > 85 ? "" :
@@ -196,7 +189,7 @@ ${wifi.signal}"
    :space-evenly false
    :orientation "h"
    (cpu-widget)
-   (battery-widget :bat {EWW_BATTERY.BAT0})
+   ;; (battery-widget :bat {EWW_BATTERY.BAT0})
    ))
 
 (defvar khal-reveal false)
@@ -317,7 +310,8 @@ ${wifi.signal}"
    :class "main"
    :space-evenly false
    (left)
-   (right)))
+   (right)
+   ))
 
 
 (defwindow main-window
