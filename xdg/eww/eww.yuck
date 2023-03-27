@@ -1,6 +1,6 @@
 (include "./combinator.yuck")
 
-(deflisten date :initial "{}" `./scripts/clock.sh`)
+(deflisten date :initial "{}" `./scripts/clock.py`)
 
 (deflisten workspaces
     ;; so it doesn't spit out a long
