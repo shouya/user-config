@@ -24,7 +24,7 @@ else
 fi
 
 # compositor
-picom --experimental-backends --daemon
+picom --daemon
 
 # hidpi setting for gtk 3 apps
 export GDK_SCALE=2
