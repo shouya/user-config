@@ -83,8 +83,8 @@ pager = delta --color-only
 whitespace = red reverse
 
 [diff]
-  # https://blog.jcoglan.com/2017/09/19/the-patience-diff-algorithm/
-  algorithm = patience
+# https://blog.jcoglan.com/2017/09/19/the-patience-diff-algorithm/
+algorithm = patience
 # tool = icdiff
 # colorMoved = default
 
@@ -136,4 +136,4 @@ rebase = true
 
 [rebase]
 autostash = true
-
+autosquash = true
