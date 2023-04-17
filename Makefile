@@ -89,6 +89,10 @@ fcitx5: # Fcitx 5
 	./utils/backup ~/.config/fcitx5
 	ln -rsf xdg/fcitx5 ~/.config
 
+alacritty: # Alacritty
+	./utils/backup ~/.config/alacritty
+	ln -rsf xdg/alacritty ~/.config
+
 hime: # Hime input method
 	./utils/backup ~/.config/hime
 	ln -rsf xdg/hime ~/.config
