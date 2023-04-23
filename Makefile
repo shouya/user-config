@@ -101,6 +101,10 @@ eww: # Eww status bar and widgets
 	./utils/backup ~/.config/eww
 	ln -rsf xdg/eww ~/.config
 
+stalonetray: # Stalonetray
+	./utils/backup ~/.stalonetrayrc
+	ln -rsf xdg/stalonetrayrc ~/.stalonetrayrc
+
 systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	./utils/backup ~/.config/systemd
 	ln -Trsf xdg/systemd-laptop ~/.config/systemd

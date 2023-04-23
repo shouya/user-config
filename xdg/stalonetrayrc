@@ -1,0 +1,26 @@
+# -*- conf -*-
+
+decorations none
+background "#a1b5a8"
+parent_bg false
+# dockapp_mode none
+
+# single monitor
+# geometry 1x1-13+10
+
+# multi monitor: 3840 (4k width) - 48 (slot size) - 13 (margin) = 3779
+geometry 1x1+3779+10
+
+max_geometry 10x1
+fuzzy_edges 2
+kludges force_icons_size
+grow_gravity NE
+icon_gravity NE
+icon_size 36
+slot_size 48
+sticky true
+window_strut none
+window_type dock
+window_layer top
+no_shrink false
+skip_taskbar true
