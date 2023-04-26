@@ -4,9 +4,16 @@ export PATH=/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/h
 
 exec 2> ~/.xsession-errors > ~/.xsession-log
 
-# x11 configs
+# xresources
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
+# turn off audible bell
 xset b off
+# start screensaver after 3 minutes, and do not blank the
+# screen. required for IdleAction for logind.
+xset s 180
+xset s noblank
+# turn off screen/monitor/video signal after 180 seconds of inactivity
+xset dpms 180 180 180
 
 # automatically swap ctrl/capslock on pluggable keyboards
 ~/.xmonad/scripts/new-keyboard.sh
@@ -52,7 +59,10 @@ pasystray &
 autokey &
 
 # screensaver
-xscreensaver --no-splash &
+# --transfer-sleep-lock is needed for i3lock to work with systemd
+xss-lock --transfer-sleep-lock -- \
+         i3lock --ignore-empty-password --show-failed-attempts --nofork \
+         -i ~/Pictures/lockscreen.png &
 
 # gnome keyring
 export $(gnome-keyring-daemon --start)
