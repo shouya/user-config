@@ -12,8 +12,8 @@ xset b off
 # screen. required for IdleAction for logind.
 xset s 180
 xset s noblank
-# turn off screen/monitor/video signal after 180 seconds of inactivity
-xset dpms 180 180 180
+# turn off screen/monitor/video signal after 5 mins of inactivity
+xset dpms 300 300 300
 
 # automatically swap ctrl/capslock on pluggable keyboards
 ~/.xmonad/scripts/new-keyboard.sh
