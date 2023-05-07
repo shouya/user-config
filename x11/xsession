@@ -8,9 +8,9 @@ exec 2> ~/.xsession-errors > ~/.xsession-log
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
 # turn off audible bell
 xset b off
-# start screensaver after 3 minutes, and do not blank the
+# start screensaver (i3lock) after 10 minutes, and do not blank the
 # screen. required for IdleAction for logind.
-xset s 180
+xset s 600
 xset s noblank
 # turn off screen/monitor/video signal after 5 mins of inactivity
 xset dpms 300 300 300
