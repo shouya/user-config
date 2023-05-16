@@ -45,8 +45,9 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FadeWindows (isFloating)
-import XMonad.Hooks.ManageHelpers (isDialog)
+import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat)
 import XMonad.Hooks.StatusBar (withSB)
+import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWS
@@ -277,17 +278,22 @@ myScratchpad conf =
                , NS "dict" "goldendict" (className =? "GoldenDict") float
                , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") float
                ]
-        float = customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
+        float = smartCenterFloat
+        -- float = smartCenterFloat
         -- this allows me to park a scratch term to become a normal term.
         extraHook = resource =? "scratch-term" --> float
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
   where hooks = composeAll [ title =? "zoom " --> doFloat
-                           , isDialog --> doFloat
-                           , propertyToQuery (Role "About") --> doFloat
-                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> doFloat
-                           , className =? "flameshot" --> doFloat
+                           , isDialog --> smartCenterFloat
+                           , propertyToQuery (Role "About") --> smartCenterFloat
+                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
+                           , className =? "flameshot" --> smartCenterFloat
                            , className =? "copyq" --> doFloat
-                           , className =? "pavucontrol" --> doFloat
+                           , title =? "Volume Control" --> smartCenterFloat
                            ]
+                where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
+
+smartCenterFloat :: ManageHook
+smartCenterFloat = (placeHook $ inBounds $ smart (0.5, 0.5)) <+> doFloat
