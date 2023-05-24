@@ -49,6 +49,7 @@ import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat)
 import XMonad.Hooks.StatusBar (withSB)
 import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook)
 import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.RefocusLast (refocusLastLayoutHook)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWS
@@ -231,8 +232,14 @@ myLayout conf = docks $ conf { layoutHook = layout }
           }
         modifier =
           -- keep the current window when floating window is
-          -- activated, useful especially in Tabbed layout
-          trackFloating . useTransientFor
+          -- activated, useful especially in Tabbed layout.
+          refocusLastLayoutHook .
+          trackFloating .
+          -- useTransientFor will make it unable to switch to ws with
+          -- no windows. Do not use. refocusLastLayoutHook was found
+          -- to have the same effect.
+          -- useTransientFor .
+          id
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
