@@ -66,6 +66,7 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Renamed
 import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.TrackFloating (trackFloating, useTransientFor)
 
 import qualified XMonad.StackSet as W
 
@@ -208,7 +209,7 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 
 -- myLayout :: XConfig a -> XConfig _
 myLayout conf = docks $ conf { layoutHook = layout }
-  where layout = notFull ||| full
+  where layout = modifier (notFull ||| full)
         notFull = smartBorders $
                   avoidStruts $
                   spacingWithEdge 5 $
@@ -227,6 +228,10 @@ myLayout conf = docks $ conf { layoutHook = layout }
           , activeBorderColor = "#efeff8"
           , urgentBorderColor = "#e0af68"
           }
+        modifier =
+          -- keep the current window when floating window is
+          -- activated, useful especially in Tabbed layout
+          trackFloating . useTransientFor
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
