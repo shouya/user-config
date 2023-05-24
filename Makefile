@@ -60,14 +60,17 @@ calendar: # Khal and vdirsyncer
 	ln -rsf xdg/vdirsyncer ~/.config
 
 sway: # Sway, waybar, kanshi, rofi
-	./utils/backup ~/.config/rofi
 	./utils/backup ~/.config/kanshi
 	./utils/backup ~/.config/sway
 	./utils/backup ~/.config/waybar
-	ln -rsf xdg/rofi ~/.config
 	ln -rsf xdg/kanshi ~/.config
 	ln -rsf xdg/sway ~/.config
 	ln -rsf xdg/waybar ~/.config
+
+rofi: # rofi
+	./utils/backup ~/.config/rofi
+	ln -rsf xdg/rofi ~/.config
+
 
 i3: # i3
 	./utils/backup ~/.config/i3
