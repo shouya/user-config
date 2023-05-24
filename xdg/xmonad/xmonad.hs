@@ -48,6 +48,7 @@ import XMonad.Hooks.FadeWindows (isFloating)
 import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat)
 import XMonad.Hooks.StatusBar (withSB)
 import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook)
+import XMonad.Hooks.UrgencyHook
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWS
@@ -89,7 +90,7 @@ main = do
 
 -- myConfiguration :: XConfig a -> IO (XConfig b)
 myConfiguration conf = do
-  pure $ ewmh
+  pure $ myEwmh
        $ desktopIntegration
        $ myAppKeys
        $ myScratchpad
@@ -294,6 +295,12 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , title =? "Volume Control" --> smartCenterFloat
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
+
+myEwmh =
+  -- mark urgent (switch to workspace and focus) instead of bringing
+  -- the window here.
+  setEwmhActivateHook doAskUrgent .
+  ewmh
 
 smartCenterFloat :: ManageHook
 smartCenterFloat = (placeHook $ inBounds $ smart (0.5, 0.5)) <+> doFloat
