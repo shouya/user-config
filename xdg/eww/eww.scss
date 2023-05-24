@@ -1,8 +1,7 @@
 * {
-    // transition: linear 0.5s;
-    all: unset;
+  // transition: linear 0.5s;
+  all: unset;
 }
-
 
 // Variable Color's
 $background: #183e4b;
@@ -10,113 +9,128 @@ $foreground: #8ba0a4;
 $darken: #305054;
 $lighten: #a1b5a8;
 
-$black: #24283B;
-$gray: #565F89;
-$red: #F7768E;
+$black: #24283b;
+$gray: #565f89;
+$red: #f7768e;
 $green: #3fb36d;
-$yellow: #E0AF68;
-$blue: #7AA2F7;
-$magenta: #BB9AF7;
-$cyan: #7DCFFF;
+$yellow: #e0af68;
+$blue: #7aa2f7;
+$magenta: #bb9af7;
+$cyan: #7dcfff;
 $white: $foreground;
 
 window {
-    background: $background;
-    color: $foreground;
-    font-family: "Noto Sans Condensed";
+  background: $background;
+  color: $foreground;
+  font-family: "Noto Sans Condensed";
 }
 
 window.main-window {
-    border-radius: 15px;
+  border-radius: 15px;
 }
 window.util-window {
-    border-radius: 15px;
+  border-radius: 15px;
 }
 window.khal-window {
-    border-radius: 15px;
+  border-radius: 15px;
 }
 window.battery-window {
-    border-radius: 15px;
+  border-radius: 15px;
 }
 
 .main {
-    padding-left: 10px;
-    padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 15px;
 }
 
 .ws {
-    transition: 0.1s;
-    color: $foreground;
+  transition: 0.1s;
+  color: $foreground;
 }
 .ws-curr-true {
-    color: $green;
-    // transform: translateY(1);
-    font-weight: bold;
-    font-size: 1.2em;
+  color: $green;
+  // transform: translateY(1);
+  font-weight: bold;
+  font-size: 1.2em;
 }
 .ws-hid-false:not(.ws-curr-true) {
-    color: $darken;
-    text-shadow: 0px 0px $foreground;
-    font-size: 0.9em;
+  color: $darken;
+  text-shadow: 0px 0px $foreground;
+  font-size: 0.9em;
+}
+.ws-vis-true {
+  color: $cyan;
 }
 
 .active-window-title {
 }
 
 circular-progress {
-    background-color: $darken;
-    transition: 0.5s;
-    box-shadow: 3px 3px green;
+  background-color: $darken;
+  transition: 0.5s;
+  box-shadow: 3px 3px green;
 }
 
 circular-progress > label {
-    font-size: 0.8em;
-    color: inherit;
-    text-shadow: 1px 1px black;
+  font-size: 0.8em;
+  color: inherit;
+  text-shadow: 1px 1px black;
 }
-.alert circular-progress {color: red;}
-.warn  circular-progress {color: orange;}
-.ok    circular-progress {color: $foreground;}
+.alert circular-progress {
+  color: red;
+}
+.warn circular-progress {
+  color: orange;
+}
+.ok circular-progress {
+  color: $foreground;
+}
 
 .monitor {
-    margin-top: 2px;
-    margin-bottom: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .sep {
-    margin-left: 5px;
-    margin-right: 5px;
-    color: $darken;
-    text-shadow: -1px 1px $lighten;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: $darken;
+  text-shadow: -1px 1px $lighten;
 }
 
 .khal {
-    .upcoming {
-        color: $darken;
-    }
-    .ongoing {
-        color: $lighten;
-        font-weight: bold;
-    }
+  .upcoming {
+    color: $darken;
+  }
+  .ongoing {
+    color: $lighten;
+    font-weight: bold;
+  }
 }
 
 .icon {
-    font-family: "Font Awesome";
-    padding-top: 0.15em;
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+  font-family: "Font Awesome";
+  padding-top: 0.15em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
 }
 
-.battery-alert {color: red;}
-.battery-warn  {color: orange;}
-.battery-ok    {color: $foreground;}
+.battery-alert {
+  color: red;
+}
+.battery-warn {
+  color: orange;
+}
+.battery-ok {
+  color: $foreground;
+}
 
 .toggle-enabled {
-    margin: 1px;
-    border-bottom: 3px solid $lighten;
+  margin: 1px;
+  border-bottom: 3px solid $lighten;
 }
 .toggle-disabled {
-    margin: 1px;
-    border-bottom: 3px solid transparent;
-    background-color: $background;
+  margin: 1px;
+  border-bottom: 3px solid transparent;
+  background-color: $background;
 }
