@@ -4,7 +4,6 @@
 
 {- External deps:
 
- * dmenu (app launcher with M-<space>
  * flameshot (prtscr)
  * slop (select window for prtscr)
  * notify-send (misc)
@@ -20,6 +19,7 @@
  * copyq (clipboard manager)
  * autocutsel (primary/clipboard sync)
  * xscreensaver
+ * rofi (app launcher with M-<space>)
 
   /sys/class/backlight/intel_backlight/brightness needs to be writable
   (See https://superuser.com/a/1393488)
@@ -160,7 +160,7 @@ myKeybinding conf = conf
           , ("M-<Return>", "M-S-`", windows W.swapMaster)
           , ("M-m", "M-`", windows W.focusMaster)
           , ("M-q", "M-S-r", reloadXMonad)
-          , ("M-p", "M-<Space>", spawn "dmenu_run")
+          , ("M-p", "M-<Space>", spawn "rofi -show run")
           , ("M-<Space>", "M-0", sendMessage NextLayout)
           -- replaced by gnome-session-quit
           -- , ("M-S-q", "M-S-e", io (exitWith ExitSuccess))
