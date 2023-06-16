@@ -48,12 +48,14 @@ eww open main-window &
 copyq &
 autocutsel -fork
 
+# activity watch
+aw-qt &
+
 # pulseaudio and volume control
 # if ! pulseaudio --check; then
 #   systemctl --user start pulseaudio.socket &
 # fi
 pasystray &
-
 
 # autokey
 autokey &
