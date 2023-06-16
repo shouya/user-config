@@ -306,6 +306,7 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , className =? "flameshot" --> smartCenterFloat
                            , className =? "copyq" --> doFloat
                            , title =? "Volume Control" --> smartCenterFloat
+                           , title =? "Dotcam" --> doCenterFloat
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
 

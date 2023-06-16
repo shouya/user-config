@@ -2,7 +2,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE RecordWildCards #-}
 
-
 module XMonad.Hooks.EwwLog
   ( ewwStatusBar
   , ewwLayoutLog
