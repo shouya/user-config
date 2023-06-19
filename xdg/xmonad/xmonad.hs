@@ -93,7 +93,7 @@ main = do
 -- myConfiguration :: XConfig a -> IO (XConfig b)
 myConfiguration conf = do
   pure $ myEwmh
-       $ desktopIntegration
+       $ myDesktopIntegration
        $ myAppKeys
        $ myScratchpad
        $ myStartupPrograms
@@ -110,8 +110,8 @@ replaceKeysP conf keys = conf
                          `removeKeysP` map fst keys
                          `additionalKeysP` keys
 
--- desktopIntegration :: XConfig a -> XConfig b
-desktopIntegration conf =
+-- myDesktopIntegration :: XConfig a -> XConfig b
+myDesktopIntegration conf =
   conf { manageHook = manageHook desktopConfig <+> manageHook conf
        , startupHook = startupHook desktopConfig >> startupHook conf
        , layoutHook = desktopLayoutModifiers (layoutHook conf)
