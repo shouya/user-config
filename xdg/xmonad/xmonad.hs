@@ -68,6 +68,7 @@ import XMonad.Layout.Tabbed
 import XMonad.Layout.Renamed
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.TrackFloating (trackFloating, useTransientFor)
+import XMonad.Layout.Fullscreen (fullscreenSupport)
 
 import qualified XMonad.StackSet as W
 
@@ -182,6 +183,7 @@ myKeybinding conf = conf
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
+          , ("M-b", sendMessage ToggleStruts)
           , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab (xK_Shift_L .|. xK_Tab))
           , ("<Print>", spawn "flameshot gui")
           , ("C-<Print>", spawn "flameshot gui --region $(slop -b 5 -p -5)")
@@ -210,11 +212,11 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
   where newStartupHook = return ()
 
 -- myLayout :: XConfig a -> XConfig _
-myLayout conf = docks $ conf { layoutHook = layout }
+myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
   where layout = modifier (notFull ||| full)
         notFull = smartBorders $
-                  avoidStruts $
                   spacingWithEdge 5 $
+                  avoidStruts $
                   (tallLayout ||| tabLayout)
         tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
         tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
@@ -314,6 +316,7 @@ myEwmh =
   -- mark urgent (switch to workspace and focus) instead of bringing
   -- the window here.
   setEwmhActivateHook doAskUrgent .
+  ewmhFullscreen .
   ewmh
 
 smartCenterFloat :: ManageHook
