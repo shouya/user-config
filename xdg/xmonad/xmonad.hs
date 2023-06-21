@@ -66,7 +66,7 @@ import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Renamed
-import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.NoBorders (smartBorders, noBorders)
 import XMonad.Layout.TrackFloating (trackFloating, useTransientFor)
 import XMonad.Layout.Fullscreen (fullscreenSupport)
 
@@ -115,7 +115,6 @@ replaceKeysP conf keys = conf
 myDesktopIntegration conf =
   conf { manageHook = manageHook desktopConfig <+> manageHook conf
        , startupHook = startupHook desktopConfig >> startupHook conf
-       , layoutHook = desktopLayoutModifiers (layoutHook conf)
        }
 
 
@@ -221,7 +220,7 @@ myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
         tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
         tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
         fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
-        full = name "full" Full
+        full = name "full" (noBorders Full)
         name x = renamed [Replace x]
         tabConf = def
           { fontName = "xft:Noto Sans CJK TC:size=9"
