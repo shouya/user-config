@@ -26,6 +26,7 @@
  -}
 
 import Data.Monoid
+import Data.Maybe
 import Control.Monad
 import System.Exit
 import qualified Data.Map as M
@@ -308,8 +309,20 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , className =? "copyq" --> doFloat
                            , title =? "Volume Control" --> smartCenterFloat
                            , title =? "Dotcam" --> doCenterFloat
+                           -- firefox popup windows (those without navigation buttons)
+                           , (className =? "Firefox" <&&> noProp "_MOTIF_WM_HINTS")
+                             --> doCenterFloat
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
+        hasProp :: String -> Query Bool
+        hasProp p = do
+          w <- ask
+          d <- liftX (asks display)
+          a <- liftX (getAtom p)
+          m <- liftX $ io $ getWindowProperty8 d a w
+          return $ isJust m
+        noProp :: String -> Query Bool
+        noProp = fmap not . hasProp
 
 myEwmh =
   -- mark urgent (switch to workspace and focus) instead of bringing
