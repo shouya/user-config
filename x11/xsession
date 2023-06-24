@@ -22,23 +22,27 @@ inputplug -0 --command ~/.xmonad/scripts/new-keyboard.sh &
 # pointer configs
 ~/.xmonad/scripts/touchpad-natural-scroll.sh
 
-# wallpaper
-if [ -d ~/Pictures/wallpapers ]; then
-  # sometimes feh random to a non-png wallpaper and fails to load, give it a few more chances.
-  ( while ! feh --bg-fill ~/Pictures/wallpapers/ -zr; do :; done ) &
-else
-  echo "~/Pictures/wallpapers not found, skipping wallpaper"
-fi
+# compatibility configs
+export XDG_CURRENT_DESKTOP=GNOME
+# See https://blog.ando.fyi/posts/diagnosing-an-unsual-wifi-issue/
+export QT_BEARER_POLL_TIMEOUT=-1
 
-# compositor
-picom --daemon
+# external monitor setup
+command -v mons && mons -e right || true
+
+# set wallpaper
+feh --bg-fill ~/Pictures/wallpapers/ -zr
 
 # hidpi setting for gtk 3 apps
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
 
+# compositor
+picom --daemon
+
 # status bar
 # polybar --reload default-bar &
+# TODO: fix eww. sometimes it just won't start on boot.
 eww open main-window &
 
 # network manager applet
@@ -48,13 +52,13 @@ eww open main-window &
 copyq &
 autocutsel -fork
 
-# activity watch
-aw-qt &
+# activity watch needs a tray to start, but doesn't need it to stay
+# running.
+stalonetray 2>/dev/null >/dev/null &
+(sleep 0.1; aw-qt) &
+(sleep 0.3; pkill stalonetray) &
 
-# pulseaudio and volume control
-# if ! pulseaudio --check; then
-#   systemctl --user start pulseaudio.socket &
-# fi
+# pulseaudio control
 pasystray &
 
 # autokey
@@ -68,11 +72,6 @@ xss-lock --transfer-sleep-lock -- \
 
 # gnome keyring
 export $(gnome-keyring-daemon --start)
-
-export XDG_CURRENT_DESKTOP=GNOME
-
-# See https://blog.ando.fyi/posts/diagnosing-an-unsual-wifi-issue/
-export QT_BEARER_POLL_TIMEOUT=-1
 
 exec 1<> /tmp/xmonad.stdout
 exec 2<> /tmp/xmonad.stderr
