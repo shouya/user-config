@@ -310,19 +310,24 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , title =? "Volume Control" --> smartCenterFloat
                            , title =? "Dotcam" --> doCenterFloat
                            -- firefox popup windows (those without navigation buttons)
-                           , (className =? "Firefox" <&&> noProp "_MOTIF_WM_HINTS")
+                           , (className =? "Firefox" <&&> firefoxPopupNormalHints)
                              --> doCenterFloat
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
-        hasProp :: String -> Query Bool
-        hasProp p = do
+        -- normal window: program specified minimum size: 900 by 240 (or something like that)
+        -- popup window: program specified minimum size: 190 by 190
+        --
+        -- another differentiating property is the x,y location. But
+        -- these fields are obsolate and XMonad doesn't implement it.
+        -- https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+        firefoxPopupNormalHints :: Query Bool
+        firefoxPopupNormalHints = do
           w <- ask
           d <- liftX (asks display)
-          a <- liftX (getAtom p)
-          m <- liftX $ io $ getWindowProperty8 d a w
-          return $ isJust m
-        noProp :: String -> Query Bool
-        noProp = fmap not . hasProp
+          sz <- liftX $ io $ getWMNormalHints d w
+          case sh_min_size sz of
+            Just (190, 190) -> return True
+            _ -> return False
 
 myEwmh =
   -- mark urgent (switch to workspace and focus) instead of bringing
