@@ -291,7 +291,8 @@ myScratchpad conf =
                  ]
   where sps =  [ NS "term" "alacritty --class=scratch-term"
                     (resource =? "scratch-term" <&&> isFloating) float
-               , NS "dict" "goldendict" (className =? "GoldenDict") float
+               , NS "dict" "goldendict" (className =? "GoldenDict" <||>
+                                         className =? "GoldenDict-ng") float
                , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") float
                ]
         float = smartCenterFloat
