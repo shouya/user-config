@@ -1,6 +1,5 @@
 (include "./combinator.yuck")
 
-(defvar monitor "eDP-1-1")
 ;; (defvar monitor "eDP-1-1")
 
 (deflisten date :initial "{}" `./scripts/clock.py`)
@@ -16,7 +15,7 @@
     `xprop -spy -root _NET_CURRENT_DESKTOP`)
 (deflisten cpu :initial "{}" `./scripts/cpu.py run_forever`)
 
-(deflisten network-speed :initial "{}" `./scripts/net.py wlp0s20f3`)
+(deflisten network-speed :initial "{}" `./scripts/net.py wlp9s0`)
 (deflisten wifi :initial '{"ssid": "", "addr": "", "freq": ""}'`./scripts/wifi.sh wlp0s20f3`)
 ;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
 (deflisten khal :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'`./scripts/khal.py`)
