@@ -1,5 +1,5 @@
 [general]
-accounts = tubi, private
+accounts = private
 pythonfile = ~/.offlineimap.py
 
 [Account tubi]
