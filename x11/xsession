@@ -34,8 +34,8 @@ command -v mons && mons -e right || true
 feh --bg-fill ~/Pictures/wallpapers/ -zr
 
 # hidpi setting for gtk 3 apps
-# export GDK_SCALE=2
-# export GDK_DPI_SCALE=0.5
+export GDK_SCALE=2
+export GDK_DPI_SCALE=0.5
 
 # compositor
 picom --daemon
@@ -43,7 +43,7 @@ picom --daemon
 # status bar
 # polybar --reload default-bar &
 # TODO: fix eww. sometimes it just won't start on boot.
-GDK_SCALE=2 GDK_DPI_SCALE=0.5 eww open main-window &
+eww open main-window &
 
 # network manager applet
 (sleep 1; nm-applet) &
