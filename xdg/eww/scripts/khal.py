@@ -47,6 +47,9 @@ def parse_khal_events(s: str) -> [dict]:
     events = []
     today = date.today()
     for line in lines:
+        line = line.strip()
+        if len(line) == 0:
+            continue
         if line.startswith("Today,"):
             continue
         time_span, title = line.split(" ", 1)
@@ -84,7 +87,7 @@ def update_khal() -> bool:
 
         if len(events) < 1:
             done = True
-            return False
+            return
 
         done = False
         # we show the most recent event
@@ -97,10 +100,10 @@ def update_khal() -> bool:
         else:
             upcoming = False
             min_left = (item["end_time"] - now).seconds // 60
-        return True
+        return
 
     except (subprocess.CalledProcessError, ValueError):
-        return False
+        return
 
 
 def report():
