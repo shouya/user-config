@@ -16,9 +16,12 @@
 (deflisten cpu :initial "{}" `./scripts/cpu.py run_forever`)
 
 (deflisten network-speed :initial "{}" `./scripts/net.py wlp9s0`)
-(deflisten wifi :initial '{"ssid": "", "addr": "", "freq": ""}'`./scripts/wifi.sh wlp0s20f3`)
-;; (defvar wifi '{"ssid": "", "addr": "", "freq": ""}')
-(deflisten khal :initial '{"min_left": 0, "name": "", "redacted": false, "done": false}'`./scripts/khal.py`)
+(deflisten wifi
+    :initial '{"ssid": "", "addr": "", "freq": ""}'
+    `./scripts/wifi.sh wlp9s0`)
+(deflisten khal
+    :initial '{"min_left": 0, "name": "", "redacted": false, "done": false, "upcoming": false}'
+    `./scripts/khal.py`)
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
 (deflisten active-window-title `./scripts/active-window-title.sh`)
 (defpoll acpi-bat-info
@@ -214,7 +217,7 @@ ${wifi.signal}"
     (revealer
      :reveal {!khal.done}
      :transition "slideright"
-     :class {khal.min_left < 0 ? "upcoming" : "ongoing" }
+     :class {khal.upcoming ? "upcoming" : "ongoing" }
      (box
       :space-evenly false
       (label :text "${khal.name}")

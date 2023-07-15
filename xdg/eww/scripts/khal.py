@@ -3,21 +3,24 @@ import os
 import subprocess
 import time
 import json
-import datetime
+from datetime import datetime, date, timedelta
+
 
 def zoom_running() -> bool:
     try:
-        subprocess.check_output(['pgrep', 'zoom'])
+        subprocess.check_output(["pgrep", "zoom"])
         return True
     except subprocess.CalledProcessError:
         return False
 
+
 def audio_being_recorded() -> bool:
     try:
-        output = subprocess.check_output(['pactl', 'list', 'source-outputs', 'short'])
+        output = subprocess.check_output(["pactl", "list", "source-outputs", "short"])
         return len(output.decode().strip()) > 0
     except subprocess.CalledProcessError:
         return False
+
 
 def update_redacted() -> bool:
     global redacted
@@ -28,50 +31,85 @@ def update_redacted() -> bool:
         redacted = False
         return False
 
+
+def parse_khal_events(s: str) -> [dict]:
+    """
+    The output looks like the follows:
+
+    Today, 2023-07-15
+    16:00-17:45 P: fix eww calendar latency
+    17:45-18:00 H: dishwasher
+    17:45-18:00 P: system upgrade
+    18:00-20:00 P: dotcam
+    """
+
+    lines = s.strip().split("\n")
+    events = []
+    today = date.today()
+    for line in lines:
+        if line.startswith("Today,"):
+            continue
+        time_span, title = line.split(" ", 1)
+        start_time, end_time = time_span.split("-", 1)
+        start_time = datetime.strptime(start_time, "%H:%M").time()
+        end_time = datetime.strptime(end_time, "%H:%M").time()
+
+        start_time = datetime.combine(today, start_time)
+        end_time = datetime.combine(today, end_time)
+
+        events.append(
+            {
+                "start_time": start_time,
+                "end_time": end_time,
+                "name": title,
+            }
+        )
+    return events
+
+
+def next_whole_minute(now) -> datetime:
+    return now + timedelta(
+        minutes=1, seconds=-now.second, microseconds=-now.microsecond
+    )
+
+
 def update_khal() -> bool:
-    global item, min_left, name, done
+    global min_left, name, done, upcoming
+
+    now = datetime.now()
 
     try:
-        result = subprocess.check_output(['khal', 'list', 'now']).decode()
-        items = result.strip().split('\n')
-        if len(items) < 2:
+        result = subprocess.check_output(["khal", "list", "now"]).decode()
+        events = parse_khal_events(result)
+
+        if len(events) < 1:
             done = True
             return False
 
         done = False
-        item = items[1].strip()
+        # we show the most recent event
+        item = events[0]
+        name = item["name"]
 
-        # item looks like "21:15-22:15 foo"
-        name = ' '.join(item.split()[1:])
-
-        start_time, end_time = item.split()[0].split('-')
-
-        now = datetime.datetime.now()
-
-        start_time_hour, start_time_minute = start_time.split(':')
-        start_time = now.replace(hour=int(start_time_hour), minute=int(start_time_minute))
-
-        end_time_hour, end_time_minute = end_time.split(':')
-        end_time = now.replace(hour=int(end_time_hour), minute=int(end_time_minute))
-
-        if now < start_time:
-            min_left = (start_time - now).seconds // 60
+        if now < item["start_time"]:
+            upcoming = True
+            min_left = (item["start_time"] - now).seconds // 60
         else:
-            min_left = (end_time - now).seconds // 60
+            upcoming = False
+            min_left = (item["end_time"] - now).seconds // 60
+        return True
 
-        if now < start_time:
-            min_left = (start_time - now).seconds // 60
-        else:
-            min_left = (end_time - now).seconds // 60
     except (subprocess.CalledProcessError, ValueError):
         return False
+
 
 def report():
     report = {
         "min_left": min_left,
         "name": name,
         "redacted": redacted,
-        "done": done
+        "done": done,
+        "upcoming": upcoming,
     }
     new_report = json.dumps(report)
     global last_reported
@@ -80,23 +118,50 @@ def report():
         last_reported = new_report
 
 
-if __name__ == '__main__':
-    os.environ['PATH'] = '/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/home/shou/.local/bin:/home/shou/.shell/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin'
+def main():
+    next_update_check = datetime.now()
+    next_redact_check = datetime.now()
 
-    item = ""
+    while True:
+        now = datetime.now()
+        if now > next_update_check:
+            update_khal()
+            next_update_check = next_whole_minute(now)
+
+        if now > next_redact_check:
+            update_redacted()
+            next_redact_check = now + timedelta(seconds=30)
+
+        report()
+        time.sleep(1)
+
+
+if __name__ == "__main__":
+    # for khal cli
+    os.environ["PATH"] = ":".join(
+        [
+            "/home/shou/.asdf/shims",
+            "/home/shou/.asdf/bin",
+            "/home/shou/.cargo/bin",
+            "/home/shou/.local/bin",
+            "/home/shou/.shell/bin",
+            "/usr/local/bin",
+            "/usr/local/sbin",
+            "/usr/sbin",
+            "/sbin",
+            "/usr/local/bin",
+            "/usr/bin",
+            "/bin",
+        ]
+    )
+
     min_left = 0
     name = ""
+    current_event = None
     redacted = False
     done = False
     last_reported = ""
-
+    upcoming = False
     counter = 0
 
-    while True:
-        if counter % 60 == 0:
-            update_khal()
-        if counter % 10 == 0:
-            update_redacted()
-        report()
-        counter += 1
-        time.sleep(1)
+    main()
