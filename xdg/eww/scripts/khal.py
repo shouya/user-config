@@ -133,7 +133,15 @@ def main():
             next_redact_check = now + timedelta(seconds=30)
 
         report()
-        time.sleep(1)
+
+        # fmt: off
+        sleep_time = min(
+            max((next_update_check - now).seconds, 0),
+            max((next_redact_check - now).seconds, 0),
+            30
+        )
+
+        time.sleep(sleep_time)
 
 
 if __name__ == "__main__":
