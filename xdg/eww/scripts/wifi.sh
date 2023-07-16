@@ -10,7 +10,7 @@ print_status() {
   if [[ -n "$ssid" ]]; then
     addr="$(ip -o -h addr show dev "$DEV" | grep -oP 'inet6? \K[^ ]+' | paste -sd,)"
     freq="$(iwgetid -f | grep -oP 'Frequency:\K.*')"
-    signal="$(iwconfig wlp0s20f3 | grep 'Link Quality' | sed -E -e 's/^\s+//' -e "s/\s+$//")"
+    signal="$(iwconfig "$DEV" | grep 'Link Quality' | sed -E -e 's/^\s+//' -e "s/\s+$//")"
   fi
 
   cat <<HERE
