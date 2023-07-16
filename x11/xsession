@@ -52,12 +52,6 @@ eww open main-window &
 copyq &
 autocutsel -fork
 
-# activity watch needs a tray to start, but doesn't need it to stay
-# running.
-stalonetray 2>/dev/null >/dev/null &
-(sleep 0.1; aw-qt) &
-(sleep 0.3; pkill stalonetray) &
-
 # pulseaudio control
 pasystray &
 
