@@ -57,6 +57,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.OnScreen
 import XMonad.Actions.FloatKeys
 import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.NoBorders (toggleBorder)
 import XMonad.Operations
 
 import XMonad.Layout.IndependentScreens
@@ -183,7 +184,7 @@ myKeybinding conf = conf
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
-          , ("M-b", sendMessage ToggleStruts)
+          , ("M-b", withFocused toggleBorder)
           , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab (xK_Shift_L .|. xK_Tab))
           , ("<Print>", spawn "flameshot gui")
           , ("C-<Print>", spawn "flameshot gui --region $(slop -b 5 -p -5)")
