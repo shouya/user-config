@@ -135,7 +135,9 @@ myWorkspaces conf = conf { workspaces = allWorkspaces
         screenKeys = [ ("M-e", nextScreenCapped)
                      , ("M-q", prevScreenCapped)
                      , ("M-S-e", shiftNextScreen)
-                     , ("M-w", moveCurrentWorkspaceToOtherScreen)
+                     -- this key is bound to kill
+                     -- , ("M-S-q", shiftPrevScreen)
+                     , ("C-M-w", moveCurrentWorkspaceToOtherScreen)
                      ]
         wsStartupHook = do
           _ <- getWorkspaceScreen "1"
