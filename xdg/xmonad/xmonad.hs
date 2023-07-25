@@ -20,6 +20,7 @@
  * autocutsel (primary/clipboard sync)
  * xscreensaver
  * rofi (app launcher with M-<space>)
+ * playerctl (media keys)
 
   /sys/class/backlight/intel_backlight/brightness needs to be writable
   (See https://superuser.com/a/1393488)
@@ -197,6 +198,7 @@ myKeybinding conf = conf
           , ("<XF86MonBrightnessUp>", raiseBrightness "intel_backlight" 5)
           , ("<XF86MonBrightnessDown>", lowerBrightness "intel_backlight" 5)
           , ("<XF86AudioMicMute>", toggleMuteMicrophone >> pure())
+          , ("<XF86AudioPlay>", spawn "playerctl play-pause")
           , ("<XF86Display>", spawn "autorandr horizontal")
           ]
         oldkey (a,b,c) = a
