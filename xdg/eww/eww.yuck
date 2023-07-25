@@ -1,6 +1,6 @@
 (include "./combinator.yuck")
 
-;; (defvar monitor "eDP-1-1")
+;; (defvar monitor "eDP-1")
 
 (deflisten date :initial "{}" `./scripts/clock.py`)
 
@@ -319,7 +319,7 @@ ${wifi.signal}"
 
 
 (defwindow main-window
-    :monitor "eDP-1-1"
+    :monitor "eDP-1"
     :stacking "fg"
     :windowtype "dock"
     :reserve (struts :distance "60" :side "top")
@@ -353,7 +353,7 @@ ${wifi.signal}"
    :wrap false))
 
 (defwindow khal-window
-    :monitor "eDP-1-1"
+    :monitor "eDP-1"
     :geometry (geometry :width "220px"
                         :height "120px"
                         :x "-25%"
@@ -363,7 +363,7 @@ ${wifi.signal}"
     (khal-detail))
 
 (defwindow battery-window
-    :monitor "eDP-1-1"
+    :monitor "eDP-1"
     :geometry (geometry :width "420px"
                         :height "100px"
                         :x "-10%"
@@ -373,7 +373,7 @@ ${wifi.signal}"
     (battery-detail))
 
 (defwindow date-time-window
-    :monitor "eDP-1-1"
+    :monitor "eDP-1"
     :geometry (geometry :width "420px"
                         :height "100px"
                         :x "-3%"
