@@ -124,6 +124,26 @@ circular-progress > label {
 .battery-ok {
   color: $foreground;
 }
+.battery-detail {
+  margin-left: 0.3em;
+  padding: 0;
+}
+.battery-wattage {
+  margin-bottom: -5px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 0;
+  font-size: 0.7em;
+}
+.battery-time {
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: -5px;
+  padding: 0;
+  font-size: 0.8em;
+}
 
 .toggle-enabled {
   margin: 1px;

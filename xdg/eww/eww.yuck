@@ -22,6 +22,11 @@
 (deflisten khal
     :initial '{"min_left": 0, "name": "", "redacted": false, "done": false, "upcoming": false}'
     `./scripts/khal.py`)
+
+(deflisten battery
+    :initial '{"status": "unknown"}'
+    `batry`)
+
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
 (deflisten active-window-title `./scripts/active-window-title.sh`)
 (defpoll acpi-bat-info
@@ -161,19 +166,28 @@ ${wifi.signal}"
   (box
    :space-evenly false
    :class "battery"
-   :visible {bat.status != "Discharging"}
+   :visible {bat.status != "discharging"}
    (icon :text "")
-   (label :visible {bat.capacity < 80}
-          :text "${bat.capacity}")))
+   (label :visible {bat.percentage < 80}
+          :text "${bat.percentage}")))
 
 (defwidget battery-discharging [bat]
   (box
    :space-evenly false
-   :class { bat.capacity < 40 ? 'battery-warn' :
-            bat.capacity < 10 ? 'battery-alert' : '' }
-   :visible {bat.status == "Discharging"}
-   (battery-icon :percent {bat.capacity})
-   (label :text "${bat.capacity}")))
+   :class { bat.percentage < 40 ? 'battery-warn' :
+            bat.percentage < 10 ? 'battery-alert' : '' }
+   :visible {bat.status == "discharging"}
+   (battery-icon :percent {bat.percentage})
+   (label :text "${bat.percentage}")
+   (box
+    :orientation "v"
+    :style "font-size: 0.7em; margin: -2px 0;"
+    (label :style "margin-bottom: -2px;"
+           :text "${bat.wattage}W")
+    (label :style "margin-top: -2px;"
+           :text "~${bat.time_to_empty}"
+           )))
+  )
 
 (defwidget battery-widget [bat]
   (eventbox
@@ -193,7 +207,7 @@ ${wifi.signal}"
    :space-evenly false
    :orientation "h"
    (cpu-widget)
-   (battery-widget :bat {EWW_BATTERY.BAT0})
+   (battery-widget :bat {battery})
    ))
 
 (defvar khal-reveal false)
@@ -250,8 +264,8 @@ ${wifi.signal}"
                :tooltip tooltip
                :cursor "hand"
                :onclick { enabled
-                        ? "( ${off} ); eww update ${enable-var-name}=$(${curr})"
-                        : "( ${on} ); eww update ${enable-var-name}=$(${curr})" }
+                          ? "( ${off} ); eww update ${enable-var-name}=$(${curr})"
+                          : "( ${on} ); eww update ${enable-var-name}=$(${curr})" }
                (icon :text { enabled ? icon : (icon-off ?: icon) }))
      ))
 
