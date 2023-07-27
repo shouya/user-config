@@ -164,18 +164,31 @@ ${wifi.signal}"
    :space-evenly false
    :class "battery"
    :visible {bat.status != "discharging"}
-   (icon :text "")
-   (label :visible {bat.percentage < 80}
-          :text "${bat.percentage}")))
+   (overlay
+    (icon :text "")
+    (label :visible {bat.percentage < 80}
+           :class "percentage"
+           :text "${bat.percentage}"))
+   (box
+    :visible {bat.status == "charging" }
+    :orientation "v"
+    :style "font-size: 0.7em; margin: -2px 0;"
+    (label :style "margin-bottom: -2px;"
+           :text "${bat.wattage}W")
+    (label :style "margin-top: -2px;"
+           :text "~${bat.time_to_full}"
+           ))))
 
 (defwidget battery-discharging [bat]
   (box
    :space-evenly false
    :class { bat.percentage < 40 ? 'battery-warn' :
             bat.percentage < 10 ? 'battery-alert' : '' }
-   :visible {bat.status == "discharging"}
-   (battery-icon :percent {bat.percentage})
-   (label :text "${bat.percentage}")
+            :visible {bat.status == "discharging"}
+            (overlay
+             (battery-icon :percent {bat.percentage})
+             (label :class "percentage"
+                    :text "${bat.percentage}"))
    (box
     :orientation "v"
     :style "font-size: 0.7em; margin: -2px 0;"
