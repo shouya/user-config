@@ -199,7 +199,10 @@ myKeybinding conf = conf
           , ("<XF86MonBrightnessDown>", lowerBrightness "intel_backlight" 5)
           , ("<XF86AudioMicMute>", toggleMuteMicrophone >> pure())
           , ("<XF86AudioPlay>", spawn "playerctl play-pause")
-          , ("<XF86Display>", spawn "autorandr horizontal")
+          , ("<XF86AudioPrev>", spawn "playerctl previous")
+          , ("<XF86AudioNext>", spawn "playerctl next")
+          , ("<XF86AudioStop>", spawn "playerctl stop")
+          , ("<XF86Display>", spawn "mons -e right")
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
