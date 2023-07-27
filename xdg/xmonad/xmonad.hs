@@ -202,7 +202,8 @@ myKeybinding conf = conf
           , ("<XF86AudioPrev>", spawn "playerctl previous")
           , ("<XF86AudioNext>", spawn "playerctl next")
           , ("<XF86AudioStop>", spawn "playerctl stop")
-          , ("<XF86Display>", spawn "mons -e right")
+          , ("<XF86Display>", spawn "mons -e right || mons -o")
+          , ("S-<XF86Display>", spawn "mons -e m")
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
