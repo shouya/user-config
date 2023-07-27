@@ -29,9 +29,6 @@
 
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
 (deflisten active-window-title `./scripts/active-window-title.sh`)
-(defpoll acpi-bat-info
-    :interval "1m"
-    "acpi -b -a -i | grep -v unavailable")
 (defpoll calendar :interval "1m" `cal -3`)
 
 (defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
@@ -192,8 +189,6 @@ ${wifi.signal}"
 (defwidget battery-widget [bat]
   (eventbox
    :class "battery"
-   :onhover "eww open battery-window"
-   :onhoverlost "eww close battery-window"
    (box
     (battery-discharging :bat bat)
     (battery-charging :bat bat))
@@ -356,11 +351,6 @@ ${wifi.signal}"
   (textual-detail
    :text { khal-today == "" ? "No tasks today!" : "${khal-today}"}))
 
-(defwidget battery-detail []
-  (textual-detail
-   :text acpi-bat-info
-   :wrap true))
-
 (defwidget date-time-detail []
   (textual-detail
    :text calendar
@@ -375,16 +365,6 @@ ${wifi.signal}"
                         :anchor "top right"
                         )
     (khal-detail))
-
-(defwindow battery-window
-    :monitor "eDP-1"
-    :geometry (geometry :width "420px"
-                        :height "100px"
-                        :x "-10%"
-                        :y "40"
-                        :anchor "top right"
-                        )
-    (battery-detail))
 
 (defwindow date-time-window
     :monitor "eDP-1"
