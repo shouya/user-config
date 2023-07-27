@@ -388,3 +388,7 @@ ${wifi.signal}"
                         :anchor "top right"
                         )
     (date-time-detail))
+
+;; Local Variables:
+;; apheleia-inhibit: t
+;; End:
