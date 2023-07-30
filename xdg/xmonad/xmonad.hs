@@ -338,6 +338,9 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            -- firefox popup windows (those without navigation buttons)
                            , (className =? "Firefox" <&&> firefoxPopupNormalHints)
                              --> doCenterFloat
+
+                           -- new windows should come after the current window
+                           , return True --> doF W.swapDown
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
         -- normal window: program specified minimum size: 900 by 240 (or something like that)
