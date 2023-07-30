@@ -95,7 +95,7 @@ main = do
   let conf = def { modMask = mod4Mask
                  , focusFollowsMouse = False
                  , clickJustFocuses = False
-                 , borderWidth = 12
+                 , borderWidth = 1
                  , focusedBorderColor = "#7aa2f7"
                  , normalBorderColor = "#efeff8"
                  }
@@ -233,7 +233,7 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
 myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
   where layout = modifier (notFull ||| full)
         notFull = smartBorders $
-                  spacingWithEdge 5 $
+                  spacingWithEdge 0 $
                   avoidStruts $
                   (mainLayout ||| tabLayout ||| tallLayout)
         mainLayout = name "main" $
