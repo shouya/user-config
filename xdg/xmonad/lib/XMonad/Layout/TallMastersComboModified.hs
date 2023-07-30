@@ -20,7 +20,7 @@
 --
 -----------------------------------------------------------------------------
 
-module XMonad.Layout.TallMastersCombo (
+module XMonad.Layout.TallMastersComboModified (
   -- * Usage
   -- $usage
   tmsCombineTwoDefault,
@@ -33,6 +33,7 @@ module XMonad.Layout.TallMastersCombo (
   SwitchOrientation (..),
   SwapSubMaster (..),
   FocusSubMaster (..), FocusedNextLayout (..), ChangeFocus (..),
+  MirrorResize (..),
 
   -- * Utilities
   ChooseWrapper (..),
@@ -48,6 +49,7 @@ import qualified XMonad.StackSet as W
 import qualified XMonad.Layout as LL
 import XMonad.Layout.Simplest (Simplest(..))
 import XMonad.Layout.Decoration
+import XMonad.Layout.ResizableTile (ResizableTall(..))
 
 ---------------------------------------------------------------------------------
 -- $usage
@@ -231,6 +233,13 @@ instance (GetFocused l1 Window, GetFocused l2 Window) => LayoutClass (TMSCombine
     -- messages that only traverse one level
     | Just Shrink <- fromMessage m = return . Just $ TMSCombineTwo f w1 w2 vsp nmaster delta (max 0 $ frac-delta) layout1 layout2
     | Just Expand <- fromMessage m = return . Just $ TMSCombineTwo f w1 w2 vsp nmaster delta (min 1 $ frac+delta) layout1 layout2
+    -- forward MirrorShrink/MirrorExpand as message Shrink/Expand the right-layout
+    | Just MirrorShrink <- fromMessage m = do
+        mlayout2 <- handleMessage layout2 (SomeMessage Shrink)
+        return $ mergeSubLayouts (Just layout1) mlayout2 i False
+    | Just MirrorExpand <- fromMessage m = do
+        mlayout2 <- handleMessage layout2 (SomeMessage Expand)
+        return $ mergeSubLayouts (Just layout1) mlayout2 i False
     | Just (IncMasterN d) <- fromMessage m =
         let w = w1++w2
             nmasterNew = min (max 0 (nmaster+d)) (length w)
@@ -521,8 +530,26 @@ instance (GetFocused l a, GetFocused r a) => GetFocused (ChooseWrapper l r) a wh
                             R -> (l, savFocused r s)
     in ChooseWrapper d l' r' lr
 
+data MirrorResize = MirrorShrink | MirrorExpand
+instance Message MirrorResize
+
 instance (Typeable a) => GetFocused Simplest a
 instance (Typeable a) => GetFocused RowsOrColumns a
 instance (Typeable a) => GetFocused Full a
 instance (Typeable a) => GetFocused Tall a
+instance (Typeable w) => GetFocused ResizableTall w
+
 instance (Typeable l, Typeable a, Typeable m, LayoutModifier m a, LayoutClass l a) => GetFocused (ModifiedLayout m l) a
+
+instance (GetFocused a w) => GetFocused (Mirror a) w
+
+
+{-
+
+My customizations:
+
+- forward Mirror{Expand,Shrink} to the second sub-layout as {Expand,Shrink}
+- allow more layouts as sublayouts:
+  + Mirror
+  + ResizableTall
+-}
