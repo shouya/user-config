@@ -344,7 +344,7 @@ ${wifi.signal}"
     :monitor "eDP-1"
     :stacking "fg"
     :windowtype "dock"
-    :reserve (struts :distance "60" :side "top")
+    :reserve (struts :distance "68" :side "top")
     :geometry (geometry :width "80%"
                         :height "30px"
                         :y "2"
