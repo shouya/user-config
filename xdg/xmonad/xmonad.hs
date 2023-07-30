@@ -235,16 +235,15 @@ myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
         notFull = smartBorders $
                   spacingWithEdge 5 $
                   avoidStruts $
-                  (tallLayout ||| tabLayout)
-        tallLayout = name "tall" $
-          -- master | ( -- )
-          tmsCombineTwoDefault
-          (retallLayout)
-          (tmsCombineTwo
-            False 1 (3/100) (1/2)
-            Simplest
-            (magicFocus $ tabbed shrinkText tabConf))
-        retallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
+                  (mainLayout ||| tabLayout ||| tallLayout)
+        mainLayout = name "main" $
+          tmsVert left (tmsHorz rightTop rightBottom)
+          where left = (Tall 0 (3/100) (1/2))
+                rightTop = Simplest
+                rightBottom = magicFocus $ tabbed shrinkText tabConf
+                tmsVert = tmsCombineTwoDefault
+                tmsHorz = tmsCombineTwo False 1 (3/100) (1/2)
+        tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
         tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
         fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
         full = name "full" (noBorders Full)
