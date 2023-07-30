@@ -66,12 +66,20 @@ import XMonad.Layout.Circle
 import XMonad.Layout.Spacing
 import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
-import XMonad.Layout.ResizableTile
+import XMonad.Layout.ResizableTile (ResizableTall(..))
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Renamed
+import XMonad.Layout.Simplest (Simplest(..))
+import XMonad.Layout.MagicFocus (magicFocus)
 import XMonad.Layout.NoBorders (smartBorders, noBorders)
 import XMonad.Layout.TrackFloating (trackFloating, useTransientFor)
 import XMonad.Layout.Fullscreen (fullscreenSupport)
+import XMonad.Layout.TallMastersComboModified
+  ( tmsCombineTwoDefault
+  , tmsCombineTwo
+  , FocusSubMaster(..)
+  , MirrorResize(MirrorShrink, MirrorExpand)
+  )
 
 import qualified XMonad.StackSet as W
 
@@ -184,6 +192,7 @@ myKeybinding conf = conf
         resizeKeys =
           [ ("M-S-h", sendMessage MirrorShrink)
           , ("M-S-l", sendMessage MirrorExpand)
+          , ("M-S-`", sendMessage FocusSubMaster)
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
@@ -227,7 +236,15 @@ myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
                   spacingWithEdge 5 $
                   avoidStruts $
                   (tallLayout ||| tabLayout)
-        tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
+        tallLayout = name "tall" $
+          -- master | ( -- )
+          tmsCombineTwoDefault
+          (retallLayout)
+          (tmsCombineTwo
+            False 1 (3/100) (1/2)
+            Simplest
+            (magicFocus $ tabbed shrinkText tabConf))
+        retallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
         tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
         fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
         full = name "full" (noBorders Full)
