@@ -165,7 +165,9 @@ ${wifi.signal}"
    :class "battery"
    :visible {bat.status != "discharging"}
    (overlay
-    (icon :text "")
+    (box
+     :class { bat.percentage < 80 ? "icon-charging" : "icon-full" }
+     (icon :text ""))
     (label :visible {bat.percentage < 80}
            :class "percentage"
            :text "${bat.percentage}"))
@@ -186,7 +188,8 @@ ${wifi.signal}"
             bat.percentage < 10 ? 'battery-alert' : '' }
             :visible {bat.status == "discharging"}
             (overlay
-             (battery-icon :percent {bat.percentage})
+             (box :class "icon-discharging"
+                  (battery-icon :percent {bat.percentage}))
              (label :class "percentage"
                     :text "${bat.percentage}"))
    (box
