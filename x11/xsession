@@ -60,8 +60,14 @@ autokey &
 
 # screensaver
 # --transfer-sleep-lock is needed for i3lock to work with systemd
+#
+# use custom built i3lock that passes media key to wm (https://github.com/Raymo111/i3lock-color)
 xss-lock --transfer-sleep-lock -- \
-         i3lock --show-failed-attempts --nofork \
+         ~/.local/bin/i3lock --nofork \
+         --tiling --clock --show-failed-attempts \
+         --date-color=999999 --time-color=aaaaaa \
+         --date-size=30 --time-size=60\
+         --pass-media-key --pass-screen-key \
          -i ~/Pictures/lockscreen.png &
 
 # gnome keyring
