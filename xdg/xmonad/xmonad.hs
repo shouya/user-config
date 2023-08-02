@@ -28,6 +28,7 @@
 
 import Data.Monoid
 import Data.Maybe
+import Data.Ratio
 import Control.Monad
 import System.Exit
 import qualified Data.Map as M
@@ -47,9 +48,9 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FadeWindows (isFloating)
-import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat)
+import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat, doRectFloat)
 import XMonad.Hooks.StatusBar (withSB)
-import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook)
+import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook, placeFocused)
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook)
 import XMonad.Config.Desktop
@@ -89,6 +90,8 @@ import XMonad.Actions.Volume
 import XMonad.Actions.Backlight
 import XMonad.Actions.AbsWS
 import XMonad.Hooks.EwwLog
+import XMonad.Hooks.SmartFloat (smartCenterFloat)
+
 
 main :: IO ()
 main = do
@@ -196,6 +199,7 @@ myKeybinding conf = conf
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
+          , ("M-p", placeFocused (smart (0.5, 0.5)))
           , ("M-b", withFocused toggleBorder)
           , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab (xK_Shift_L .|. xK_Tab))
           , ("<Print>", spawn "flameshot gui")
@@ -360,10 +364,10 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
 
 myEwmh =
   -- mark urgent (switch to workspace and focus) instead of bringing
-  -- the window here.
+  -- thew indow here.
   setEwmhActivateHook doAskUrgent .
   ewmhFullscreen .
   ewmh
 
-smartCenterFloat :: ManageHook
-smartCenterFloat = (placeHook $ inBounds $ smart (0.5, 0.5)) <+> doFloat
+
+smartCenterFloat = smartCenterFloat'

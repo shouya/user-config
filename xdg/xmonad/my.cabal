@@ -16,6 +16,7 @@ executable xmonad
       XMonad.Actions.FixedWorkspace
       XMonad.Actions.Volume
       XMonad.Hooks.EwwLog
+      XMonad.Hooks.SmartFloat
       XMonad.Layout.TallMastersComboModified
       Paths_my
   hs-source-dirs:
