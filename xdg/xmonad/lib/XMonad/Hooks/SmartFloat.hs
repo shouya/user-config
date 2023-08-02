@@ -1,5 +1,6 @@
 module XMonad.Hooks.SmartFloat
   ( smartCenterFloat
+  , smartCenterFloatWithMax
   )
 where
 
@@ -14,16 +15,15 @@ import Data.Ratio ((%))
 import XMonad.Hooks.Place (smart, inBounds, purePlaceWindow)
 import XMonad.Hooks.ManageHelpers (doRectFloat)
 
-smartCenterFloat :: ManageHook
-smartCenterFloat = ask >>= \window -> do
+smartCenterFloatWithMax :: Maybe (Rational, Rational) -> ManageHook
+smartCenterFloatWithMax maxSize = ask >>= \window -> do
   -- Step 1: Find the size of the current screen
   winset <- liftX $ gets windowset
   let screen = screenRect . W.screenDetail . W.current $ winset
   -- Step 2: Find the size of the new window
   window' <- liftX $ getWindowRectangle window
-  let targetRect = maxRect
-                     (toRationalRect window' screen)
-                     (1%3, 1%3)
+  let targetRect = maybe id (flip maxRect) maxSize
+                         (toRationalRect window' screen)
   -- Step 3: Find rectangles for all floating windows
   let floats = W.floating winset
   let floatRects = map (`fromRationalRect` screen) $
@@ -31,13 +31,16 @@ smartCenterFloat = ask >>= \window -> do
                      W.index winset
   -- Step 4: Calculate the place for the new window
   let targetPlace = purePlaceWindow
-                     (smart (0.5, 0.5))
-                     screen
-                     floatRects
-                     (0,0)
-                     (fromRationalRect targetRect screen)
+                      (smart (0.5, 0.5))
+                      screen
+                      floatRects
+                      (0,0)
+                      (fromRationalRect targetRect screen)
   -- Step 5: Call doRectFloat with the new rectangle
   doRectFloat (toRationalRect targetPlace screen)
+
+smartCenterFloat :: ManageHook
+smartCenterFloat = smartCenterFloatWithMax (Just $ (1%3, 1%3))
 
 fromRationalRect :: W.RationalRect -> Rectangle -> Rectangle
 fromRationalRect r screen
