@@ -368,6 +368,3 @@ myEwmh =
   setEwmhActivateHook doAskUrgent .
   ewmhFullscreen .
   ewmh
-
-
-smartCenterFloat = smartCenterFloat'
