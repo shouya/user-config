@@ -342,7 +342,8 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            -- firefox popup windows (those without navigation buttons)
                            , (className =? "Firefox" <&&> firefoxPopupNormalHints)
                              --> doCenterFloat
-
+                           -- do not resize Tor Browser
+                           , className =? "Tor Browser" --> doFloat
                            -- new windows should come after the current window
                            , return True --> doF W.swapDown
                            ]

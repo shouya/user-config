@@ -40,7 +40,7 @@ smartCenterFloatWithMax maxSize = ask >>= \window -> do
   doRectFloat (toRationalRect targetPlace screen)
 
 smartCenterFloat :: ManageHook
-smartCenterFloat = smartCenterFloatWithMax (Just $ (1%3, 1%3))
+smartCenterFloat = smartCenterFloatWithMax (Just $ (2%5, 2%5))
 
 fromRationalRect :: W.RationalRect -> Rectangle -> Rectangle
 fromRationalRect r screen
