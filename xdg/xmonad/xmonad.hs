@@ -90,7 +90,7 @@ import XMonad.Actions.Volume
 import XMonad.Actions.Backlight
 import XMonad.Actions.AbsWS
 import XMonad.Hooks.EwwLog
-import XMonad.Hooks.SmartFloat (smartCenterFloat)
+import XMonad.Hooks.SmartFloat (smartCenterFloat, smartCenterFloatWithMax)
 
 
 main :: IO ()
@@ -319,31 +319,31 @@ myScratchpad conf =
                  , ("M-m", namedScratchpadAction sps "term")
                  ]
   where sps =  [ NS "term" "alacritty --class=scratch-term"
-                    (resource =? "scratch-term" <&&> isFloating) float
+                    (resource =? "scratch-term" <&&> isFloating) floatNormal
                , NS "dict" "goldendict" (className =? "GoldenDict" <||>
-                                         className =? "GoldenDict-ng") float
-               , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") float
+                                         className =? "GoldenDict-ng") floatNarrow
+               , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") floatSmall
                ]
-        float = smartCenterFloat
         -- float = smartCenterFloat
         -- this allows me to park a scratch term to become a normal term.
-        extraHook = resource =? "scratch-term" --> float
+        extraHook = resource =? "scratch-term" --> floatNormal
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
   where hooks = composeAll [ title =? "zoom " --> doFloat
-                           , isDialog --> smartCenterFloat
-                           , propertyToQuery (Role "About") --> smartCenterFloat
-                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
-                           , className =? "flameshot" --> smartCenterFloat
-                           , className =? "copyq" --> doFloat
-                           , title =? "Volume Control" --> smartCenterFloat
+                           , className =? "flameshot" --> doFloat
+                           , className =? "copyq" --> floatPopup
+                           , title =? "Volume Control" --> floatSmall
                            , title =? "Dotcam" --> doCenterFloat
                            -- firefox popup windows (those without navigation buttons)
                            , (className =? "Firefox" <&&> firefoxPopupNormalHints)
-                             --> doCenterFloat
+                             --> floatNormal
                            -- do not resize Tor Browser
                            , className =? "Tor Browser" --> doFloat
+
+                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
+                           , propertyToQuery (Role "About") --> floatSmall
+                           , isDialog --> smartCenterFloat
                            -- new windows should come after the current window
                            , return True --> doF W.swapDown
                            ]
@@ -362,6 +362,12 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
           case sh_min_size sz of
             Just (190, 190) -> return True
             _ -> return False
+
+
+floatPopup = smartCenterFloatWithMax (3%10, 2%10)
+floatSmall = smartCenterFloatWithMax (3%10, 3%10)
+floatNormal = smartCenterFloatWithMax (2%5, 3%5)
+floatNarrow = smartCenterFloatWithMax (3%10, 4%10)
 
 myEwmh =
   -- mark urgent (switch to workspace and focus) instead of bringing

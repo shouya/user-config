@@ -9,21 +9,18 @@ import XMonad.Prelude
 import qualified XMonad.StackSet as W
 
 import qualified Data.Map as M
-import Data.Maybe (mapMaybe)
-import Data.Ratio ((%))
 
-import XMonad.Hooks.Place (smart, inBounds, purePlaceWindow)
+import XMonad.Hooks.Place (smart, purePlaceWindow)
 import XMonad.Hooks.ManageHelpers (doRectFloat)
 
-smartCenterFloatWithMax :: Maybe (Rational, Rational) -> ManageHook
+smartCenterFloatWithMax :: (Rational, Rational) -> ManageHook
 smartCenterFloatWithMax maxSize = ask >>= \window -> do
   -- Step 1: Find the size of the current screen
   winset <- liftX $ gets windowset
   let screen = screenRect . W.screenDetail . W.current $ winset
   -- Step 2: Find the size of the new window
   window' <- liftX $ getWindowRectangle window
-  let targetRect = maybe id (flip maxRect) maxSize
-                         (toRationalRect window' screen)
+  let targetRect = maxRect maxSize (toRationalRect window' screen)
   -- Step 3: Find rectangles for all floating windows
   let floats = W.floating winset
   let floatRects = map (`fromRationalRect` screen) $
@@ -40,7 +37,7 @@ smartCenterFloatWithMax maxSize = ask >>= \window -> do
   doRectFloat (toRationalRect targetPlace screen)
 
 smartCenterFloat :: ManageHook
-smartCenterFloat = smartCenterFloatWithMax (Just $ (2%5, 2%5))
+smartCenterFloat = smartCenterFloatWithMax (1, 1)
 
 fromRationalRect :: W.RationalRect -> Rectangle -> Rectangle
 fromRationalRect r screen
@@ -68,8 +65,8 @@ getWindowRectangle window
        b <- asks $ borderWidth . config
        return $ Rectangle x y (w + 2*b) (h + 2*b)
 
-maxRect :: W.RationalRect -> (Rational, Rational) -> W.RationalRect
-maxRect (W.RationalRect x y w h) (maxW, maxH)
+maxRect :: (Rational, Rational) -> W.RationalRect -> W.RationalRect
+maxRect (maxW, maxH) (W.RationalRect x y w h)
   = W.RationalRect x' y' w' h'
   where x' = if w > maxW then x else x + (w - maxW) / 2
         y' = if h > maxH then y else y + (h - maxH) / 2
