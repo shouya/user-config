@@ -37,6 +37,9 @@ feh --bg-fill ~/Pictures/wallpapers/ -zr
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
 
+# Fix blank Java apps
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 # compositor
 picom --daemon
 
