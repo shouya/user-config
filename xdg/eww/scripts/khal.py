@@ -52,6 +52,8 @@ def parse_khal_events(s: str) -> [dict]:
             continue
         if line.startswith("Today,"):
             continue
+        if line.startswith("Tomorrow,"):
+            continue
         time_span, title = line.split(" ", 1)
         start_time, end_time = time_span.split("-", 1)
         start_time = datetime.strptime(start_time, "%H:%M").time()
