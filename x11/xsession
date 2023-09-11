@@ -8,12 +8,13 @@ exec 2> ~/.xsession-errors > ~/.xsession-log
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
 # turn off audible bell
 xset b off
-# start screensaver (i3lock) after 10 minutes, and do not blank the
-# screen. required for IdleAction for logind.
-xset s 600
+# Dim the screen after 5 minutes (xss-lock -n), then start screensaver
+# 10 minutes (xss-lock --) after that.
+# Do not blank the screen. required for IdleAction for logind.
+xset s 300 600
 xset s noblank
 # turn off screen/monitor/video signal after 5 mins of inactivity
-xset dpms 300 300 300
+xset dpms 600 600 600
 
 # automatically swap ctrl/capslock on pluggable keyboards
 ~/.xmonad/scripts/new-keyboard.sh
@@ -69,7 +70,8 @@ autokey &
 # --transfer-sleep-lock is needed for i3lock to work with systemd
 #
 # use custom built i3lock that passes media key to wm (https://github.com/Raymo111/i3lock-color)
-xss-lock --transfer-sleep-lock -- \
+xss-lock -n 'xset dpms force off' \
+         --transfer-sleep-lock -- \
          ~/.local/bin/i3lock --nofork \
          --tiling --clock --show-failed-attempts \
          --date-color=999999 --time-color=aaaaaa \
