@@ -217,6 +217,8 @@ myKeybinding conf = conf
           , ("<XF86AudioStop>", spawn "playerctl stop")
           , ("<XF86Display>", spawn "mons -e right || mons -o")
           , ("S-<XF86Display>", spawn "mons -e m")
+          , ("C-M1-v", spawn "calibre-to-anki.sh")
+          , ("C-M1-k", spawn "killall -9 java")
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)
