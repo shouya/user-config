@@ -7,4 +7,4 @@ BindsTo=llama-cpp-server.service
 After=llama-cpp-server.service
 
 [Service]
-ExecStart=/lib/systemd/systemd-socket-proxyd --exit-idle-time=20s 127.0.0.1:8081
+ExecStart=/lib/systemd/systemd-socket-proxyd --exit-idle-time=300s 127.0.0.1:9182

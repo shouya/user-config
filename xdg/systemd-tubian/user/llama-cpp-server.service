@@ -7,5 +7,5 @@ Type=simple
 ExecStartPre=-/usr/bin/killall server
 # Prefixed with `-` not to mark service as failed on net-fails;
 #  will be restarted on-demand by socket-activation.
-ExecStart=-/home/shou/.local/bin/start-llama-server --port 8081
+ExecStart=-/home/shou/.local/bin/start-llama-server --port 9182
 ExecStartPost=/bin/sleep 10

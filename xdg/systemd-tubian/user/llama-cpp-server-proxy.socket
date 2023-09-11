@@ -2,7 +2,7 @@
 Description=Socket activation for llama.cpp server
 
 [Socket]
-ListenStream=8080
+ListenStream=9181
 
 [Install]
 WantedBy=sockets.target
