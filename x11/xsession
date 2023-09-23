@@ -63,9 +63,6 @@ autocutsel -fork
 # pulseaudio control
 pasystray &
 
-# autokey
-autokey &
-
 # screensaver
 # --transfer-sleep-lock is needed for i3lock to work with systemd
 #
@@ -75,7 +72,7 @@ xss-lock -n 'xset dpms force off' \
          ~/.local/bin/i3lock --nofork \
          --tiling --clock --show-failed-attempts \
          --date-color=999999 --time-color=aaaaaa \
-         --date-size=30 --time-size=60\
+         --date-size=30 --time-size=60 \
          --pass-media-key --pass-screen-key \
          -i ~/Pictures/lockscreen.png &
 
