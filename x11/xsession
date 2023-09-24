@@ -63,6 +63,9 @@ autocutsel -fork
 # pulseaudio control
 pasystray &
 
+# usb drive automount
+udiskie --smart-tray &
+
 # screensaver
 # --transfer-sleep-lock is needed for i3lock to work with systemd
 #
