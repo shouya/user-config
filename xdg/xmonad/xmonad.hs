@@ -215,6 +215,8 @@ myKeybinding conf = conf
           , ("<XF86AudioPrev>", spawn "playerctl previous")
           , ("<XF86AudioNext>", spawn "playerctl next")
           , ("<XF86AudioStop>", spawn "playerctl stop")
+          -- the "Call" button on the built-in laptop
+          , ("<XF86Go>", spawn "playerctl play-pause")
           , ("<XF86Display>", spawn "mons -e right || mons -o")
           , ("S-<XF86Display>", spawn "mons -e m")
           , ("C-M1-v", spawn "calibre-to-anki.sh")
