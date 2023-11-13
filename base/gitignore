@@ -75,3 +75,4 @@ flamegraph.svg
 scratch/
 
 .stack-work/
+/perf.data
