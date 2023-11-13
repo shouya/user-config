@@ -53,11 +53,13 @@ def parse_khal_events(s: str) -> [dict]:
         if line.startswith("Today,"):
             continue
         if line.startswith("Tomorrow,"):
-            continue
+            break
         time_span, title = line.split(" ", 1)
         start_time, end_time = time_span.split("-", 1)
-        start_time = datetime.strptime(start_time, "%H:%M").time()
-        end_time = datetime.strptime(end_time, "%H:%M").time()
+
+
+        start_time = parse_time(start_time)
+        end_time = parse_time(end_time)
 
         start_time = datetime.combine(today, start_time)
         end_time = datetime.combine(today, end_time)
@@ -70,6 +72,11 @@ def parse_khal_events(s: str) -> [dict]:
             }
         )
     return events
+
+def parse_time(s: str) -> time:
+    normalized_s = s.replace('24:00', '00:00')
+    return datetime.strptime(normalized_s, "%H:%M").time()
+
 
 
 def next_whole_minute(now) -> datetime:
