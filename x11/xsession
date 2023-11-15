@@ -64,8 +64,8 @@ udiskie --smart-tray &
 # do not blank the screen. I use dpms for that purpose.
 xset s noblank
 # dim the screen after 5 minutes (dim.sh), then start screensaver
-# 10 minutes (lock) after that.
-xset s 180 600
+# ~2 minutes (lock) after that, before the screen turns off.
+xset s 180 110
 xss-lock -n ~/.local/bin/dim.sh \
          --transfer-sleep-lock -- \
          ~/.local/bin/lock &
