@@ -55,7 +55,7 @@ copyq &
 autocutsel -fork
 
 # pulseaudio control
-pasystray &
+pasystray --notify=all &
 
 # usb drive automount
 udiskie --smart-tray &
