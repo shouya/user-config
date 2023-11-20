@@ -34,7 +34,7 @@ export GDK_DPI_SCALE=0.5
 
 # hidpi for QT apps
 export QT_SCALE_FACTOR=1
-export QT_FONT_DPI=192
+export QT_FONT_DPI=144
 
 # Fix blank Java apps
 export _JAVA_AWT_WM_NONREPARENTING=1
