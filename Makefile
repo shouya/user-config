@@ -108,6 +108,10 @@ stalonetray: # Stalonetray
 	./utils/backup ~/.stalonetrayrc
 	ln -rsf xdg/stalonetrayrc ~/.stalonetrayrc
 
+fish: # Fish shell
+	./utils/backup ~/.config/fish
+	ln -rsf xdg/fish ~/.config/fish
+
 systemd-laptop: # Systemd for graphical laptop, including Wayland related daemon
 	./utils/backup ~/.config/systemd
 	ln -Trsf xdg/systemd-laptop ~/.config/systemd
