@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This file must be kept executable for the shell specified in the
+# shellbang to take action. Otherwise it uses login shell to execute
+# the file, to which this xsession may not be syntatically correct.
+
 export PATH=/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/home/shou/.local/bin:/home/shou/.cabal/bin:/home/shou/.shell/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
 
 exec 2> ~/.xsession-errors > ~/.xsession-log
@@ -75,8 +79,9 @@ xset dpms 0 0 300
 # gnome keyring
 export $(gnome-keyring-daemon --start)
 
-exec 1<> /tmp/xmonad.stdout
-exec 2<> /tmp/xmonad.stderr
+# from now on, redirect stdout and stderr to these files so
+# .xsession-errors/.xsession-logs only contain output from startup
+exec 1>/tmp/xmonad.stdout 2>/tmp/xmonad.stderr
 
 if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
 	exec dbus-launch --exit-with-session xmonad
