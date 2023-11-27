@@ -70,3 +70,6 @@ abbr --add sys --position anywhere -- systemctl
 abbr --add sysu --position anywhere -- systemctl --user
 abbr --add jf --position anywhere -- journalctl -fu
 abbr --add jfu --position anywhere -- journalctl --user -fu
+
+# faster way to type /dev/null
+abbr --add nul --position anywhere -- /dev/null
