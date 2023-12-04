@@ -40,6 +40,9 @@ alias k kubectl
 # aria
 alias a2c 'aria2c -x10 -s10 -c --file-allocation=none'
 
+# yt-dlp
+alias yt 'yt-dlp --no-progress --no-mtime --min-filesize 200k --cookies-from-browser firefox --downloader aria2c --verbose'
+
 # ripgrep, default to smart case
 alias rg 'rg --smart-case'
 
