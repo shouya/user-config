@@ -22,15 +22,15 @@ function z
 
     if test $argc -eq 0
         _z_cd $HOME
-    else if begin
-            test $argc -eq 1; and test $argv[1] = -
-        end
+    else if test $argc -eq 1; and test $argv[1] = -
         _z_cd -
     else
         set -l _zoxide_result (zoxide query -- $argv)
         and _z_cd $_zoxide_result
     end
 end
+
+complete -c z -x -a '(zoxide query -l -- $argv 2>/dev/null | head -n 20)'
 
 function zi
     set -l _zoxide_result (zoxide query -i -- $argv)
