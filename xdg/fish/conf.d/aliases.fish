@@ -6,6 +6,7 @@ end
 alias l ls
 alias ll 'ls -lh'
 alias lt 'ls -lhtr'
+alias lt1 'ls -ht | head -n 1'
 
 # view file in vim with syntax highlighting
 alias vr 'vim -R'
@@ -71,6 +72,8 @@ end
 # to allow expansion after "sudo"
 abbr --add sys --position anywhere -- systemctl
 abbr --add sysu --position anywhere -- systemctl --user
+abbr --add j --position anywhere -- journalctl --since=\"14 days ago\" -u
+abbr --add ju --position anywhere -- journalctl --since=\"14 days ago\" --user -u
 abbr --add jf --position anywhere -- journalctl -fu
 abbr --add jfu --position anywhere -- journalctl --user -fu
 
