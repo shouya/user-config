@@ -59,7 +59,7 @@ copyq &
 autocutsel -fork
 
 # pulseaudio control
-pasystray --notify=all &
+pasystray &
 
 # usb drive automount
 udiskie --smart-tray &
