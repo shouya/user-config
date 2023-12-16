@@ -17,7 +17,8 @@ lowerVolume :: MonadIO m => Int -> m ()
 lowerVolume n = spawn (printf "amixer set Master playback %d%%-" n)
 
 toggleMute :: MonadIO m => m ()
-toggleMute = spawn "amixer set Master playback toggle"
+-- toggleMute = spawn "amixer set Master playback toggle"
+toggleMute = spawn "~/.xmonad/scripts/toggle-mute.sh"
 
 toggleMuteMicrophone :: MonadIO m => m ()
 toggleMuteMicrophone = spawn "amixer set Capture toggle"
