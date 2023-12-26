@@ -6,3 +6,9 @@ window:
   dimensions:
     columns: 80
     lines: 24
+
+key_bindings:
+  - { key: Equals, mods: Super, action: IncreaseFontSize }
+  - { key: Minus, mods: Super, action: DecreaseFontSize }
+  - { key: Equals, mods: Control, action: None }
+  - { key: Minus, mods: Control, action: None }
