@@ -5,5 +5,6 @@ else
 end
 
 
-set -x EDITOR vim
+# [-a ""]: start emacs server if not running
+set -x EDITOR 'emacsclient -a "" --tty'
 set -x PAGER less
