@@ -76,3 +76,4 @@ scratch/
 
 .stack-work/
 /perf.data
+/perf.data.old
