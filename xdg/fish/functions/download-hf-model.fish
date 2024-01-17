@@ -5,6 +5,6 @@
 function download-hf-model --arg url
     set -l filename (echo $url | sed -e 's/.*\///' -e 's/\?.*//')
     er-x-direct-client add $(hostname -I)
-    a2c -o ~/models/llama.cpp/$filename "$url"
+    a2c -o $filename "$url"
     er-x-direct-client reset
 end
