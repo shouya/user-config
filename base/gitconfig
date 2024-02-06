@@ -137,3 +137,7 @@ rebase = true
 [rebase]
 autostash = true
 autosquash = true
+
+# probably used by magit-forge
+[gitea "git.lain.li/api/v1"]
+user = shouya
