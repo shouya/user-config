@@ -4,7 +4,25 @@
 # shellbang to take action. Otherwise it uses login shell to execute
 # the file, to which this xsession may not be syntatically correct.
 
-export PATH=/home/shou/.asdf/shims:/home/shou/.asdf/bin:/home/shou/.cargo/bin:/home/shou/.local/bin:/home/shou/.elan/bin:/home/shou/.cabal/bin:/home/shou/.shell/bin:/home/shou/.nix-profile/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+paths=(
+    /home/shou/.asdf/shims
+    /home/shou/.asdf/bin
+    /home/shou/.cargo/bin
+    /home/shou/.local/bin
+    /home/shou/.elan/bin
+    /home/shou/.cabal/bin
+    /home/shou/.shell/bin
+    /home/shou/.nix-profile/bin
+    /home/shou/.local/share/pnpm
+    /home/shou/.bun/bin
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin
+    /sbin
+    /usr/bin
+    /bin
+)
+export PATH="$(IFS=: ; echo "${paths[*]}")"
 
 exec 2> ~/.xsession-errors > ~/.xsession-log
 
