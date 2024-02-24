@@ -70,7 +70,7 @@ authorstat = "!f(){ git ls-files | xargs -n1 git blame --line-porcelain | sed -n
 path = "~/.gitconfig.private"
 
 [user]
-name = Shou Ya
+name = shouya
 email = shouya@users.noreply.github.com
 signingkey = 7287CB6DB65E82C5094CF34CD5020D9FAD55DEE5
 
