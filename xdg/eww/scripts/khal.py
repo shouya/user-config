@@ -3,6 +3,7 @@ import os
 import subprocess
 import time
 import json
+import math
 from datetime import datetime, date, timedelta
 
 
@@ -57,7 +58,6 @@ def parse_khal_events(s: str) -> [dict]:
         time_span, title = line.split(" ", 1)
         start_time, end_time = time_span.split("-", 1)
 
-
         start_time = parse_time(start_time)
         end_time = parse_time(end_time)
 
@@ -73,10 +73,10 @@ def parse_khal_events(s: str) -> [dict]:
         )
     return events
 
-def parse_time(s: str) -> time:
-    normalized_s = s.replace('24:00', '00:00')
-    return datetime.strptime(normalized_s, "%H:%M").time()
 
+def parse_time(s: str) -> time:
+    normalized_s = s.replace("24:00", "00:00")
+    return datetime.strptime(normalized_s, "%H:%M").time()
 
 
 def next_whole_minute(now) -> datetime:
@@ -105,10 +105,10 @@ def update_khal() -> bool:
 
         if now < item["start_time"]:
             upcoming = True
-            min_left = (item["start_time"] - now).seconds // 60
+            min_left = math.ceil((item["start_time"] - now).seconds / 60)
         else:
             upcoming = False
-            min_left = (item["end_time"] - now).seconds // 60
+            min_left = math.ceil((item["end_time"] - now).seconds / 60)
         return
 
     except (subprocess.CalledProcessError, ValueError):
