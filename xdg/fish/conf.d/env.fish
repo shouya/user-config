@@ -4,6 +4,8 @@ else
     set -x KUBECONFIG ~/.kube/config
 end
 
+# pnpm home
+set -gx PNPM_HOME "$HOME/.local/share/pnpm"
 
 # [-a ""]: start emacs server if not running
 set -x EDITOR 'emacsclient -a "" --tty'
