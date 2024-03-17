@@ -94,6 +94,10 @@ xss-lock -n ~/.local/bin/dim.sh \
 # turn off screen/monitor/video signal after 5 mins of inactivity
 xset dpms 0 0 300
 
+# translate Idle Inhibition D-Bus API to systemd-logind wake lock (systemd-inhibit)
+# see https://github.com/notpeelz/sd-inhibit-bridge
+[[ -x sd-inhibit-bridge ]] && sd-inhibit-bridge &
+
 # gnome keyring
 export $(gnome-keyring-daemon --start)
 
