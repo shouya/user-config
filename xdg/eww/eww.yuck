@@ -28,7 +28,7 @@
     `batry`)
 
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
-(deflisten active-window-title `./scripts/active-window-title.sh`)
+(deflisten active-window-title `./scripts/active-window-title.py`)
 (defpoll calendar :interval "1m" `cal -3`)
 
 (defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
