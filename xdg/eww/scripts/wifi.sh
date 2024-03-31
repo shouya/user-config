@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEV="${1:-wlp0s20f3}"
+DEV="${1:-$(ip link | grep wlp | awk '{print $2}' | sed 's/://')}"
 
 print_status() {
   ssid="$(iwgetid -r)"
