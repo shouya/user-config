@@ -19,7 +19,7 @@
 (deflisten network-speed :initial "{}" `./scripts/net.py wlp9s0`)
 (deflisten wifi
     :initial '{"ssid": "", "addr": "", "freq": ""}'
-    `./scripts/wifi.sh wlp9s0`)
+    `./scripts/wifi.sh`)
 (deflisten khal
     :initial '{"min_left": 0, "name": "", "redacted": false, "done": false, "upcoming": false}'
     `./scripts/khal.py`)
@@ -111,7 +111,7 @@
    :temp {cpu.temp}
    ))
 
-(defwidget network-widget [device]
+(defwidget network-widget []
   (box
    :space-evenly false
    (label :visible {wifi.ssid != ""}
@@ -330,7 +330,7 @@ ${wifi.signal}"
   (box
    :space-evenly false
    (khal-widget)
-   (network-widget :device "wlp0s20f3")
+   (network-widget)
    (sep)
    (monitors)
    (sep)
