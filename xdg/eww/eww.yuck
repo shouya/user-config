@@ -1,4 +1,4 @@
-;; -*- lisp-data -*-
+;; -*- lisp -*-
 (include "./combinator.yuck")
 
 ;; (defvar monitor "eDP-1")
@@ -93,14 +93,9 @@
    (xmonad-active-window-title :max-len 100)))
 
 (defwidget clock []
-  (eventbox
-   :onhover "eww open date-time-window"
-   :onhoverlost "eww close date-time-window"
-   (label
-    :class "clock"
-    :text {date.short}
-    :tooltip {date.long}
-    )))
+  (tooltip
+   (date-time-detail)
+   (label :class "clock" :text {date.short})))
 
 (defvar cpu-reveal false)
 
@@ -227,33 +222,33 @@ ${wifi.signal}"
 (defvar khal-reveal false)
 
 (defwidget khal-widget []
-  (eventbox
-   :onhover "eww open khal-window"
-   :onhoverlost "eww close khal-window"
-   :onclick "xdotool key 'super+F4'"
-   :cursor "hand"
-   :class "khal"
-   :visible {!khal.redacted}
-   (box
-    :space-evenly false
-    :valign "baseline"
-    :width 30
-    (revealer
-     :reveal {khal.done}
-     :transition "slideright"
-     (label :text "Done for today!"))
-    (revealer
-     :reveal {!khal.done}
-     :transition "slideright"
-     :class {khal.upcoming ? "upcoming" : "ongoing" }
-     (box
-      :space-evenly false
-      (label :text "${khal.name}")
-      (label
-       :style "font-size: .8em; margin-left: 6px;"
-       :text "(${khal.min_left}m)")
-      ))
-    (sep))))
+  (tooltip
+   (khal-detail)
+   (eventbox
+    :onclick "xdotool key 'super+F4'"
+    :cursor "hand"
+    :class "khal"
+    :visible {!khal.redacted}
+    (box
+     :space-evenly false
+     :valign "baseline"
+     :width 30
+     (revealer
+      :reveal {khal.done}
+      :transition "slideright"
+      (label :text "Done for today!"))
+     (revealer
+      :reveal {!khal.done}
+      :transition "slideright"
+      :class {khal.upcoming ? "upcoming" : "ongoing" }
+      (box
+       :space-evenly false
+       (label :text "${khal.name}")
+       (label
+        :style "font-size: .8em; margin-left: 6px;"
+        :text "(${khal.min_left}m)")
+       ))
+     (sep)))))
 
 (defwidget util-toggle
     [icon ?icon-off enabled enable-var-name tooltip curr on off]
@@ -380,26 +375,6 @@ ${wifi.signal}"
   (textual-detail
    :text calendar
    :wrap false))
-
-(defwindow khal-window
-    :monitor "eDP-1"
-    :geometry (geometry :width "220px"
-                        :height "120px"
-                        :x "-25%"
-                        :y "40"
-                        :anchor "top right"
-                        )
-    (khal-detail))
-
-(defwindow date-time-window
-    :monitor "eDP-1"
-    :geometry (geometry :width "420px"
-                        :height "100px"
-                        :x "-3%"
-                        :y "40"
-                        :anchor "top right"
-                        )
-    (date-time-detail))
 
 ;; Local Variables:
 ;; apheleia-inhibit: t
