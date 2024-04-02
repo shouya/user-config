@@ -1,3 +1,4 @@
+;; -*- lisp-data -*-
 (include "./combinator.yuck")
 
 ;; (defvar monitor "eDP-1")
@@ -252,22 +253,6 @@ ${wifi.signal}"
       ))
     (sep))))
 
-(defpoll tray-enabled
-    :run-while util-reveal
-    :initial "false"
-    :interval "10m"
-    "pgrep stalonetray >/dev/null && echo true || echo false")
-
-(defwidget tray-toggle []
-  (util-toggle
-   :icon ""
-   :tooltip "Open tray"
-   :enabled tray-enabled
-   :enable-var-name "tray-enabled"
-   :curr "pgrep stalonetray >/dev/null && echo true || echo false"
-   :on "stalonetray 2>/dev/null >/dev/null &"
-   :off "pkill stalonetray"))
-
 (defwidget util-toggle
     [icon ?icon-off enabled enable-var-name tooltip curr on off]
     (overlay
@@ -313,13 +298,34 @@ ${wifi.signal}"
      :duration "200ms"
      :transition "slideright"
      (box :space-evenly false
-          (tray-toggle)
           (dunst-toggle)
           ))
     (eventbox
      :onclick "eww update util-stick=${!util-stick}"
      :cursor "hand"
      (icon :text "")))))
+
+(defvar tray-reveal false)
+(defvar tray-stick false)
+
+(defwidget tray-switches []
+  (eventbox
+   :onhover "eww update tray-reveal=true"
+   :onhoverlost "eww update tray-reveal=false"
+   :class { tray-stick ? "toggle-enabled" : "toggle-disabled" }
+   (box
+    :space-evenly false
+    (revealer
+     :reveal {tray-stick || tray-reveal}
+     :duration "200ms"
+     :transition "slideright"
+     (box :space-evenly false
+          (systray)
+          ))
+    (eventbox
+     :onclick "eww update tray-stick=${!tray-stick}"
+     :cursor "hand"
+     (icon :text "")))))
 
 (defwidget right []
   (box
@@ -330,6 +336,7 @@ ${wifi.signal}"
    (monitors)
    (sep)
    (util-switches)
+   (tray-switches)
    (sep)
    (clock)
    ))
