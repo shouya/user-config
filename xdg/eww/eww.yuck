@@ -316,9 +316,11 @@ ${wifi.signal}"
      :reveal {tray-stick || tray-reveal}
      :duration "200ms"
      :transition "slideright"
-     (box :space-evenly false
-          (systray)
-          ))
+     (systray
+      :icon-size 20
+      :space-evenly false
+      :spacing 2)
+     )
     (eventbox
      :onclick "eww update tray-stick=${!tray-stick}"
      :cursor "hand"
