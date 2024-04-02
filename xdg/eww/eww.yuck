@@ -125,28 +125,24 @@ ${wifi.signal}"
 
 (defwidget cpu-circular
     [class level percent freq temp ?value revealer-var revealer-var-name]
-    (revealer-on-hover
-     :var revealer-var
-     :var-name revealer-var-name
+    (box
+     :space-evenly false
+     :width 70
      :class "monitor ${class} ${level} cpu-${level}"
-
-     (box
-      :space-evenly false
-      :width 70
-      (circular-progress
-       :width 30
-       :value {percent > 100 ? 100 : percent}
-       :start-at 75
-       :thickness 5
-       (label :text "${round(value ?: percent,1)}"))
-      (box
-       :orientation "v"
-       :style "font-size: 0.7em; margin: -2px 0; "
-       (label :style "margin-bottom: -2px;"
-              :text "${temp}℃")
-       (label :style "margin-top: -2px;"
-              :text "${freq}"))
+     (circular-progress
+      :width 30
+      :value {percent > 100 ? 100 : percent}
+      :start-at 75
+      :thickness 5
+      (label :text "${round(value ?: percent,1)}")
       )
+     (box
+      :orientation "v"
+      :style "font-size: 0.7em; margin: -2px 0; "
+      (label :style "margin-bottom: -2px;"
+             :text "${temp}℃")
+      (label :style "margin-top: -2px;"
+             :text "${freq}"))
      ))
 
 (defwidget battery-icon [percent]
