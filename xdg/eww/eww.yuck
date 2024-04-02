@@ -167,9 +167,9 @@ ${wifi.signal}"
    :visible {bat.status != "discharging"}
    (overlay
     (box
-     :class { bat.percentage < 80 ? "icon-charging" : "icon-full" }
+     :class { (bat.percentage ?: 100) < 80 ? "icon-charging" : "icon-full" }
      (icon :text ""))
-    (label :visible {bat.percentage < 80}
+    (label :visible {(bat.percentage ?: 100) < 80}
            :class "percentage"
            :text "${bat.percentage}"))
    (box
@@ -185,12 +185,12 @@ ${wifi.signal}"
 (defwidget battery-discharging [bat]
   (box
    :space-evenly false
-   :class { bat.percentage < 40 ? 'battery-warn' :
-            bat.percentage < 10 ? 'battery-alert' : '' }
+   :class { (bat.percentage ?: 100) < 40 ? 'battery-warn' :
+            (bat.percentage ?: 100) < 10 ? 'battery-alert' : '' }
             :visible {bat.status == "discharging"}
             (overlay
              (box :class "icon-discharging"
-                  (battery-icon :percent {bat.percentage}))
+                  (battery-icon :percent {bat.percentage ?: 100 }))
              (label :class "percentage"
                     :text "${bat.percentage}"))
    (box
@@ -219,7 +219,9 @@ ${wifi.signal}"
    :space-evenly false
    :orientation "h"
    (cpu-widget)
-   (battery-widget :bat {battery})
+   (box
+    :visible {battery.status != "unknown"}
+    (battery-widget :bat battery))
    ))
 
 (defvar khal-reveal false)
