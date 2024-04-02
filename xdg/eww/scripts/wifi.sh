@@ -23,7 +23,7 @@ print_status
 while true; do
   # monitor the output of ip monitor, until the line containing $DEV
   # appears. When that happens, print_status.
-  until ip -o monitor addr link | grep -m 1 "$DEV"; do sleep 1; done
+  until ip -o monitor addr link | grep -m 1 "$DEV" >/dev/null; do sleep 1; done
 
   sleep 1
   print_status
