@@ -70,7 +70,7 @@ picom --daemon
 eww open main-window &
 
 # network manager applet
-(sleep 1; nm-applet) &
+(sleep 1; exec nm-applet --indicator) &
 
 # clipboard
 copyq &
