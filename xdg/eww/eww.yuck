@@ -296,8 +296,8 @@ ${wifi.signal}"
     :onclick { wake-guard.mode=="null" ? "wake-guard msg -m idle +15m" :
                wake-guard.mode=="sleep" ? "wake-guard msg -m idle +0s" :
                wake-guard.mode=="idle" ? "wake-guard msg -m sleep +0s" : "" }
-    :onmiddleclick "xset dpms force off"
-    :onrightclick "systemctl suspend"
+    :onmiddleclick "(notify-send 'Display off in 2 secs'; sleep 2; xset dpms force off) &"
+    :onrightclick "(notify-send 'Suspending in 2 secs'; sleep 2; systemctl suspend) &"
     :onscroll "test {} = up && wake-guard msg +15m || wake-guard msg -15m"
     :class { wake-guard.active ? "toggle-enabled" : "toggle-disabled" }
     (box :space-evenly false
