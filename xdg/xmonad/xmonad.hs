@@ -326,7 +326,7 @@ myScratchpad conf =
                     (resource =? "scratch-term" <&&> isFloating) floatNormal
                , NS "dict" "goldendict" (className =? "GoldenDict" <||>
                                          className =? "GoldenDict-ng") floatNarrow
-               , NS "calc" "speedcrunch" (className =? "SpeedCrunch") floatSmall
+               , NS "calc" "qalculate-gtk" (className =? "Qalculate-gtk") floatSmall
                ]
         -- float = smartCenterFloat
         -- this allows me to park a scratch term to become a normal term.
