@@ -348,6 +348,7 @@ ${wifi.signal}"
      :duration "200ms"
      :transition "slideright"
      (systray
+      :class "tray"
       :icon-size 20
       :space-evenly false
       :spacing 2))

@@ -1,6 +1,6 @@
 * {
-  // transition: linear 0.5s;
-  all: unset;
+  transition: linear 0.1s;
+  // all: unset;
 }
 
 // Variable Color's
@@ -28,14 +28,51 @@ window {
 window.main-window {
   border-radius: 15px;
 }
-window.util-window {
-  border-radius: 15px;
+
+// tray context menu
+.tray window {
+  border-radius: 0px;
+  box-shadow: 0px 0px 5px $darken;
 }
-window.khal-window {
-  border-radius: 15px;
-}
-window.battery-window {
-  border-radius: 15px;
+
+.tray menu {
+  border-radius: 1px;
+
+  background: $background;
+  color: $foreground;
+  padding: 8px;
+
+  > menuitem {
+    padding: 0px 5px;
+
+    &:disabled label {
+      color: gray;
+    }
+
+    &:hover {
+      background-color: $darken;
+
+      > arrow {
+        background-color: $darken;
+      }
+    }
+  }
+
+  arrow {
+    background: $background;
+    color: $lighten;
+  }
+
+  separator {
+    background-color: $lighten;
+    padding-top: 1px;
+    margin: 5px 0px;
+
+    &:last-child {
+      padding: unset;
+      margin: unset;
+    }
+  }
 }
 
 .main {
