@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # This file must be kept executable for the shell specified in the
-# shellbang to take action. Otherwise it uses login shell to execute
-# the file, to which this xsession may not be syntatically correct.
+# shebang to take action. Otherwise it uses login shell to execute the
+# file, to which this xsession may not be syntactically correct.
 
 paths=(
     /home/shou/.asdf/shims
@@ -99,7 +99,7 @@ xset dpms 0 0 300
 
 # translate Idle Inhibition D-Bus API to systemd-logind wake lock (systemd-inhibit)
 # see https://github.com/notpeelz/sd-inhibit-bridge
-[[ -x sd-inhibit-bridge ]] && sd-inhibit-bridge &
+which -s sd-inhibit-bridge && sd-inhibit-bridge &
 
 # gnome keyring
 export $(gnome-keyring-daemon --start)
