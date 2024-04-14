@@ -104,6 +104,9 @@ which -s sd-inhibit-bridge && sd-inhibit-bridge &
 # gnome keyring
 export $(gnome-keyring-daemon --start)
 
+# kill any remaining closing sessions (caused by crashing X server)
+loginctl list-sessions | grep closing | awk '{print $1}' | xargs loginctl kill-session
+
 # from now on, redirect stdout and stderr to these files so
 # .xsession-errors/.xsession-logs only contain output from startup
 exec 1>/tmp/xmonad.stdout 2>/tmp/xmonad.stderr
