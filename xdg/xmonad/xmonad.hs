@@ -52,7 +52,7 @@ import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat, doRectFloat)
 import XMonad.Hooks.StatusBar (withSB)
 import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook, placeFocused)
 import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.RefocusLast (refocusLastLayoutHook)
+import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastLogHook, refocusingIsActive, refocusLastWhen, isFloat)
 import XMonad.Config.Desktop
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWS
@@ -238,7 +238,9 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
   where newStartupHook = return ()
 
 -- myLayout :: XConfig a -> XConfig _
-myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
+myLayout conf = docks $ fullscreenSupport $ conf { layoutHook      = layout
+                                                 , logHook         = layoutLogHook   <+> logHook conf
+                                                 , handleEventHook = layoutEventHook <+> handleEventHook conf}
   where layout = modifier (notFull ||| full)
         notFull = smartBorders $
                   spacingWithEdge 0 $
@@ -266,15 +268,17 @@ myLayout conf = docks $ fullscreenSupport $ conf { layoutHook = layout }
           , urgentBorderColor = "#e0af68"
           }
         modifier =
+          trackFloating .
           -- keep the current window when floating window is
           -- activated, useful especially in Tabbed layout.
           refocusLastLayoutHook .
-          trackFloating .
           -- useTransientFor will make it unable to switch to ws with
           -- no windows. Do not use. refocusLastLayoutHook was found
           -- to have the same effect.
           -- useTransientFor .
           id
+        layoutLogHook = refocusLastLogHook
+        layoutEventHook = refocusLastWhen (isFloat)
 
 -- myAppKeys :: XConfig a -> XConfig a
 myAppKeys conf = conf
