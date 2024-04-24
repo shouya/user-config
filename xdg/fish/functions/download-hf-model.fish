@@ -4,7 +4,5 @@
 
 function download-hf-model --arg url
     set -l filename (echo $url | sed -e 's/.*\///' -e 's/\?.*//')
-    er-x-direct-client add $(hostname -I)
-    a2c -o $filename "$url"
-    er-x-direct-client reset
+    direct-dscp.sh aria2c -x10 -s10 -c --file-allocation=none -o $filename "$url"
 end
