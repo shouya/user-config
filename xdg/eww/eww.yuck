@@ -231,6 +231,7 @@ ${wifi.signal}"
      :space-evenly false
      :valign "baseline"
      :width 30
+     (sep)
      (revealer
       :reveal {khal.done}
       :transition "slideright"
@@ -245,8 +246,8 @@ ${wifi.signal}"
        (label
         :style "font-size: .8em; margin-left: 6px;"
         :text "(${khal.min_left}m)")
-       ))
-     (sep)))))
+       ))))
+   ))
 
 (defwidget util-toggle
     [icon ?icon-off enabled enable-var-name tooltip curr on off]
@@ -360,8 +361,8 @@ ${wifi.signal}"
 (defwidget right []
   (box
    :space-evenly false
-   (khal-widget)
    (network-widget)
+   (khal-widget)
    (sep)
    (monitors)
    (sep)
