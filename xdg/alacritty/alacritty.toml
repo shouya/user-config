@@ -1,0 +1,27 @@
+[env]
+REAL_TERM = "alacritty"
+TERM = "xterm-256color"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Super"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Super"
+
+[[keyboard.bindings]]
+action = "None"
+key = "Equals"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "None"
+key = "Minus"
+mods = "Control"
+
+[window.dimensions]
+columns = 80
+lines = 24
