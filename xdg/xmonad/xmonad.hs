@@ -118,6 +118,7 @@ myConfiguration conf = do
        $ myStatusBar
        $ myWorkspaces
        $ myKeybinding
+       $ myHacks
        conf
 
 
@@ -348,6 +349,7 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                              --> floatNormal
                            -- do not resize Tor Browser
                            , className =? "Tor Browser" --> doFloat
+                           , (className =? "steam" <&&> title /=? "Steam") --> doFloat
 
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
                            , propertyToQuery (Role "About") --> floatSmall
@@ -371,6 +373,9 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
             Just (190, 190) -> return True
             _ -> return False
 
+        (/=?) :: (Eq a) => Query a -> a -> Query Bool
+        q /=? x = fmap not (q =? x)
+
 
 floatPopup = smartCenterFloatWithMax (3%10, 2%10)
 floatSmall = smartCenterFloatWithMax (3%10, 3%10)
@@ -383,3 +388,7 @@ myEwmh =
   setEwmhActivateHook doAskUrgent .
   ewmhFullscreen .
   ewmh
+
+myHacks config = config
+  { handleEventHook = fixSteamFlicker <+> handleEventHook config
+  }
