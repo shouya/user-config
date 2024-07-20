@@ -37,13 +37,15 @@ import Text.Printf
 import qualified Data.Text as T
 
 import XMonad
-import XMonad.Util.EZConfig
+import XMonad.Util.EZConfig (removeKeysP, additionalKeysP)
 import XMonad.Util.Ungrab
 import XMonad.Util.Run (safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WindowProperties ( Property (..)
                                     , propertyToQuery)
+import XMonad.Util.Hacks (fixSteamFlicker)
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
@@ -63,7 +65,7 @@ import XMonad.Actions.NoBorders (toggleBorder)
 import XMonad.Operations
 
 import XMonad.Layout.IndependentScreens
-import XMonad.Layout.Circle
+import XMonad.Layout.CircleEx (circle)
 import XMonad.Layout.Spacing
 import XMonad.Layout.Roledex
 import XMonad.Layout.Spiral
@@ -91,7 +93,6 @@ import XMonad.Actions.Backlight
 import XMonad.Actions.AbsWS
 import XMonad.Hooks.EwwLog
 import XMonad.Hooks.SmartFloat (smartCenterFloat, smartCenterFloatWithMax)
-
 
 main :: IO ()
 main = do
@@ -165,12 +166,11 @@ myWorkspaces conf = conf { workspaces = allWorkspaces
 
 
 -- myKeybinding :: XConfig a -> XConfig a
-myKeybinding conf = conf
-                    `removeKeysP` map oldkey repurposedKeys
-                    `replaceKeysP` map newkey repurposedKeys
-                    `replaceKeysP` extraKeys
-                    `replaceKeysP` floatingKeys
-                    `replaceKeysP` resizeKeys
+myKeybinding conf = removeKeysP conf (map oldkey repurposedKeys)
+                    `replaceKeysP` (map newkey repurposedKeys)
+                    `replaceKeysP` (extraKeys)
+                    `replaceKeysP` (floatingKeys)
+                    `replaceKeysP` (resizeKeys)
   where repurposedKeys =
           [ ("M-S-c", "M-S-q", kill)
           , ("M-S-<Return>", "M-<Return>", spawn myTerminal)
@@ -255,7 +255,7 @@ myLayout conf = docks $ fullscreenSupport $ conf { layoutHook      = layout
                 tmsHorz = tmsCombineTwo False 1 (3/100) (1/2)
         tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
         tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
-        fancy = name "fancy" (Circle ||| spiral (3/4) ||| Roledex)
+        fancy = name "fancy" (circle ||| spiral (3/4) ||| Roledex)
         full = name "full" (noBorders Full)
         name x = renamed [Replace x]
         tabConf = def
