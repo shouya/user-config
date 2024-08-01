@@ -17,8 +17,6 @@ EnumerateGroupBackwardKeys=
 ActivateKeys=
 # Deactivate Input Method
 DeactivateKeys=
-# Toggle embedded preedit
-TogglePreedit=
 
 [Hotkey/TriggerKeys]
 0=Alt+space
@@ -35,9 +33,14 @@ TogglePreedit=
 [Hotkey/NextCandidate]
 0=Tab
 
+[Hotkey/TogglePreedit]
+0=Control+Alt+P
+
 [Behavior]
 # Active By Default
 ActiveByDefault=False
+# Reset state on Focus In
+resetStateWhenFocusIn=No
 # Share Input State
 ShareInputState=No
 # Show preedit in application
@@ -60,6 +63,12 @@ CustomXkbOption=
 EnabledAddons=
 # Preload input method to be used by default
 PreloadInputMethod=True
+# Allow input method in the password field
+AllowInputMethodForPassword=False
+# Show preedit text when typing password
+ShowPreeditForPassword=False
+# Interval of saving user data in minutes
+AutoSavePeriod=30
 
 [Behavior/DisabledAddons]
 0=clipboard
