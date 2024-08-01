@@ -42,7 +42,7 @@ inputplug -0 --command ~/.xmonad/scripts/new-keyboard.sh &
 ~/.xmonad/scripts/touchpad-natural-scroll.sh
 
 # compatibility configs
-export XDG_CURRENT_DESKTOP=GNOME
+export XDG_CURRENT_DESKTOP=XFCE
 # See https://blog.ando.fyi/posts/diagnosing-an-unsual-wifi-issue/
 export QT_BEARER_POLL_TIMEOUT=-1
 
