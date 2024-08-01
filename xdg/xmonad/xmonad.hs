@@ -362,6 +362,10 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
                            , propertyToQuery (Role "About") --> floatSmall
                            , isDialog --> smartCenterFloat
+                           -- open new window after the current
+                           -- one. Except for floating windows, those
+                           -- should always popup to the front.
+                           , not <$> willFloat --> doF W.swapDown
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
         -- normal window: program specified minimum size: 900 by 240 (or something like that)
