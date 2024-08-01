@@ -16,6 +16,7 @@ import Data.Function
 import Data.Ord
 import Data.Maybe
 import Data.List
+import Text.Printf
 import qualified Data.ByteString.Lazy as BS
 import qualified Data.ByteString.Lazy.Char8 as LBC8
 
@@ -82,15 +83,17 @@ workspaceDescriptions = do
                         , visibleNoW = isVisibleNoWindows' ppws
                         }
 
-
 ewwLayoutLog :: X ()
 ewwLayoutLog = pure ()
 
 ewwTitleLog :: X ()
 ewwTitleLog = do
   winset <- gets windowset
-  title <- maybe (pure "") (fmap show . getName) . S.peek $ winset
-  xmonadPropLog' "_XMONAD_TITLE_LOG" title
+  let w = S.peek winset
+  class_ <- traverse (runQuery className) w
+  title_ <- traverse (runQuery title) w
+  let full = (\c t -> printf "%s: %s" c t) <$> class_ <*> title_
+  xmonadPropLog' "_XMONAD_TITLE_LOG" (fromMaybe "" full)
 
 
 ewwWorkspaceLog :: X ()
