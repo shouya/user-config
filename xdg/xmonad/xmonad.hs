@@ -38,7 +38,6 @@ import qualified Data.Text as T
 
 import XMonad
 import XMonad.Util.EZConfig (removeKeysP, additionalKeysP)
-import XMonad.Util.Ungrab
 import XMonad.Util.Run (safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Util.NamedScratchpad
@@ -62,6 +61,7 @@ import XMonad.Actions.OnScreen
 import XMonad.Actions.FloatKeys
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.NoBorders (toggleBorder)
+import XMonad.Actions.Promote (promote)
 import XMonad.Operations
 
 import XMonad.Layout.IndependentScreens
@@ -75,7 +75,8 @@ import XMonad.Layout.Renamed
 import XMonad.Layout.Simplest (Simplest(..))
 import XMonad.Layout.MagicFocus (magicFocus)
 import XMonad.Layout.NoBorders (smartBorders, noBorders)
-import XMonad.Layout.TrackFloating (trackFloating, useTransientFor)
+import XMonad.Layout.TrackFloating (useTransientFor)
+import XMonad.Layout.FocusTracking (focusTracking)
 import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.TallMastersComboModified
   ( tmsCombineTwoDefault
@@ -83,6 +84,7 @@ import XMonad.Layout.TallMastersComboModified
   , FocusSubMaster(..)
   , MirrorResize(MirrorShrink, MirrorExpand)
   )
+import XMonad.Layout.Groups.Helpers (toggleFocusFloat)
 
 import qualified XMonad.StackSet as W
 
@@ -200,6 +202,7 @@ myKeybinding conf = removeKeysP conf (map oldkey repurposedKeys)
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
+          , ("M-f", toggleFocusFloat)
           , ("M-p", placeFocused (smart (0.5, 0.5)))
           , ("M-b", withFocused toggleBorder)
           , ("M-<Tab>", cycleRecentWS [xK_Super_L] xK_Tab (xK_Shift_L .|. xK_Tab))
@@ -269,7 +272,6 @@ myLayout conf = docks $ fullscreenSupport $ conf { layoutHook      = layout
           , urgentBorderColor = "#e0af68"
           }
         modifier =
-          trackFloating .
           -- keep the current window when floating window is
           -- activated, useful especially in Tabbed layout.
           refocusLastLayoutHook .
@@ -339,8 +341,10 @@ myScratchpad conf =
 
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
+  -- Note: a window can match multiple criteria and execute multiple times
   where hooks = composeAll [ title =? "zoom " --> doFloat
                            , className =? "flameshot" --> doFloat
+                           , className =? "cs5610" --> doFloat
                            , className =? "copyq" --> floatPopup
                            , title =? "Volume Control" --> floatSmall
                            , title =? "Dotcam" --> doCenterFloat
@@ -354,8 +358,6 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
                            , propertyToQuery (Role "About") --> floatSmall
                            , isDialog --> smartCenterFloat
-                           -- new windows should come after the current window
-                           , return True --> doF W.swapDown
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
         -- normal window: program specified minimum size: 900 by 240 (or something like that)
