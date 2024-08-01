@@ -16,7 +16,7 @@
     `xprop -spy -root _NET_CURRENT_DESKTOP`)
 (deflisten cpu :initial "{}" `./scripts/cpu.py run_forever`)
 
-(deflisten network-speed :initial "{}" `./scripts/net.py wlp9s0`)
+(deflisten network-speed :initial "{}" `./scripts/net.py`)
 (deflisten wifi
     :initial '{"ssid": "", "addr": "", "freq": ""}'
     `./scripts/wifi.sh`)
@@ -122,7 +122,10 @@
 ${wifi.addr}
 ${wifi.signal}"
           )
-   (label :visible {wifi.ssid == ""}
+   (label :visible {wifi.ssid == "" && network-speed.tx != null}
+          :text "${network-speed.tx}⇅${network-speed.rx}"
+          )
+   (label :visible {wifi.ssid == "" && network-speed.tx == null}
           :text "Disconnected")))
 
 (defwidget cpu-circular
