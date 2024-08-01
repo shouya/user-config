@@ -95,6 +95,7 @@ import XMonad.Actions.Backlight
 import XMonad.Actions.AbsWS
 import XMonad.Hooks.EwwLog
 import XMonad.Hooks.SmartFloat (smartCenterFloat, smartCenterFloatWithMax)
+import XMonad.Hooks.TiledProperty (handleTiled)
 
 main :: IO ()
 main = do
@@ -242,9 +243,12 @@ myStartupPrograms conf = conf { startupHook = newStartupHook >> startupHook conf
   where newStartupHook = return ()
 
 -- myLayout :: XConfig a -> XConfig _
-myLayout conf = docks $ fullscreenSupport $ conf { layoutHook      = layout
-                                                 , logHook         = layoutLogHook   <+> logHook conf
-                                                 , handleEventHook = layoutEventHook <+> handleEventHook conf}
+myLayout conf = handleTiled $
+                docks $
+                fullscreenSupport $
+                conf { layoutHook      = layout
+                     , logHook         = layoutLogHook   <+> logHook conf
+                     , handleEventHook = layoutEventHook <+> handleEventHook conf}
   where layout = modifier (notFull ||| full)
         notFull = smartBorders $
                   spacingWithEdge 0 $

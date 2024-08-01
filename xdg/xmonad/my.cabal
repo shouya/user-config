@@ -17,6 +17,7 @@ executable xmonad
       XMonad.Actions.Volume
       XMonad.Hooks.EwwLog
       XMonad.Hooks.SmartFloat
+      XMonad.Hooks.TiledProperty
       XMonad.Layout.TallMastersComboModified
       Paths_my
   hs-source-dirs:
