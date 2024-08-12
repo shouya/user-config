@@ -49,7 +49,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FadeWindows (isFloating)
-import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat, doRectFloat)
+import XMonad.Hooks.ManageHelpers (isDialog, doCenterFloat, doRectFloat, composeOne, (-?>), transience)
 import XMonad.Hooks.StatusBar (withSB)
 import XMonad.Hooks.Place (smart, underMouse, inBounds, placeHook, placeFocused)
 import XMonad.Hooks.UrgencyHook
@@ -346,26 +346,29 @@ myScratchpad conf =
 --- myFloatingRules :: XConfig a -> XConfig a
 myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
   -- Note: a window can match multiple criteria and execute multiple times
-  where hooks = composeAll [ title =? "zoom " --> doFloat
-                           , className =? "flameshot" --> doFloat
-                           , className =? "cs5610" --> doFloat
-                           , className =? "copyq" --> floatPopup
-                           , title =? "Volume Control" --> floatSmall
-                           , title =? "Dotcam" --> doCenterFloat
+  where hooks = composeOne [ title =? "zoom " -?> doFloat
+                           , className =? "flameshot" -?> doFloat
+                           , className =? "cs5610" -?> doFloat
+                           , className =? "copyq" -?> doFloat
+                           , title =? "Volume Control" -?> floatSmall
+                           , title =? "Dotcam" -?> doCenterFloat
                            -- firefox popup windows (those without navigation buttons)
                            , (className =? "Firefox" <&&> firefoxPopupNormalHints)
-                             --> floatNormal
+                             -?> floatNormal
+                           -- firefox cookie clearance notification
+                           , propertyToQuery (Role "alert") -?> doFloat
                            -- do not resize Tor Browser
-                           , className =? "Tor Browser" --> doFloat
-                           , (className =? "steam" <&&> title /=? "Steam") --> doFloat
+                           , className =? "Tor Browser" -?> doFloat
+                           , (className =? "steam" <&&> title /=? "Steam") -?> doFloat
 
-                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" --> smartCenterFloat
-                           , propertyToQuery (Role "About") --> floatSmall
-                           , isDialog --> smartCenterFloat
+                           , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" -?> smartCenterFloat
+                           , propertyToQuery (Role "About") -?> floatSmall
+                           , isDialog -?> smartCenterFloat
+                           , transience
                            -- open new window after the current
                            -- one. Except for floating windows, those
                            -- should always popup to the front.
-                           , not <$> willFloat --> doF W.swapDown
+                           , not <$> willFloat -?> doF W.swapDown
                            ]
                 where atMouse = placeHook $ inBounds $ underMouse (0.5, 0.5)
         -- normal window: program specified minimum size: 900 by 240 (or something like that)
