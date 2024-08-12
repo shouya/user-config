@@ -88,16 +88,16 @@ pasystray &
 udiskie --smart-tray &
 
 # sleep/lock settings:
-# do not blank the screen. I use dpms for that purpose.
+# do not blank the screen or dpms
 xset s noblank
+xset -dpms
 # dim the screen after 5 minutes (dim.sh), then start screensaver
 # ~2 minutes (lock) after that, before the screen turns off.
 xset s 180 110
-xss-lock -n ~/.local/bin/dim.sh \
-         --transfer-sleep-lock -- \
-         ~/.local/bin/lock &
-# turn off screen/monitor/video signal after 5 mins of inactivity
-xset dpms 0 0 300
+
+# power manager
+xfce4-power-manager &
+xfce4-screensaver &
 
 # translate Idle Inhibition D-Bus API to systemd-logind wake lock (systemd-inhibit)
 # see https://github.com/notpeelz/sd-inhibit-bridge
