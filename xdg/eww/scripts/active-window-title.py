@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-
 import os
 import subprocess
+import socket
 
 
 def get_xmonad_title():
@@ -21,10 +21,39 @@ def get_xmonad_title():
         if title == "<field not available>":
             print("", flush=True)
             continue
-
         if title:
             print(title, flush=True)
 
 
+def get_hyprland_title():
+    socket_path = os.path.join(
+        os.environ.get("XDG_RUNTIME_DIR", ""),
+        "hypr",
+        os.environ.get("HYPRLAND_INSTANCE_SIGNATURE", ""),
+        ".socket2.sock",
+    )
+
+    if not os.path.exists(socket_path):
+        print("Hyprland socket not found", flush=True)
+        return
+
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    sock.connect(socket_path)
+
+    for line in sock.makefile("r"):
+        line = line.strip()
+        if line.startswith("activewindow>>"):
+            app, title = line.split(">>")[1].split(",", 1)
+            print(f"{app} - {title}", flush=True)
+
+
+def get_active_window_title():
+    desktop_env = os.environ.get("XDG_CURRENT_DESKTOP", "").lower()
+    if "hyprland" in desktop_env:
+        get_hyprland_title()
+    else:
+        get_xmonad_title()
+
+
 if __name__ == "__main__":
-    get_xmonad_title()
+    get_active_window_title()

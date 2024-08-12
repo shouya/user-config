@@ -5,16 +5,17 @@
 
 (deflisten date :initial "{}" `./scripts/clock.py`)
 
-(deflisten workspaces
+(deflisten xmonad-workspaces
     ;; so it doesn't spit out a long
     ;; error every time I reload
     :initial "[{},{},{},{},{},{},{},{},{},{}]"
-    `./scripts/workspaces.sh`)
+    `./scripts/xmonad-workspaces.sh`)
+(deflisten hyprland-workspaces
+    :initial "[{},{},{},{},{},{},{},{},{},{}]"
+    `./scripts/hyprland-workspaces.py`)
 
-(deflisten current-workspace
-    :initial "0"
-    `xprop -spy -root _NET_CURRENT_DESKTOP`)
 (deflisten cpu :initial "{}" `./scripts/cpu.py run_forever`)
+(deflisten current-env `echo $XDG_SESSION_DESKTOP`)
 
 (deflisten network-speed :initial "{}" `./scripts/net.py`)
 (deflisten wifi
@@ -29,7 +30,9 @@
     `batry`)
 
 (defpoll khal-today :initial "" :interval "1m" `khal list today`)
-(deflisten active-window-title `./scripts/active-window-title.py`)
+(deflisten active-window-title
+    :initial "..."
+    `./scripts/active-window-title.py`)
 (defpoll calendar :interval "1m" `cal -3`)
 (deflisten wake-guard :initial '{"active":false,"mode":null,"remaining_seconds":null,"message":""}' `wake-guard monitor`)
 
@@ -58,18 +61,18 @@
    :space-evenly false
    :width 100
    :valign "baseline"
-   (xmonad-workspace-button :entry {workspaces[0]})
-   (xmonad-workspace-button :entry {workspaces[1]})
-   (xmonad-workspace-button :entry {workspaces[2]})
-   (xmonad-workspace-button :entry {workspaces[3]})
-   (xmonad-workspace-button :entry {workspaces[4]})
-   (xmonad-workspace-button :entry {workspaces[5]})
-   (xmonad-workspace-button :entry {workspaces[6]})
-   (xmonad-workspace-button :entry {workspaces[7]})
-   (xmonad-workspace-button :entry {workspaces[8]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[0]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[1]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[2]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[3]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[4]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[5]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[6]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[7]})
+   (xmonad-workspace-button :entry {xmonad-workspaces[8]})
    ))
 
-(defwidget xmonad-active-window-title [max-len]
+(defwidget active-window-title [max-len]
   (fix-sized
    :width 600
    (label
@@ -86,13 +89,54 @@
 
 (defwidget left []
   (box
+   :hexpand true
+   (xmonad-left)
+   (hyprland-left))
+  )
+
+(defwidget hyprland-ws-switcher []
+  (box
+   :class "workspaces"
+   :spacing 2
+   :space-evenly false
+   :width 100
+   :valign "baseline"
+   (hyprland-workspace-button :entry {hyprland-workspaces[0]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[1]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[2]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[3]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[4]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[5]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[6]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[7]})
+   (hyprland-workspace-button :entry {hyprland-workspaces[8]})
+   ))
+
+(defwidget hyprland-workspace-button [entry]
+  (eventbox
+   :cursor "hand2"
+   :class "ws ws-curr-${entry.current} ws-vis-${entry.visible} ws-hid-${entry.hidden} ws-urg-${entry.urgent} ws-name-${entry.name}"
+   :onclick "hyprctl dispatch workspace ${entry.index}"
+   :width 12
+   :height 30
+   {entry.name}))
+
+(defwidget hyprland-left []
+  (box
+   :spacing 10
+   :space-evenly false
+   :visible {get_env("XDG_SESSION_DESKTOP") == "Hyprland"}
+   (hyprland-ws-switcher)
+   (active-window-title :max-len 100)))
+
+(defwidget xmonad-left []
+  (box
    :spacing 10
    :space-evenly false
    :valign "center"
-   :hexpand true
-   :visible {arraylength(workspaces) > 1}
+   :visible { get_env("XDG_SESSION_TYPE") != "wayland" }
    (xmonad-ws-switcher)
-   (xmonad-active-window-title :max-len 100)))
+   (active-window-title :max-len 100)))
 
 (defwidget clock []
   (tooltip
@@ -122,10 +166,10 @@
 ${wifi.addr}
 ${wifi.signal}"
           )
-   (label :visible {wifi.ssid == "" && network-speed.tx != null}
+   (label :visible {wifi.ssid == "" && network-speed.tx != ""}
           :text "${network-speed.tx}⇅${network-speed.rx}"
           )
-   (label :visible {wifi.ssid == "" && network-speed.tx == null}
+   (label :visible {wifi.ssid == "" && network-speed.tx == ""}
           :text "Disconnected")))
 
 (defwidget cpu-circular
@@ -227,7 +271,7 @@ ${wifi.signal}"
    (khal-detail)
    (eventbox
     :onclick "xdotool key 'super+F4'"
-    :cursor "hand"
+    :cursor "hand2"
     :class "khal"
     :visible {!khal.redacted}
     (box
@@ -257,7 +301,7 @@ ${wifi.signal}"
     (overlay
      (eventbox :class { enabled ? "toggle-enabled" : "toggle-disabled" }
                :tooltip tooltip
-               :cursor "hand"
+               :cursor "hand2"
                :onclick { enabled
                           ? "( ${off} ); eww update ${enable-var-name}=$(${curr})"
                           : "( ${on} ); eww update ${enable-var-name}=$(${curr})" }
@@ -296,7 +340,7 @@ ${wifi.signal}"
   (tooltip
    (wake-guard-toggle-tooltip)
    (eventbox
-    :cursor "hand"
+    :cursor "hand2"
     :onclick { wake-guard.mode=="null" ? "wake-guard msg -m idle +15m" :
                wake-guard.mode=="sleep" ? "wake-guard msg -m idle +0s" :
                wake-guard.mode=="idle" ? "wake-guard msg -m sleep +0s" : "" }
@@ -334,7 +378,7 @@ ${wifi.signal}"
           ))
     (eventbox
      :onclick "eww update util-stick=${!util-stick}"
-     :cursor "hand"
+     :cursor "hand2"
      (icon :text "")))))
 
 (defvar tray-reveal false)
@@ -358,7 +402,7 @@ ${wifi.signal}"
       :spacing 2))
     (eventbox
      :onclick "eww update tray-stick=${!tray-stick}"
-     :cursor "hand"
+     :cursor "hand2"
      (icon :text "")))))
 
 (defwidget right []
@@ -384,10 +428,11 @@ ${wifi.signal}"
    (right)
    ))
 
-
 (defwindow main-window
-    :monitor "eDP-1"
+    :monitor 0
     :stacking "fg"
+    ;; ask wayland compositor to reserve space
+    :exclusive true
     :windowtype "dock"
     :reserve (struts :distance "68" :side "top")
     :geometry (geometry :width "90%"
