@@ -163,4 +163,8 @@ picom: # Picom, an X compositor
 	./utils/backup ~/.config/picom
 	ln -rsf xdg/picom ~/.config
 
+hypr: # Hyprland and other Hypr ecosystem utilities
+	./utils/backup ~/.config/hypr
+	ln -rsf xdg/hypr ~/.config
+
 .PHONY : $(MAKECMDGOALS)
