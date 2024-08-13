@@ -26,4 +26,4 @@ if [[ -n "$window" ]]; then
 fi
 
 # otherwise, launch it
-hyprctl dispatch exec "[float;tag +scratch] $cmd"
+hyprctl dispatch exec "[float] $cmd"
