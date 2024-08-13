@@ -5,4 +5,3 @@ swayidle -w timeout 300 'swaylock -f -c 000000' \
             resume 'hyprctl dispatch dpms on' \
             timeout 900 'systemctl suspend' \
             before-sleep 'swaylock -f -c 000000' &
-
