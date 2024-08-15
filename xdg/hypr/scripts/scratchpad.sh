@@ -19,9 +19,7 @@ window="$(hyprctl -j clients | jq -c ".[] | select($jq_filter)" | head -n1)"
 # if the window already exists, show it
 if [[ -n "$window" ]]; then
     addr="$(echo "$window" | jq -r .address)"
-    hyprctl dispatch movetoworkspace "+0,address:$addr"
-    hyprctl dispatch setfloating "address:$addr"
-    hyprctl dispatch focuswindow "address:$addr"
+    hyprctl --batch "dispatch movetoworkspace +0,address:$addr ; dispatch focuswindow address:$addr"
     exit
 fi
 
