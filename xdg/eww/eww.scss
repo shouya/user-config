@@ -4,7 +4,7 @@
 }
 
 // Variable Color's
-$background: #183e4b;
+$background: #061705;
 $foreground: #8ba0a4;
 $darken: #438080;
 $lighten: #a1b5a8;
@@ -132,7 +132,6 @@ circular-progress > label {
   margin-left: 5px;
   margin-right: 5px;
   color: $darken;
-  text-shadow: -1px 1px $lighten;
 }
 
 .khal {
@@ -156,6 +155,8 @@ circular-progress > label {
 .battery-warn,
 .battery-alert,
 .battery {
+  margin-left: -0.2em;
+
   .icon-charging,
   .icon-discharging {
     color: $darken;

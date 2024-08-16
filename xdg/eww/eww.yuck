@@ -146,16 +146,14 @@
 (defvar cpu-reveal false)
 
 (defwidget cpu-widget []
-  (cpu-circular
-   :class "cpu"
-   :level {cpu.load_level}
-   :percent { (cpu.load ?: 1.0) / 10.0 * 100.0 }
-   :value {cpu.load}
-   :revealer-var cpu-reveal
-   :revealer-var-name "cpu-reveal"
-   :freq {cpu.freq}
-   :temp {cpu.temp}
-   ))
+  (box
+   :space-evenly false
+   :width 70
+   :class "monitor cpu cpu-${cpu.load_level}"
+   (label :text "${round(cpu.load ?: 0, 1)}/")
+   (label :text "${cpu.temp}℃/")
+   (label :text "${cpu.freq}")))
+
 
 (defwidget network-widget []
   (box
@@ -172,27 +170,6 @@ ${wifi.signal}"
    (label :visible {wifi.ssid == "" && network-speed.tx == ""}
           :text "Disconnected")))
 
-(defwidget cpu-circular
-    [class level percent freq temp ?value revealer-var revealer-var-name]
-    (box
-     :space-evenly false
-     :width 70
-     :class "monitor ${class} ${level} cpu-${level}"
-     (circular-progress
-      :width 30
-      :value {percent > 100 ? 100 : percent}
-      :start-at 75
-      :thickness 5
-      (label :text "${round(value ?: percent,1)}")
-      )
-     (box
-      :orientation "v"
-      :style "font-size: 0.7em; margin: -2px 0; "
-      (label :style "margin-bottom: -2px;"
-             :text "${temp}℃")
-      (label :style "margin-top: -2px;"
-             :text "${freq}"))
-     ))
 
 (defwidget battery-icon [percent]
   (icon :text { percent > 85 ? "" :
@@ -261,6 +238,7 @@ ${wifi.signal}"
    (cpu-widget)
    (box
     :visible {battery.status != "unknown"}
+    (sep)
     (battery-widget :bat battery))
    ))
 
