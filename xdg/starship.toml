@@ -70,8 +70,9 @@ disabled = true
 
 # i only use the venv indicator
 [python]
-format = 'with [\(${virtualenv}\)]($style) '
-detect_files = []
+format = 'with [python \(${virtualenv}\)]($style) '
+# do not show up just because of there's a .py file
+detect_extensions = []
 
 [hostname]
 ssh_only = false
