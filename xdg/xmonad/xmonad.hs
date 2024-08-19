@@ -78,14 +78,8 @@ import XMonad.Layout.NoBorders (smartBorders, noBorders)
 import XMonad.Layout.TrackFloating (useTransientFor)
 import XMonad.Layout.FocusTracking (focusTracking)
 import XMonad.Layout.Fullscreen (fullscreenSupport)
-import XMonad.Layout.TallMastersComboModified
-  ( tmsCombineTwoDefault
-  , tmsCombineTwo
-  , FocusSubMaster(..)
-  , MirrorResize(MirrorShrink, MirrorExpand)
-  )
 import XMonad.Layout.Groups.Helpers (toggleFocusFloat)
-
+import XMonad.Layout.ResizableTile (MirrorResize(MirrorShrink, MirrorExpand))
 import qualified XMonad.StackSet as W
 
 -- custom libs
@@ -199,7 +193,6 @@ myKeybinding conf = removeKeysP conf (map oldkey repurposedKeys)
         resizeKeys =
           [ ("M-S-h", sendMessage MirrorShrink)
           , ("M-S-l", sendMessage MirrorExpand)
-          , ("M-S-`", sendMessage FocusSubMaster)
           ]
         extraKeys =
           [ ("C-M-f", withFocused toggleFloat)
@@ -253,14 +246,7 @@ myLayout conf = handleTiled $
         notFull = smartBorders $
                   spacingWithEdge 0 $
                   avoidStruts $
-                  (mainLayout ||| tabLayout ||| tallLayout)
-        mainLayout = name "main" $
-          tmsVert left (tmsHorz rightTop rightBottom)
-          where left = (Tall 0 (3/100) (1/2))
-                rightTop = Simplest
-                rightBottom = magicFocus $ tabbed shrinkText tabConf
-                tmsVert = tmsCombineTwoDefault
-                tmsHorz = tmsCombineTwo False 1 (3/100) (1/2)
+                  (tallLayout ||| tabLayout)
         tallLayout = name "tall" $ ResizableTall 1 (3/100) (1/2) []
         tabLayout = name "tab" $ tabbedAlways shrinkText tabConf
         fancy = name "fancy" (circle ||| spiral (3/4) ||| Roledex)
