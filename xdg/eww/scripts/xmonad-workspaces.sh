@@ -4,7 +4,7 @@ PROP=_XMONAD_WORKSPACE_LOG
 
 # stdbuf -oL is needed to avoid buffering
 
-if [[ "$XDG_SESSION_TYPE" != "X11" ]]; then
+if [[ "$WINDOW_MANAGER" != "xmonad" ]]; then
   exit 1
 fi
 

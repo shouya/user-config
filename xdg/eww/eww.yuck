@@ -90,8 +90,9 @@
 (defwidget left []
   (box
    :hexpand true
+   ;; (hyprland-left)
    (xmonad-left)
-   (hyprland-left))
+   )
   )
 
 (defwidget hyprland-ws-switcher []
@@ -125,7 +126,7 @@
   (box
    :spacing 10
    :space-evenly false
-   :visible {get_env("XDG_SESSION_DESKTOP") == "Hyprland"}
+   :visible { get_env("XDG_SESSION_DESKTOP") == "Hyprland" }
    (hyprland-ws-switcher)
    (active-window-title :max-len 100)))
 
@@ -134,7 +135,7 @@
    :spacing 10
    :space-evenly false
    :valign "center"
-   :visible { get_env("XDG_SESSION_TYPE") != "wayland" }
+   :visible { get_env("WINDOW_MANAGER") == "xmonad" }
    (xmonad-ws-switcher)
    (active-window-title :max-len 100)))
 

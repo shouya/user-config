@@ -48,11 +48,13 @@ def get_hyprland_title():
 
 
 def get_active_window_title():
-    desktop_env = os.environ.get("XDG_CURRENT_DESKTOP", "").lower()
-    if "hyprland" in desktop_env:
+    if "hyprland" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
         get_hyprland_title()
-    else:
+    elif "xmonad" in os.environ.get("WINDOW_MANAGER", "").lower():
         get_xmonad_title()
+    else:
+        print("Unsupported environment")
+        exit(1)
 
 
 if __name__ == "__main__":
