@@ -4,6 +4,9 @@
 # shebang to take action. Otherwise it uses login shell to execute the
 # file, to which this xsession may not be syntactically correct.
 
+echo "Xsession env"
+env
+
 paths=(
     /home/shou/.asdf/shims
     /home/shou/.asdf/bin
@@ -26,6 +29,9 @@ paths=(
 )
 export PATH="$(IFS=: ; echo "${paths[*]}")"
 
+export WINDOW_MANAGER=xmonad
+dbus-update-activation-environment DISPLAY XAUTHORITY WINDOW_MANAGER
+
 exec 2> ~/.xsession-errors > ~/.xsession-log
 
 # xresources
@@ -41,8 +47,6 @@ inputplug -0 --command ~/.xmonad/scripts/new-keyboard.sh &
 # pointer configs
 ~/.xmonad/scripts/touchpad-natural-scroll.sh
 
-# compatibility configs
-export XDG_CURRENT_DESKTOP=XFCE
 # See https://blog.ando.fyi/posts/diagnosing-an-unsual-wifi-issue/
 export QT_BEARER_POLL_TIMEOUT=-1
 
@@ -70,8 +74,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 picom --daemon
 
 # status bar
-# polybar --reload default-bar &
-# TODO: fix eww. sometimes it just won't start on boot.
 eww open main-window &
 
 # network manager applet
@@ -98,6 +100,8 @@ xset s 180 110
 # power manager
 xfce4-power-manager &
 xfce4-screensaver &
+#
+fcitx5 -d &
 
 # translate Idle Inhibition D-Bus API to systemd-logind wake lock (systemd-inhibit)
 # see https://github.com/notpeelz/sd-inhibit-bridge
@@ -107,14 +111,16 @@ which -s sd-inhibit-bridge && sd-inhibit-bridge &
 export $(gnome-keyring-daemon --start)
 
 # kill any remaining closing sessions (caused by crashing X server)
-loginctl list-sessions | grep closing | awk '{print $1}' | xargs loginctl kill-session
+loginctl list-sessions | grep tty7 | grep -v "$XDG_SESSION_ID" | awk '{print $1}' | xargs loginctl kill-session
 
 # from now on, redirect stdout and stderr to these files so
 # .xsession-errors/.xsession-logs only contain output from startup
 exec 1>/tmp/xmonad.stdout 2>/tmp/xmonad.stderr
 
 if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
-	exec dbus-launch --exit-with-session xmonad
+  echo "Starting dbus-launch"
+  exec dbus-launch --exit-with-session xmonad
 else
-	exec xmonad
+  echo "Starting xmonad"
+  exec xmonad
 fi
