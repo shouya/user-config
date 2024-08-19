@@ -6,7 +6,6 @@ end
 alias l ls
 alias ll 'ls -lh'
 alias lt 'ls -lhtr'
-alias lt1 'ls -ht | head -n 1'
 
 # view file in vim with syntax highlighting
 alias vr 'vim -R'
