@@ -159,7 +159,7 @@ myWorkspaces conf = conf { workspaces = allWorkspaces
           setWorkspaceScreen "5" 0
           setWorkspaceScreen "6" 0
           setWorkspaceScreen "7" 0
-          setWorkspaceScreen "8" 0
+          setWorkspaceScreen "8" 1
           setWorkspaceScreen "9" 1
 
 
