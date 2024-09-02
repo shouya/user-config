@@ -3,8 +3,10 @@ if not status is-interactive
 end
 
 if set -q fish_private_mode
-    set -gx _ZO_EXCLUDE_DIRS /
+    set -gx _ZO_EXCLUDE_DIRS '/*'
 end
+
+set -gx _ZO_MAXAGE 10000
 
 function _z_cd
     cd $argv
