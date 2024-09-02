@@ -1,0 +1,12 @@
+[Unit]
+Description=Vigilare daemon
+PartOf=graphical-session.target
+
+[Service]
+Type=dbus
+BusName=org.shou.Vigilare
+Environment=RUST_LOG=info
+ExecStart=%h/.local/bin/vigilare daemon -m xfce4-power-manager
+
+[Install]
+WantedBy=graphical-session.target
