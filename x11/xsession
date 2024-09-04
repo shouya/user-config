@@ -57,8 +57,8 @@ command -v mons && mons -e right || true
 feh --bg-fill ~/Pictures/wallpapers/ -zr
 
 # hidpi setting for gtk 3 apps
-export GDK_SCALE=2
-export GDK_DPI_SCALE=0.5
+# export GDK_SCALE=2
+# export GDK_DPI_SCALE=0.5
 
 # hidpi for QT apps
 export QT_SCALE_FACTOR=2
@@ -109,6 +109,7 @@ which -s sd-inhibit-bridge && sd-inhibit-bridge &
 
 # gnome keyring
 export $(gnome-keyring-daemon --start)
+dbus-update-activation-environment SSH_AUTH_SOCK GNOME_KEYRING_CONTROL
 
 # kill any remaining closing sessions (caused by crashing X server)
 loginctl list-sessions | grep tty7 | grep -v "$XDG_SESSION_ID" | awk '{print $1}' | xargs loginctl kill-session
