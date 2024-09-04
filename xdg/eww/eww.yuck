@@ -34,13 +34,13 @@
     :initial "..."
     `./scripts/active-window-title.py`)
 (defpoll calendar :interval "1m" `cal -3`)
-(deflisten wake-guard :initial '{"active":false,"mode":null,"remaining_seconds":null,"message":""}' `wake-guard monitor`)
+(deflisten vigilare :initial '{"active":false,"mode":null,"remaining_seconds":null,"message":""}' `vigilare monitor`)
 
 (defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
 
 (defwidget icon [text]
   (overlay
-   (box :width 24 :height 24)
+   (box :width 48 :height 48)
    (label :class "icon" :text text)))
 
 
@@ -50,16 +50,16 @@
    ;; :visible {entry.current || entry.visible || entry.hidden}
    :class "ws ws-curr-${entry.current} ws-vis-${entry.visible} ws-hid-${entry.hidden} ws-urg-${entry.urgent} ws-name-${entry.name}"
    :onclick "wmctrl -s ${entry.index}"
-   :width 12
-   :height 30
+   :width 24
+   :height 60
    {entry.name}))
 
 (defwidget xmonad-ws-switcher []
   (box
    :class "workspaces"
-   :spacing 2
+   :spacing 4
    :space-evenly false
-   :width 100
+   :width 200
    :valign "baseline"
    (xmonad-workspace-button :entry {xmonad-workspaces[0]})
    (xmonad-workspace-button :entry {xmonad-workspaces[1]})
@@ -305,7 +305,7 @@ ${wifi.signal}"
    :off "dunstctl set-paused true")
   )
 
-(defwidget wake-guard-toggle-tooltip []
+(defwidget vigilare-toggle-tooltip []
   (box
    :orientation "v"
    :space-evenly false
@@ -315,27 +315,27 @@ ${wifi.signal}"
    (label :xalign 0 :text "Scroll: wake guard")))
 
 
-(defwidget wake-guard-toggle []
+(defwidget vigilare-toggle []
   (tooltip
-   (wake-guard-toggle-tooltip)
+   (vigilare-toggle-tooltip)
    (eventbox
     :cursor "hand2"
-    :onclick { wake-guard.mode=="null" ? "wake-guard msg -m idle +15m" :
-               wake-guard.mode=="sleep" ? "wake-guard msg -m idle +0s" :
-               wake-guard.mode=="idle" ? "wake-guard msg -m sleep +0s" : "" }
+    :onclick { vigilare.mode=="null" ? "vigilare msg -m idle +15m" :
+               vigilare.mode=="sleep" ? "vigilare msg -m idle +0s" :
+               vigilare.mode=="idle" ? "vigilare msg -m sleep +0s" : "" }
     :onmiddleclick "(notify-send 'Display off in 2 secs'; sleep 2; xset dpms force off) &"
     :onrightclick "(notify-send 'Suspending in 2 secs'; sleep 2; systemctl suspend) &"
-    :onscroll "test {} = up && wake-guard msg +15m || wake-guard msg -15m"
-    :class { wake-guard.active ? "toggle-enabled" : "toggle-disabled" }
+    :onscroll "test {} = up && vigilare msg +15m || vigilare msg -15m"
+    :class { vigilare.active ? "toggle-enabled" : "toggle-disabled" }
     (box :space-evenly false
-         (box :visible {wake-guard.mode=="null"}
+         (box :visible {vigilare.mode=="null"}
               (icon :text "󰒲"))
-         (box :visible {wake-guard.mode=="sleep"}
+         (box :visible {vigilare.mode=="sleep"}
               (icon :text "󰒳"))
-         (box :visible {wake-guard.mode=="idle"}
+         (box :visible {vigilare.mode=="idle"}
               (icon :text "󰈉"))
-         (label :visible {wake-guard.mode!="null"} :text "${wake-guard.mode}")
-         (label :visible {wake-guard.message!=""} :text "/${wake-guard.message}")))))
+         (label :visible {vigilare.mode!="null"} :text "${vigilare.mode}")
+         (label :visible {vigilare.message!=""} :text "/${vigilare.message}")))))
 
 (defvar util-reveal false)
 (defvar util-stick true)
@@ -348,12 +348,12 @@ ${wifi.signal}"
    (box
     :space-evenly false
     (revealer
-     :reveal {util-stick || util-reveal || wake-guard.active}
+     :reveal {util-stick || util-reveal || vigilare.active}
      :duration "200ms"
      :transition "slideright"
      (box :space-evenly false
           (dunst-toggle)
-          (wake-guard-toggle)
+          (vigilare-toggle)
           ))
     (eventbox
      :onclick "eww update util-stick=${!util-stick}"
@@ -376,7 +376,7 @@ ${wifi.signal}"
      :transition "slideright"
      (systray
       :class "tray"
-      :icon-size 20
+      :icon-size 40
       :space-evenly false
       :spacing 2))
     (eventbox
