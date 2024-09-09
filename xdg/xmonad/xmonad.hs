@@ -343,6 +343,8 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
                              -?> floatNormal
                            -- firefox cookie clearance notification
                            , propertyToQuery (Role "alert") -?> doFloat
+                           -- float picture in picture
+                           , propertyToQuery (Role "PictureInPicture") -?> doFloat
                            -- do not resize Tor Browser
                            , className =? "Tor Browser" -?> doFloat
                            , (className =? "steam" <&&> title /=? "Steam") -?> doFloat
