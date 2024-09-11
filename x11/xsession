@@ -98,8 +98,9 @@ xset -dpms
 xset s 180 110
 
 # power manager
-xfce4-power-manager &
 xfce4-screensaver &
+x11-idle-sync &
+
 #
 fcitx5 -d &
 
