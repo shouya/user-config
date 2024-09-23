@@ -78,3 +78,6 @@ abbr --add jfu --position anywhere -- journalctl --user -fu
 
 # faster way to type /dev/null
 abbr --add nul --position anywhere -- /dev/null
+
+alias yt-dlp-a2c "yt-dlp --output '%(title).200B%(title.201B&…|)s.%(ext)s' --no-mtime --min-filesize 200k --downloader aria2c"
+alias yt-dlp-audio 'yt-dlp -x'
