@@ -351,6 +351,8 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
 
                            , isPrefixOf "About " <$> stringProperty "WM_ICON_NAME" -?> smartCenterFloat
                            , propertyToQuery (Role "About") -?> floatSmall
+                           -- chromium popup bubble
+                           , propertyToQuery (Role "bubble") -?> doFloat
                            , isDialog -?> smartCenterFloat
                            , transience
                            -- open new window after the current
