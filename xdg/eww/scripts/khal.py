@@ -4,6 +4,7 @@ import subprocess
 import time
 import json
 import math
+import signal
 from datetime import datetime, date, timedelta
 
 
@@ -130,9 +131,17 @@ def report():
         last_reported = new_report
 
 
+def handle_hup(signum, frame):
+    update_khal()
+    update_redacted()
+    report()
+
+
 def main():
     next_update_check = datetime.now()
     next_redact_check = datetime.now()
+
+    signal.signal(signal.SIGHUP, handle_hup)
 
     while True:
         now = datetime.now()
