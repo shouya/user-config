@@ -5,6 +5,8 @@ import time
 import json
 import math
 import signal
+import sys
+import re
 from datetime import datetime, date, timedelta
 
 
@@ -38,32 +40,20 @@ def parse_khal_events(s: str) -> [dict]:
     """
     The output looks like the follows:
 
-    Today, 2023-07-15
-    16:00-17:45 P: fix eww calendar latency
-    17:45-18:00 H: dishwasher
-    17:45-18:00 P: system upgrade
-    18:00-20:00 P: dotcam
+    2024-11-24 12:00::2024-11-24 12:45::C: calculus
+    2024-11-24 12:45::2024-11-24 13:30::SW: coding
     """
 
     lines = s.strip().split("\n")
     events = []
-    today = date.today()
     for line in lines:
         line = line.strip()
         if len(line) == 0:
             continue
-        if line.startswith("Today,"):
-            continue
-        if line.startswith("Tomorrow,"):
-            break
-        time_span, title = line.split(" ", 1)
-        start_time, end_time = time_span.split("-", 1)
 
-        start_time = parse_time(start_time)
-        end_time = parse_time(end_time)
-
-        start_time = datetime.combine(today, start_time)
-        end_time = datetime.combine(today, end_time)
+        start, end, title = line.split("::", 2)
+        start_time = parse_time(start)
+        end_time = parse_time(end)
 
         events.append(
             {
@@ -77,7 +67,7 @@ def parse_khal_events(s: str) -> [dict]:
 
 def parse_time(s: str) -> time:
     normalized_s = s.replace("24:00", "00:00")
-    return datetime.strptime(normalized_s, "%H:%M").time()
+    return datetime.strptime(normalized_s, "%Y-%m-%d %H:%M")
 
 
 def next_whole_minute(now) -> datetime:
@@ -92,7 +82,11 @@ def update_khal() -> bool:
     now = datetime.now()
 
     try:
-        result = subprocess.check_output(["khal", "list", "now"]).decode()
+        # example: 2024-11-24 12:00::2024-11-24 12:45::C: calculus
+        fmt = "{start-long}::{end-long}::{title}"
+        result = subprocess.check_output(
+            ["khal", "list", "now", "-df", "", "-f", fmt]
+        ).decode()
         events = parse_khal_events(result)
 
         if len(events) < 1:
@@ -112,7 +106,8 @@ def update_khal() -> bool:
             min_left = math.ceil((item["end_time"] - now).seconds / 60)
         return
 
-    except (subprocess.CalledProcessError, ValueError):
+    except (subprocess.CalledProcessError, ValueError) as e:
+        print(e, file=sys.stderr)
         return
 
 
