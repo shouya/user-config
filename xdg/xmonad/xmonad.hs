@@ -216,6 +216,7 @@ myKeybinding conf = removeKeysP conf (map oldkey repurposedKeys)
           -- the "Call" button on the built-in laptop
           , ("<XF86Go>", spawn "playerctl play-pause")
           , ("<XF86Display>", spawn "mons -e right || mons -o")
+          , ("<Pause>", spawn "~/.xmonad/scripts/reset-cpu-freq-sched.sh")
           , ("S-<XF86Display>", spawn "mons -e m")
           , ("C-M1-v", spawn "calibre-to-anki.sh")
           , ("C-M1-k", spawn "killall -9 java")
