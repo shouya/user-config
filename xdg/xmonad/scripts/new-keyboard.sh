@@ -16,7 +16,7 @@ device_name="$4"
 setup_keyboard() {
   echo "New keyboard detected; configuring..."
   setxkbmap -option ctrl:nocaps,altwin:swap_lalt_lwin
-  xset r rate 200 45
+  xset r rate 230 40
 }
 
 if [[ "$#" = 0 ]]; then
