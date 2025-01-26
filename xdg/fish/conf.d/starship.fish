@@ -11,7 +11,7 @@ if status is-interactive
         # Account for changes in variable name between v2.7 and v3.0
         set STARSHIP_DURATION "$CMD_DURATION$cmd_duration"
         set STARSHIP_JOBS (count (jobs -p))
-        /home/shou/.local/bin/starship prompt --terminal-width="$COLUMNS" --status=$STARSHIP_CMD_STATUS --pipestatus="$STARSHIP_CMD_PIPESTATUS" --keymap=$STARSHIP_KEYMAP --cmd-duration=$STARSHIP_DURATION --jobs=$STARSHIP_JOBS
+        starship prompt --terminal-width="$COLUMNS" --status=$STARSHIP_CMD_STATUS --pipestatus="$STARSHIP_CMD_PIPESTATUS" --keymap=$STARSHIP_KEYMAP --cmd-duration=$STARSHIP_DURATION --jobs=$STARSHIP_JOBS
     end
 
     function fish_right_prompt
@@ -26,7 +26,7 @@ if status is-interactive
         # Account for changes in variable name between v2.7 and v3.0
         set STARSHIP_DURATION "$CMD_DURATION$cmd_duration"
         set STARSHIP_JOBS (count (jobs -p))
-        /home/shou/.local/bin/starship prompt --right --terminal-width="$COLUMNS" --status=$STARSHIP_CMD_STATUS --pipestatus="$STARSHIP_CMD_PIPESTATUS" --keymap=$STARSHIP_KEYMAP --cmd-duration=$STARSHIP_DURATION --jobs=$STARSHIP_JOBS
+        starship prompt --right --terminal-width="$COLUMNS" --status=$STARSHIP_CMD_STATUS --pipestatus="$STARSHIP_CMD_PIPESTATUS" --keymap=$STARSHIP_KEYMAP --cmd-duration=$STARSHIP_DURATION --jobs=$STARSHIP_JOBS
     end
 
     # Disable virtualenv prompt, it breaks starship

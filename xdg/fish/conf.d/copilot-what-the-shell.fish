@@ -5,7 +5,7 @@ if not status is-interactive
     return
 end
 
-set copilot_cli_path (which github-copilot-cli)
+set copilot_cli_path (which github-copilot-cli 2>/dev/null)
 
 if test -z "$copilot_cli_path"
     return
