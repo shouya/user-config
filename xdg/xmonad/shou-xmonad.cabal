@@ -1,14 +1,13 @@
-cabal-version: 1.12
+cabal-version:   3.0
+name:            shou-xmonad
+version:         0.0.0
+build-type:      Simple
 
--- This file has been generated from package.yaml by hpack version 0.35.1.
---
--- see: https://github.com/sol/hpack
-
-name:           my
-version:        0.0.0
-build-type:     Simple
+common warnings
+  ghc-options: -Wall
 
 executable xmonad
+  import: warnings
   main-is: xmonad.hs
   other-modules:
       XMonad.Actions.AbsWS
@@ -19,7 +18,6 @@ executable xmonad
       XMonad.Hooks.SmartFloat
       XMonad.Hooks.TiledProperty
       XMonad.Layout.TallMastersComboModified
-      Paths_my
   hs-source-dirs:
       lib/
       ./
@@ -33,3 +31,4 @@ executable xmonad
     , xmonad-contrib
     , xmonad-extras
   default-language: Haskell2010
+

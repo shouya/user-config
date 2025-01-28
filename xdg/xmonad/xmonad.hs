@@ -43,7 +43,7 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WindowProperties ( Property (..)
                                     , propertyToQuery)
-import XMonad.Util.Hacks (fixSteamFlicker)
+-- import XMonad.Util.Hacks (fixSteamFlicker)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -394,5 +394,5 @@ myEwmh =
   ewmh
 
 myHacks config = config
-  { handleEventHook = fixSteamFlicker <+> handleEventHook config
-  }
+  -- { -- handleEventHook = fixSteamFlicker <+> handleEventHook config
+  -- }

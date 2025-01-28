@@ -1,5 +1,4 @@
 #!/bin/sh
 
-mkdir -p ~/.xmonad/target
-stack --local-bin-path ~/.xmonad/target/ install my \
-	&& mv ~/.xmonad/target/xmonad "$1"
+nix build
+ln -rs --force result/bin/xmonad ./xmonad-x86_64-linux
