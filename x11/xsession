@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This file must be kept executable for the shell specified in the
 # shebang to take action. Otherwise it uses login shell to execute the
@@ -27,7 +27,7 @@ paths=(
     /usr/bin
     /bin
 )
-export PATH="$(IFS=: ; echo "${paths[*]}")"
+export PATH="$(IFS=: ; echo "${paths[*]}"):$PATH"
 
 export WINDOW_MANAGER=xmonad
 dbus-update-activation-environment DISPLAY XAUTHORITY WINDOW_MANAGER
@@ -106,7 +106,7 @@ fcitx5 -d &
 
 # translate Idle Inhibition D-Bus API to systemd-logind wake lock (systemd-inhibit)
 # see https://github.com/notpeelz/sd-inhibit-bridge
-which -s sd-inhibit-bridge && sd-inhibit-bridge &
+which sd-inhibit-bridge 2>/dev/null && sd-inhibit-bridge &
 
 # gnome keyring
 export $(gnome-keyring-daemon --start)
