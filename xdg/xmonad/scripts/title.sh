@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if pgrep zoom &>/dev/null; then
 	echo "****"

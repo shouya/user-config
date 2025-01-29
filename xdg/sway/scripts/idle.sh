@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # This script configures how to handle idle actions and sleep related stuff.
 #

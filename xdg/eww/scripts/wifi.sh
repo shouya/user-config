@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DEV="${1:-$(ip link | grep wlp | awk '{print $2}' | sed 's/://')}"
 

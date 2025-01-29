@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BG="$(find ~/Pictures/wallpapers -type f | shuf | head -n1)"
 if [[ -z "$BG" ]]; then

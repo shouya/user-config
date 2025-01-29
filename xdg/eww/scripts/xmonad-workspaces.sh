@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PROP=_XMONAD_WORKSPACE_LOG
 

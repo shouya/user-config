@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 focusing_floating="$(hyprctl activewindow | grep "floating: 0")"
 direction="$1"

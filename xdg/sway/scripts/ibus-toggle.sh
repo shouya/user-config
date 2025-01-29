@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if ! pgrep 'ibus-daemon' 2>/dev/null; then
   ibus-daemon -drx
