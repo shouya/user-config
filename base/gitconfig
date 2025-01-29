@@ -75,7 +75,6 @@ email = 526598+shouya@users.noreply.github.com
 signingkey = 7287CB6DB65E82C5094CF34CD5020D9FAD55DEE5
 
 [core]
-excludesfile = ~/.gitignore
 editor = vim
 pager = delta --color-only
 

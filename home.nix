@@ -20,6 +20,7 @@ in
   programs.git = {
     enable = true;
     includes = [ { path = ./base/gitconfig; } ];
+    ignores = [ (builtins.readFile ./base/gitignore) ];
   };
 
   home.sessionVariables = {
