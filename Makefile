@@ -19,11 +19,13 @@ base: git ssh
 
 git: # Git config (requires git-crypt)
 	git crypt unlock
+	mkdir -p ~/.config/git
 ifndef NO_GIT_CRYPT
-	ln -frs base/gitconfig.private ~/.gitconfig.private
+	ln -frs base/gitconfig.private ~/.config/git/config.private
 endif
-	ln -frs base/gitconfig ~/.gitconfig
-	ln -frs base/gitignore ~/.gitignore
+	ln -frs base/gitconfig ~/.config/git/config
+	ln -frs base/gitignore ~/.config/git/ignore
+
 
 ssh: # SSH config (requires git-crypt)
 ifndef NO_GIT_CRYPT
@@ -36,6 +38,7 @@ ifeq ($(UNAME),Darwin)
 	ln -rs base/ssh_config_macos.private ~/.ssh/config.d/macos.conf
 endif
 ifeq ($(UNAME),Linux)
+
 	ln -rs base/ssh_config_linux.private ~/.ssh/config.d/linux.conf
 endif
 endif
