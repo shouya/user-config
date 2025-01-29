@@ -6,6 +6,14 @@ help:
 	| sort \
 	| awk 'BEGIN {FS = ":.*?# "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+install-home-manager:
+	@which home-manager || echo Please refer to https://nix-community.github.io/home-manager/index.xhtml for installation instruction
+
+home-manager: install-home-manager # Home Manager
+	ln -fnrs . ~/.config/home-manager
+# home manager can't clone emacs config for us, doing it manually
+	@echo Symlinked to home-manager, feel free to run 'home-manager switch'
+
 base: git ssh
 
 git: # Git config (requires git-crypt)
