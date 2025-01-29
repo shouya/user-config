@@ -34,5 +34,16 @@ in
         }
       )
     );
+
+    programs.emacs.package = pkgs.emacs30;
+
+    home.packages = with pkgs; [
+      # used by jinx.el
+      enchant
+      emacsPackages.jinx
+
+      # node for copilot.el
+      nodejs_22
+    ];
   };
 }
