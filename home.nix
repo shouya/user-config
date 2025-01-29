@@ -14,6 +14,12 @@ in
 
   home.file = {
     ".xsession".source = ./x11/xsession;
+    ".Xresources".source = ./x11/Xresources.herbian;
+  };
+
+  programs.git = {
+    enable = true;
+    includes = [ { path = ./base/gitconfig; } ];
   };
 
   home.sessionVariables = {
