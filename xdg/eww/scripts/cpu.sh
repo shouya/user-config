@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 cd "$( dirname "$0" )" >/dev/null 2>&1
 
