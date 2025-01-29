@@ -23,8 +23,8 @@ in
   ];
 
   home.file = {
-    ".xsession".source = ./x11/xsession;
-    ".Xresources".source = ./x11/Xresources.herbian;
+    ".xsession".source = linkConfig "x11/xsession";
+    ".Xresources".source = linkConfig "x11/Xresources.herbian";
   };
 
   programs.git = {
