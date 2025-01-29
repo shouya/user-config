@@ -101,7 +101,7 @@ followTags = true
 #  gpgSign = true
 
 [commit]
-gpgsign = true
+	gpgsign = false
 
 [tag]
 forceSignAnnotated = true
