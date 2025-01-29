@@ -1,8 +1,18 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-let user-config = ./..;
+let
+  user-config = "${config.home.homeDirectory}/projects/user-config";
+  link = config.lib.file.mkOutOfStoreSymlink;
+  linkConfig = path: link "${user-config}/${path}";
 in
 {
+  imports = [
+    ./emacs.nix
+  ];
+  _module.args = {
+    inherit user-config link linkConfig;
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -22,6 +32,15 @@ in
     includes = [ { path = ./base/gitconfig; } ];
     ignores = [ (builtins.readFile ./base/gitignore) ];
   };
+
+  programs.eww = {
+    enable = true;
+    configDir = ./xdg/eww;
+  };
+
+  programs.emacs.enable = true;
+  xdg.enable = true;
+
 
   home.sessionVariables = {
     # EDITOR = "emacs";

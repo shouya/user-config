@@ -12,6 +12,7 @@ install-home-manager:
 home-manager: install-home-manager # Home Manager
 	ln -fnrs . ~/.config/home-manager
 # home manager can't clone emacs config for us, doing it manually
+	[ -e emacs ] || git clone --recursive git@git.lain.li:shouya/emacs.d.git emacs
 	@echo Symlinked to home-manager, feel free to run 'home-manager switch'
 
 base: git ssh
