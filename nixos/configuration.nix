@@ -9,6 +9,9 @@
       ./hardware-configuration.nix
     ];
 
+  # allow proprietary packages
+  nixpkgs.config.allowUnfree = true;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -37,21 +40,23 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-    # videoDrivers = [ "nvidia" ];
+    autoRepeatInterval = 45;
+    autoRepeatDelay = 200;
+    videoDrivers = [ "amdgpu" "nvidia" ];
   };
   hardware.graphics.enable = true;
   hardware.nvidia = {
-     open = false; # use proprietary driver
-     modesetting.enable = true;
-     powerManagement.enable = true;
-     nvidiaSettings = true;
-     prime = {
-       offload.enable = true;
-       offload.enableOffloadCmd = true; # generate the nvidia-offload command
+    open = false; # use proprietary driver
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    nvidiaSettings = true;
+    prime = {
+      offload.enable = true;
+      offload.enableOffloadCmd = true; # generate the nvidia-offload command
 
-       nvidiaBusId = "PCI:1:0:0";
-       amdgpuBusId = "PCI:16:0:0";
-     };
+      nvidiaBusId = "PCI:1:0:0";
+      amdgpuBusId = "PCI:16:0:0";
+    };
   };
   # services.xserver.desktopManager.xmonad = {
   #   enable = true;
