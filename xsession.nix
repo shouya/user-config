@@ -8,13 +8,13 @@
 
   home.packages = with pkgs; [
     # fonts
-    noto-fonts
+    noto-fonts # used by system
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
     noto-fonts-color-emoji
-    cantarell-fonts
-    nerd-fonts.fira-code
-    jetbrains-mono
+    cantarell-fonts # used on ui
+    nerd-fonts.symbols-only # used by eww
+    jetbrains-mono # used in emacs
 
     # desktop session
     picom
