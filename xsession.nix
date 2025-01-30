@@ -3,6 +3,7 @@
   home.file = {
     ".xsession".source = linkConfig "x11/xsession";
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
+    ".config/picom".source = linkConfig "xdg/picom";
   };
 
   home.packages = with pkgs; [
@@ -13,6 +14,12 @@
     noto-fonts-color-emoji
     cantarell-fonts
     nerd-fonts.fira-code
+    jetbrains-mono
+
+    # desktop session
+    picom
+
+    # tools
   ];
 
 
