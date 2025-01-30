@@ -22,6 +22,7 @@
 
     # desktop session
     picom
+    networkmanagerapplet # nm-applet
 
     # tools
     autocutsel
