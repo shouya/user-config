@@ -49,12 +49,18 @@ in
 
 
   home.packages = with pkgs; [
-    autocutsel
+    # apps
     alacritty
     calibre
     firefox
-    git-crypt
     starship
+
+    # tools
+    nvtopPackages.nvidia
+    nvtopPackages.amd
+
+    # shell utils
+    git-crypt
     zoxide
   ];
 

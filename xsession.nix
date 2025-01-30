@@ -21,11 +21,12 @@
     jetbrains-mono # used in emacs
 
     # desktop session
+    xmonad-with-packages
     picom
     networkmanagerapplet # nm-applet
+    autocutsel
 
     # tools
-    autocutsel
   ];
 
 
