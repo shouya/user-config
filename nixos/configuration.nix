@@ -133,6 +133,9 @@
     vim
     xclip
     nix-search
+
+    # for convenient tools
+    python313Full
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
