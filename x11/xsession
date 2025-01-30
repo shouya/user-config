@@ -85,9 +85,6 @@ autocutsel -fork
 # pulseaudio control
 pasystray &
 
-# usb drive automount
-udiskie --smart-tray &
-
 # sleep/lock settings:
 # do not blank the screen or dpms
 xset s noblank

@@ -34,6 +34,7 @@
   };
 
   services.copyq.enable = true;
+  services.udiskie.enable = true;
 
   home.pointerCursor = {
     package = pkgs.adwaita-icon-theme;
