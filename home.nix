@@ -40,6 +40,11 @@ in
     ignores = [ (builtins.readFile ./base/gitignore) ];
   };
 
+  programs.ssh = {
+    enable = true;
+    includes = [ (toString ./base/ssh_config.private) ];
+  };
+
   programs.eww = {
     enable = true;
     configDir = ./xdg/eww;
