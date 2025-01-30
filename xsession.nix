@@ -5,9 +5,9 @@
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
     ".config/picom".source = linkConfig "xdg/picom";
 
-
     ".config/copyq/copyq.conf".source = linkConfig "xdg/copyq/copyq.conf";
     ".config/copyq/copyq-commands.conf".source = linkConfig "xdg/copyq/copyq-commands.conf";
+
   };
 
   home.packages = with pkgs; [
@@ -28,7 +28,6 @@
 
     # tools
   ];
-
 
   programs.eww = {
     enable = true;

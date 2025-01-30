@@ -10,6 +10,7 @@ in
   imports = [
     ./emacs.nix
     ./xsession.nix
+    ./calendar.nix
   ];
   _module.args = {
     inherit user-config link linkConfig;
@@ -47,7 +48,6 @@ in
     };
   };
 
-
   home.packages = with pkgs; [
     # apps
     alacritty
@@ -61,7 +61,11 @@ in
     # shell utils
     git-crypt
     zoxide
+
+    # dev tools
+    nixd # nix lsp
   ];
+
 
   home.sessionVariables = {
     # EDITOR = "emacs";

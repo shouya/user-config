@@ -70,6 +70,7 @@ calendar: # Khal and vdirsyncer
 	./utils/backup ~/.config/vdirsyncer
 	ln -rsf xdg/khal ~/.config
 	ln -rsf xdg/vdirsyncer ~/.config
+	@echo "Run 'vdirsyncer discover && vdirsyncer sync' to setup"
 
 sway: # Sway, waybar, kanshi, rofi
 	./utils/backup ~/.config/kanshi
