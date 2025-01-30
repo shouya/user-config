@@ -53,6 +53,8 @@ alias less 'less -R'
 # type -qf is fish built-in as equivalence to which >/dev/null
 if type -qf apt
     alias eix 'apt search'
+else if type -qf nix-search
+    alias eix nix-search
 end
 
 # shortcut for pbcopy/pbpaste/wl-copy/wl-paste
