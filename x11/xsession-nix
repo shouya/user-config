@@ -80,14 +80,7 @@ eww open main-window &
 (sleep 1; exec nm-applet --indicator) &
 
 # clipboard
-copyq &
 autocutsel -fork
-
-# pulseaudio control
-pasystray &
-
-# usb drive automount
-udiskie --smart-tray &
 
 # sleep/lock settings:
 # do not blank the screen or dpms

@@ -1,7 +1,7 @@
 { config, pkgs, lib, linkConfig, ... }:
 {
   home.file = {
-    ".xsession".source = linkConfig "x11/xsession";
+    ".xsession".source = linkConfig "x11/xsession-nix";
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
     ".config/picom".source = linkConfig "xdg/picom";
 
