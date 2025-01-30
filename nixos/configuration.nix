@@ -85,6 +85,13 @@
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+    extraConfig.pipewire = {
+      "99-disable-bell" = {
+        "context.properties"= {
+          "module.x11.bell" = false;
+        };
+      };
+    };
   };
   services.udisks2.enable = true; # required by udiskie
 
