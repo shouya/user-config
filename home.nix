@@ -19,7 +19,14 @@ in
   home.username = "shou";
   home.homeDirectory = "/home/shou";
 
-  home.packages = [
+  home.packages = with pkgs; [
+    # fonts
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-color-emoji
+    cantarell-fonts
+    nerd-fonts.fira-code
   ];
 
   home.file = {
@@ -40,6 +47,13 @@ in
 
   programs.emacs.enable = true;
   xdg.enable = true;
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      emoji = ["Noto Color Emoji"];
+    };
+  };
 
 
   home.sessionVariables = {
