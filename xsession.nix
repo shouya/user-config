@@ -4,6 +4,10 @@
     ".xsession".source = linkConfig "x11/xsession";
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
     ".config/picom".source = linkConfig "xdg/picom";
+
+
+    ".config/copyq/copyq.conf".source = linkConfig "xdg/copyq/copyq.conf";
+    ".config/copyq/copyq-commands.conf".source = linkConfig "xdg/copyq/copyq-commands.conf";
   };
 
   home.packages = with pkgs; [
@@ -20,6 +24,7 @@
     picom
 
     # tools
+    autocutsel
   ];
 
 
@@ -27,6 +32,8 @@
     enable = true;
     configDir = ./xdg/eww;
   };
+
+  services.copyq.enable = true;
 
   home.pointerCursor = {
     package = pkgs.adwaita-icon-theme;
