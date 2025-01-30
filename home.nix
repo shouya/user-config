@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
 
+
 let
   user-config = "${config.home.homeDirectory}/projects/user-config";
   link = config.lib.file.mkOutOfStoreSymlink;
@@ -8,6 +9,7 @@ in
 {
   imports = [
     ./emacs.nix
+    ./xsession.nix
   ];
   _module.args = {
     inherit user-config link linkConfig;
@@ -19,21 +21,6 @@ in
   home.username = "shou";
   home.homeDirectory = "/home/shou";
 
-  home.packages = with pkgs; [
-    # fonts
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    noto-fonts-color-emoji
-    cantarell-fonts
-    nerd-fonts.fira-code
-  ];
-
-  home.file = {
-    ".xsession".source = linkConfig "x11/xsession";
-    ".Xresources".source = linkConfig "x11/Xresources.herbian";
-  };
-
   programs.git = {
     enable = true;
     includes = [ { path = ./base/gitconfig; } ];
@@ -43,11 +30,6 @@ in
   programs.ssh = {
     enable = true;
     includes = [ (toString ./base/ssh_config.private) ];
-  };
-
-  programs.eww = {
-    enable = true;
-    configDir = ./xdg/eww;
   };
 
   programs.emacs.enable = true;
@@ -65,5 +47,5 @@ in
     # EDITOR = "emacs";
   };
 
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  home.stateVersion = "24.11";
 }
