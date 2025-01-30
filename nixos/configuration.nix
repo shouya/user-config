@@ -16,6 +16,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # boot.plymouth.enable = true; # boot animation
+  boot.kernelModules = [ "nvidia" ];
 
   networking.hostName = "mrnix"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -45,10 +46,12 @@
     videoDrivers = [ "amdgpu" "nvidia" ];
   };
   hardware.graphics.enable = true;
+  hardware.graphics.extraPackages = [pkgs.nvidia-vaapi-driver];
   hardware.nvidia = {
     open = false; # use proprietary driver
     modesetting.enable = true;
     powerManagement.enable = true;
+    powerManagement.finegrained = true;
     nvidiaSettings = true;
     prime = {
       offload.enable = true;

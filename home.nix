@@ -56,8 +56,7 @@ in
     starship
 
     # tools
-    nvtopPackages.nvidia
-    nvtopPackages.amd
+    (nvtopPackages.nvidia.override { amd = true; })
 
     # shell utils
     git-crypt
