@@ -82,9 +82,6 @@ eww open main-window &
 # clipboard
 autocutsel -fork
 
-# pulseaudio control
-pasystray &
-
 # sleep/lock settings:
 # do not blank the screen or dpms
 xset s noblank
