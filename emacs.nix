@@ -40,6 +40,7 @@ in
     home.packages = with pkgs; [
       # used by jinx.el
       enchant
+      hunspellDicts.en-us
       emacsPackages.jinx
 
       # node for copilot.el
