@@ -17,6 +17,11 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  home.keyboard.options = [
+    "ctrl:nocaps"
+    "altwin:swap_lalt_lwin"
+  ];
+
 
   home.username = "shou";
   home.homeDirectory = "/home/shou";
@@ -42,6 +47,16 @@ in
     };
   };
 
+
+  home.packages = with pkgs; [
+    autocutsel
+    alacritty
+    calibre
+    firefox
+    git-crypt
+    starship
+    zoxide
+  ];
 
   home.sessionVariables = {
     # EDITOR = "emacs";

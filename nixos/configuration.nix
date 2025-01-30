@@ -97,19 +97,9 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqp5GiCayavtH8l4rfvg5Wi57yGxedOoXZd64oAy9Hv shou@herbian"
     ];
     shell = pkgs.fish;
-    packages = with pkgs; [
-      alacritty
-      calibre
-      firefox
-      git-crypt
-      starship
-      zoxide
-      xmonad-with-packages
-    ];
+    packages = with pkgs; [];
   };
 
-  # allow proprietary packages
-  nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -132,6 +122,7 @@
     tree
     vim
     xclip
+    nix-search
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
