@@ -21,5 +21,8 @@
     configDir = ./xdg/eww;
   };
 
-  # home.pointerCursor.size = 64;
+  home.pointerCursor = {
+    package = pkgs.adwaita-icon-theme;
+    name = "Adwaita";
+  };
 }
