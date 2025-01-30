@@ -57,9 +57,10 @@ in
 
     # tools
     (nvtopPackages.nvidia.override { amd = true; })
+    pass
+    git-crypt
 
     # shell utils
-    git-crypt
     zoxide
 
     # dev tools
