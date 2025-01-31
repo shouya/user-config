@@ -144,6 +144,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-rofi;
   };
   programs.fish.enable = true;
 
@@ -167,15 +168,16 @@
   services.udev.extraRules =
     let mkRule = lib.concatStringsSep ", ";
     in with pkgs; lib.concatStringsSep "\n" [
-    # turn off rotational disk after 5 minutes (60 * 5) and set power
-    # saving level to 128
-    (mkRule [
-      ''ACTION=="add|change"''
-      ''SUBSYSTEM=="block"''
-      ''KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1"''
-      ''RUN+="${hdparm}/bin/hdparm -B 90 -S 60 /dev/%k"''
-    ])
-  ];
+      # turn off rotational disk after 5 minutes (60 * 5) and set power
+      # saving level to 128
+      (mkRule [
+        ''ACTION=="add|change"''
+        ''SUBSYSTEM=="block"''
+        ''KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1"''
+        ''RUN+="${hdparm}/bin/hdparm -B 90 -S 60 /dev/%k"''
+      ])
+    ];
+  networking.interfaces.enp6s0.wakeOnLan.enable = true;
 
   powerManagement.resumeCommands = ''
     echo "This should show up in the journal after resuming."
