@@ -52,13 +52,16 @@ in
     # apps
     alacritty
     calibre
+    chromium
     firefox
     starship
+    telegram-desktop
 
     # tools
     (nvtopPackages.nvidia.override { amd = true; })
-    pass
+    flameshot
     git-crypt
+    pass
 
     # shell utils
     zoxide

@@ -12,21 +12,22 @@
 
   home.packages = with pkgs; [
     # fonts
-    noto-fonts # used by system
+    cantarell-fonts # used on ui
+    jetbrains-mono # used in emacs
+    nerd-fonts.symbols-only # used by eww
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
     noto-fonts-color-emoji
-    cantarell-fonts # used on ui
-    nerd-fonts.symbols-only # used by eww
-    jetbrains-mono # used in emacs
+    noto-fonts # used by system
 
     # desktop session
-    xmonad-with-packages
-    picom
-    networkmanagerapplet # nm-applet
     autocutsel
-
-    # tools
+    gnome-keyring # ssh-agent, etc
+    libnotify # for notify-send
+    networkmanagerapplet # nm-applet
+    picom
+    rofi
+    xmonad-with-packages
   ];
 
   programs.eww = {
