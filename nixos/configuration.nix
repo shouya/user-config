@@ -177,7 +177,9 @@
         ''RUN+="${hdparm}/bin/hdparm -B 90 -S 60 /dev/%k"''
       ])
     ];
-  networking.interfaces.enp6s0.wakeOnLan.enable = true;
+
+  networking.interfaces.eth.name = "enp6s0";
+  networking.interfaces.eth.wakeOnLan.enable = true;
 
   powerManagement.resumeCommands = ''
     echo "This should show up in the journal after resuming."
