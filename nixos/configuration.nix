@@ -41,10 +41,11 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-    autoRepeatInterval = 45;
-    autoRepeatDelay = 200;
     videoDrivers = [ "amdgpu" "nvidia" ];
+    displayManager.lightdm.enable = true;
+    desktopManager.xterm.enable = true;
   };
+
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = [pkgs.nvidia-vaapi-driver];
   hardware.nvidia = {
@@ -61,16 +62,6 @@
       amdgpuBusId = "PCI:16:0:0";
     };
   };
-  # services.xserver.desktopManager.xmonad = {
-  #   enable = true;
-  #   enableContribAndExtras = true;
-  # }
-  # services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.windowManager.session = [{
-    name = "xsession";
-    manage = "window";
-    start = "exec ~/.xsession";
-  }];
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -86,6 +77,7 @@
     enable = true;
     pulse.enable = true;
     extraConfig.pipewire = {
+      # disable audible bell
       "99-disable-bell" = {
         "context.properties"= {
           "module.x11.bell" = false;

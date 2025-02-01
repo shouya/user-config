@@ -1,7 +1,6 @@
 { config, pkgs, lib, linkConfig, ... }:
 {
   home.file = {
-    ".xsession".source = linkConfig "x11/xsession-nix";
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
     ".config/picom".source = linkConfig "xdg/picom";
 
@@ -9,6 +8,9 @@
     ".config/copyq/copyq-commands.conf".source = linkConfig "xdg/copyq/copyq-commands.conf";
 
   };
+
+  xsession.enable = true;
+  xsession.windowManager.command = "${pkgs.xmonad-with-packages}/bin/xmonad";
 
   home.packages = with pkgs; [
     # fonts
@@ -54,15 +56,6 @@
   services.copyq.enable = true;
   services.pasystray.enable = true;
   services.udiskie.enable = true;
-
-  # https://github.com/nix-community/home-manager/issues/2064#issuecomment-887300055
-  # required by pasystray
-	systemd.user.targets.tray = {
-		Unit = {
-			Description = "Home Manager System Tray";
-			Requires = [ "graphical-session-pre.target" ];
-		};
-	};
 
   home.pointerCursor = {
     package = pkgs.adwaita-icon-theme;
