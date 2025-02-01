@@ -12,7 +12,7 @@
   xsession.importedVariables = [
     "PATH" # allow tools
   ];
-  xsession.windowManager.command = "${pkgs.xmonad-with-packages}/bin/xmonad";
+  xsession.windowManager.command = "env SHLVL=0 ${pkgs.xmonad-with-packages}/bin/xmonad";
 
   home.packages = with pkgs; [
     # fonts
