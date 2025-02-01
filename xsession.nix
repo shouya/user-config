@@ -34,6 +34,20 @@
     enable = true;
     configDir = ./xdg/eww;
   };
+  programs.alacritty.settings = {
+    window.dimensions = {
+      lines = 24;
+      columns = 80;
+    };
+    env.REAL_TERM = "alacritty";
+    env.TERM = "xterm-256color";
+    keyboard.bindings = [
+      { mods = "Super";   key = "Equals"; action = "IncreaseFontSize"; }
+      { mods = "Super";   key = "Minus";  action = "DecreaseFontSize"; }
+      { mods = "Control"; key = "Equals"; action = "None";             }
+      { mods = "Control"; key = "Minus";  action = "None";             }
+    ];
+  };
 
   services.copyq.enable = true;
   services.pasystray.enable = true;
