@@ -39,6 +39,29 @@
     enable = true;
     configDir = ./xdg/eww;
   };
+  systemd.user.services.eww = {
+      Unit = {
+        Description = "Eww";
+        PartOf = [ "graphical-session.target" ];
+      };
+
+      Service.ExecStart = "${pkgs.eww}/bin/eww --no-daemonize daemon";
+      Install.WantedBy = [ "graphical-session.target" ];
+  };
+  systemd.user.services.eww-open-main-window = {
+    Unit = {
+      Description= "Eww Open Main Window";
+      Requires = [ "eww.service" ];
+      After = [ "eww.service" ];
+    };
+
+    Service.Type = "oneshot";
+    Service.ExecStart = "${pkgs.eww}/bin/eww open --no-daemonize main-window";
+    Service.ExecStop = "${pkgs.eww}/bin/eww close main-window";
+    Service.RemainAfterExit = true;
+
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 
   programs.alacritty.enable = true;
   programs.alacritty.settings = {

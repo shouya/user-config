@@ -20,7 +20,7 @@
         };
       };
     in {
-      homeConfigurations."shou" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.shou = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
       };

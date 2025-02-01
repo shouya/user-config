@@ -383,7 +383,7 @@ myFloatingRules conf = conf { manageHook = hooks <+> manageHook conf }
 
 floatPopup = smartCenterFloatWithMax (3%10, 2%10)
 floatSmall = smartCenterFloatWithMax (3%10, 3%10)
-floatNormal = smartCenterFloatWithMax (2%5, 3%5)
+floatNormal = smartCenterFloatWithMax (1%4, 3%4)
 floatNarrow = smartCenterFloatWithMax (3%10, 4%10)
 
 myEwmh =
