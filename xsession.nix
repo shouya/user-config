@@ -34,6 +34,8 @@
     enable = true;
     configDir = ./xdg/eww;
   };
+
+  programs.alacritty.enable = true;
   programs.alacritty.settings = {
     window.dimensions = {
       lines = 24;
