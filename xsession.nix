@@ -6,10 +6,12 @@
 
     ".config/copyq/copyq.conf".source = linkConfig "xdg/copyq/copyq.conf";
     ".config/copyq/copyq-commands.conf".source = linkConfig "xdg/copyq/copyq-commands.conf";
-
   };
 
   xsession.enable = true;
+  xsession.importedVariables = [
+    "PATH" # allow tools
+  ];
   xsession.windowManager.command = "${pkgs.xmonad-with-packages}/bin/xmonad";
 
   home.packages = with pkgs; [
