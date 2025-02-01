@@ -29,7 +29,8 @@
     networkmanagerapplet # nm-applet
     picom
     rofi
-    xmonad-with-packages
+    gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
+    seahorse # manage gnome keyring
   ];
 
   programs.eww = {
@@ -53,6 +54,7 @@
     ];
   };
 
+  services.gnome-keyring.enable = true;
   services.copyq.enable = true;
   services.pasystray.enable = true;
   services.udiskie.enable = true;

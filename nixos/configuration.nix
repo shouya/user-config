@@ -133,11 +133,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-rofi;
-  };
   programs.fish.enable = true;
 
   # List services that you want to enable:
@@ -156,6 +151,12 @@
 
   # disable sudo password
   security.sudo.wheelNeedsPassword = false;
+  security.pam.services.login.enableGnomeKeyring = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-gnome3; # use gnome-keyring
+  };
 
   services.udev.extraRules =
     let mkRule = lib.concatStringsSep ", ";
