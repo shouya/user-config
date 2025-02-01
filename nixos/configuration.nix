@@ -109,7 +109,7 @@
     shell = pkgs.fish;
     packages = with pkgs; [];
   };
-
+  fileSystems."/home/shou/tmp" = {device = "tmpfs"; fsType = "tmpfs";};
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
