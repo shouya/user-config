@@ -14,6 +14,7 @@ let runtimeDeps  = with pkgs; [
       wirelesstools # iwgetid
       wmctrl
       xorg.xprop # xprop
+      eww # eww msg
     ];
     eww = pkgs.eww;
 in {
@@ -23,13 +24,10 @@ in {
 
   home.packages = with pkgs; [
     nerd-fonts.symbols-only
+    eww
   ];
 
-  programs.eww = {
-    enable = true;
-    configDir = ./xdg/eww;
-    package = eww;
-  };
+  xdg.configFile."eww".source = linkConfig "xdg/eww";
 
   systemd.user.services.eww = {
       Unit = {

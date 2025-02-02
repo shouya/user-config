@@ -36,7 +36,7 @@
 (defpoll calendar :interval "1m" `cal -3`)
 (deflisten vigilare :initial '{"active":false,"mode":null,"remaining_seconds":null,"message":""}' `vigilare monitor`)
 
-(defwidget sep [] (label :yalign "0"  :class "sep" :text "|"))
+(defwidget sep [] (label :yalign "0"  :class "sep" :text ""))
 
 (defwidget icon [text]
   (overlay

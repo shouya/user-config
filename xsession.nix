@@ -30,7 +30,6 @@
     autocutsel
     gnome-keyring # ssh-agent, etc
     libnotify # for notify-send
-    networkmanagerapplet # nm-applet
     picom
     rofi
     gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
@@ -41,6 +40,8 @@
     playerctl
   ];
 
+  # prefer app indicator (SNI) over legacy tray icons
+  xsession.preferStatusNotifierItems = true;
 
   systemd.user.services.picom = {
     Unit.Description = "Picom X11 Compositor";
@@ -71,6 +72,7 @@
   services.copyq.enable = true;
   services.pasystray.enable = true;
   services.udiskie.enable = true;
+  services.network-manager-applet.enable = true;
 
   home.pointerCursor = {
     package = pkgs.adwaita-icon-theme;

@@ -128,9 +128,11 @@ circular-progress > label {
 }
 
 .sep {
-  margin-left: 5px;
-  margin-right: 5px;
-  color: $darken;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  border-left: 2px solid $darken;
 }
 
 .khal {
