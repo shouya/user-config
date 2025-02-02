@@ -161,24 +161,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # for khal cli
-    os.environ["PATH"] = ":".join(
-        [
-            "/home/shou/.asdf/shims",
-            "/home/shou/.asdf/bin",
-            "/home/shou/.cargo/bin",
-            "/home/shou/.local/bin",
-            "/home/shou/.shell/bin",
-            "/usr/local/bin",
-            "/usr/local/sbin",
-            "/usr/sbin",
-            "/sbin",
-            "/usr/local/bin",
-            "/usr/bin",
-            "/bin",
-        ]
-    )
-
     min_left = 0
     name = ""
     current_event = None

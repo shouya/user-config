@@ -1,9 +1,11 @@
 { config, pkgs, lib, linkConfig, ... }:
 {
+  imports = [
+    ./eww.nix
+  ];
   home.file = {
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
     ".config/picom".source = linkConfig "xdg/picom";
-
     ".config/copyq/copyq.conf".source = linkConfig "xdg/copyq/copyq.conf";
     ".config/copyq/copyq-commands.conf".source = linkConfig "xdg/copyq/copyq-commands.conf";
   };
@@ -11,7 +13,6 @@
   xsession.enable = true;
   xsession.importedVariables = [
     "PATH" # allow for calling tools in PATH by eww, vdirsync etc
-    "WINDOW_MANAGER" # eww uses this to determine if it should show workspaces
   ];
   xsession.windowManager.command = "env SHLVL=0 ${pkgs.xmonad-with-packages}/bin/xmonad";
   home.sessionVariables = { WINDOW_MANAGER = "xmonad"; };
@@ -20,7 +21,6 @@
     # fonts
     cantarell-fonts # used on ui
     jetbrains-mono # used in emacs
-    nerd-fonts.symbols-only # used by eww
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
     noto-fonts-color-emoji
@@ -37,36 +37,6 @@
     seahorse # manage gnome keyring
   ];
 
-  programs.eww = {
-    enable = true;
-    configDir = ./xdg/eww;
-  };
-  systemd.user.services.eww = {
-      Unit = {
-        Description = "Eww";
-        After= [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
-      };
-
-      Service.ExecStart = "${pkgs.eww}/bin/eww --no-daemonize daemon";
-      Install.WantedBy = [ "graphical-session.target" ];
-  };
-  systemd.user.services.eww-open-main-window = {
-    Unit = {
-      Description= "Eww Open Main Window";
-      Requires = [ "eww.service" ];
-      After = [ "eww.service" ];
-    };
-
-    Service.Type = "oneshot";
-    # wait for 3 seconds for eww to initialize
-    Service.ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
-    Service.ExecStart = "${pkgs.eww}/bin/eww open --no-daemonize main-window";
-    Service.ExecStop = "${pkgs.eww}/bin/eww close main-window";
-    Service.RemainAfterExit = true;
-
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
 
   systemd.user.services.picom = {
     Unit.Description = "Picom X11 Compositor";
