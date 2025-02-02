@@ -67,11 +67,11 @@ in
 
     # shell utils
     zoxide
+    direnv
 
     # dev tools
     nixd # nix lsp
   ];
-
 
   home.sessionVariables = {
     # EDITOR = "emacs";
