@@ -18,19 +18,23 @@
   # boot.plymouth.enable = true; # boot animation
   boot.kernelModules = [ "nvidia" ];
 
+  # resume from swap
+  boot.resumeDevice = "/dev/disk/by-uuid/8e5a49c0-3bf6-4728-ba92-727acdd442a9";
+  # Power management configuration
+  powerManagement.enable = true;
+  networking.interfaces.eth.name = "enp6s0";
+  networking.interfaces.eth.wakeOnLan.enable = true;
+  powerManagement.resumeCommands = ''
+    echo "This should show up in the journal after resuming."
+  '';
+
   networking.hostName = "mrnix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Asia/Seoul";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
@@ -171,12 +175,6 @@
       ])
     ];
 
-  networking.interfaces.eth.name = "enp6s0";
-  networking.interfaces.eth.wakeOnLan.enable = true;
-
-  powerManagement.resumeCommands = ''
-    echo "This should show up in the journal after resuming."
-  '';
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
