@@ -7,6 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nfs-mount.nix
     ];
 
   # allow proprietary packages
@@ -112,6 +113,7 @@
     shell = pkgs.fish;
   };
   fileSystems."/home/shou/tmp" = {device = "tmpfs"; fsType = "tmpfs";};
+
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
