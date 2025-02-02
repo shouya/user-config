@@ -10,9 +10,11 @@
 
   xsession.enable = true;
   xsession.importedVariables = [
-    "PATH" # allow tools
+    "PATH" # allow for calling tools in PATH by eww, vdirsync etc
+    "WINDOW_MANAGER" # eww uses this to determine if it should show workspaces
   ];
   xsession.windowManager.command = "env SHLVL=0 ${pkgs.xmonad-with-packages}/bin/xmonad";
+  home.sessionVariables = { WINDOW_MANAGER = "xmonad"; };
 
   home.packages = with pkgs; [
     # fonts
@@ -42,6 +44,7 @@
   systemd.user.services.eww = {
       Unit = {
         Description = "Eww";
+        After= [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
       };
 
@@ -56,6 +59,8 @@
     };
 
     Service.Type = "oneshot";
+    # wait for 3 seconds for eww to initialize
+    Service.ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
     Service.ExecStart = "${pkgs.eww}/bin/eww open --no-daemonize main-window";
     Service.ExecStop = "${pkgs.eww}/bin/eww close main-window";
     Service.RemainAfterExit = true;

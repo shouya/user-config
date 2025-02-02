@@ -110,7 +110,6 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqp5GiCayavtH8l4rfvg5Wi57yGxedOoXZd64oAy9Hv shou@herbian"
     ];
     shell = pkgs.fish;
-    packages = with pkgs; [];
   };
   fileSystems."/home/shou/tmp" = {device = "tmpfs"; fsType = "tmpfs";};
 
