@@ -63,6 +63,15 @@
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
+  systemd.user.services.picom = {
+    Unit.Description = "Picom X11 Compositor";
+    Unit.PartOf = [ "graphical-session.target" ];
+    Install.WantedBy = [ "graphical-session.target" ];
+    Service.ExecStart = "${pkgs.picom}/bin/picom";
+    Service.Restart = "always";
+    Service.RestartSec = "3";
+  };
+
   programs.alacritty.enable = true;
   programs.alacritty.settings = {
     window.dimensions = {
