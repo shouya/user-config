@@ -7,9 +7,6 @@
  * flameshot (prtscr)
  * slop (select window for prtscr)
  * notify-send (misc)
- * inputplug (startup hook)
- * picom (startup hook)
- * nm-applet (startup hook)
  * alacritty (app key/scratchpad/term)
  * emacs (app key)
  * malakal (app key)
@@ -17,8 +14,6 @@
  * stardict (scratchpad)
  * amixer (volume adjust)
  * copyq (clipboard manager)
- * autocutsel (primary/clipboard sync)
- * xscreensaver
  * rofi (app launcher with M-<space>)
  * playerctl (media keys)
 

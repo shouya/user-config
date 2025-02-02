@@ -60,6 +60,8 @@ in
     telegram-desktop
     anki-bin
     mpv # used by anki
+    qalculate-gtk
+    goldendict-ng
 
     # tools
     (nvtopPackages.nvidia.override { amd = true; })

@@ -38,6 +38,7 @@
 
     # used by xmonad
     alsa-utils # amixer, aplay
+    playerctl
   ];
 
 
