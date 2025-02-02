@@ -58,6 +58,8 @@ in
     firefox
     starship
     telegram-desktop
+    anki-bin
+    mpv # used by anki
 
     # tools
     (nvtopPackages.nvidia.override { amd = true; })
