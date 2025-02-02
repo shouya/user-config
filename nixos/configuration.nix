@@ -20,6 +20,13 @@
 
   # resume from swap
   boot.resumeDevice = "/dev/disk/by-uuid/8e5a49c0-3bf6-4728-ba92-727acdd442a9";
+
+  # luks unlock with usb stick
+  boot.initrd.luks.devices.nixos.keyFile = "/dev/disk/by-partuuid/8df4dcb5-02";
+  boot.initrd.luks.devices.nixos.keyFileSize = 4096;
+  boot.initrd.luks.devices.nixos.keyFileOffset = 151243;
+  boot.initrd.luks.devices.nixos.fallbackToPassword = true;
+
   # Power management configuration
   powerManagement.enable = true;
   networking.interfaces.eth.name = "enp6s0";
