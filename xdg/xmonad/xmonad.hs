@@ -228,7 +228,7 @@ myKeybinding conf = removeKeysP conf (map oldkey repurposedKeys)
                                   then W.sink w s
                                   else W.float w floatingRect s)
         floatingRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
-        playVolume = spawn "aplay /usr/share/sounds/sound-icons/percussion-10.wav"
+        playVolume = spawn "aplay ~/.xmonad/assets/percussion-10.wav"
 
 myTerminal = "alacritty"
 

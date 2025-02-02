@@ -14,7 +14,7 @@
   xsession.importedVariables = [
     "PATH" # allow for calling tools in PATH by eww, vdirsync etc
   ];
-  xsession.windowManager.command = "env SHLVL=0 ${pkgs.xmonad-with-packages}/bin/xmonad";
+  xsession.windowManager.command = "env SHLVL=0 ${pkgs.xmonad-with-packages}/bin/xmonad >/tmp/xmonad.out 2>&1";
   home.sessionVariables = { WINDOW_MANAGER = "xmonad"; };
 
   home.packages = with pkgs; [
@@ -35,6 +35,9 @@
     rofi
     gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
     seahorse # manage gnome keyring
+
+    # used by xmonad
+    alsa-utils # amixer, aplay
   ];
 
 
