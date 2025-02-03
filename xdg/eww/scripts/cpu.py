@@ -32,7 +32,7 @@ def get_freq():
     return freq
 
 
-def run():
+def run(temp_dev):
     load = os.getloadavg()[0]
 
     if load > cpus:
@@ -45,7 +45,7 @@ def run():
     freq = get_freq()
 
     # Get CPU temperature
-    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+    with open(temp_dev, "r") as f:
         temp = f.read().strip()
         # Convert millidegrees Celsius to degrees Celsius
         temp = int(int(temp) / 1000)
@@ -87,15 +87,28 @@ def change_policy():
         )
         subprocess.check_call(["notify-send", "CPU governor policy restored."])
 
+def detect_temp_device():
+    paths = [
+        "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input",
+        "/sys/class/thermal/thermal_zone0/temp",
+    ]
+
+    for path in paths:
+        if os.path.exists(path):
+            return path
+
+    return None
 
 if __name__ == "__main__":
     if sys.argv[1] == "check":
         check()
     elif sys.argv[1] == "run":
-        run()
+        dev = detect_temp_device()
+        run(dev)
     elif sys.argv[1] == "run_forever":
+        dev = detect_temp_device()
         while True:
-            run()
+            run(dev)
             time.sleep(1)
     elif sys.argv[1] == "change_policy":
         change_policy()
