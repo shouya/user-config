@@ -99,6 +99,15 @@
   };
   services.udisks2.enable = true; # required by udiskie
 
+  # bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    # for battery status
+    settings = {General = {Experimental = true;};};
+  };
+  services.blueman.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -137,6 +146,7 @@
     vim
     xclip
     nix-search
+    bluez-experimental
 
     # for convenient tools
     python313Full
