@@ -12,6 +12,8 @@
 
   # allow proprietary packages
   nixpkgs.config.allowUnfree = true;
+  # build package with CUDA support
+  nixpkgs.config.cudaSupport = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -125,6 +127,16 @@
 
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # mostly for CUDA cache
+  # https://discourse.nixos.org/t/cuda-cache-for-nix-community/56038
+  nix.settings.substituters = [
+    "https://nix-community.cachix.org"
+  ];
+  nix.settings.trusted-public-keys = [
+    # Compare to the key published at https://nix-community.org/cache
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  ];
 
   # programs.firefox.enable = true;
 
