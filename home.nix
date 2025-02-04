@@ -37,7 +37,7 @@ in
 
   programs.ssh = {
     enable = true;
-    includes = [ (toString ./base/ssh_config.private) ];
+    extraConfig = builtins.readFile ./base/ssh_config.private;
   };
 
   programs.emacs.enable = true;
