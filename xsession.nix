@@ -34,6 +34,7 @@
     rofi
     gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
     seahorse # manage gnome keyring
+    wmctrl # used by emacs, eww, etc
 
     # used by xmonad
     alsa-utils # amixer, aplay
