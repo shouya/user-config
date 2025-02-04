@@ -61,6 +61,7 @@
     };
     env.REAL_TERM = "alacritty";
     env.TERM = "xterm-256color";
+    env.WINIT_X11_SCALE_FACTOR = "1.5";
     keyboard.bindings = [
       { mods = "Super";   key = "Equals"; action = "IncreaseFontSize"; }
       { mods = "Super";   key = "Minus";  action = "DecreaseFontSize"; }
