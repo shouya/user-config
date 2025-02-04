@@ -11,6 +11,7 @@ in
     ./emacs.nix
     ./xsession.nix
     ./calendar.nix
+    ./fcitx.nix
   ];
   _module.args = {
     inherit user-config link linkConfig;
