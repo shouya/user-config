@@ -67,7 +67,10 @@ in
     (nvtopPackages.nvidia.override { amd = true; })
     flameshot
     git-crypt
+    kubectl
     pass
+    podman
+    wireshark
 
     # shell utils
     zoxide

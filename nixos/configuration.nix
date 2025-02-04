@@ -116,7 +116,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.shou = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" ];
+    extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" "wireshark" ];
     uid = 1000;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqp5GiCayavtH8l4rfvg5Wi57yGxedOoXZd64oAy9Hv shou@herbian"
@@ -143,23 +143,24 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    bluez-experimental
     delta
+    dig
     fd
     file
     git
+    git-lfs
     gnumake
     htop
     lm_sensors
     lshw
     ncdu
+    nix-search
     pciutils
     ripgrep
     tree
     vim
     xclip
-    nix-search
-    bluez-experimental
-    nix-alien
 
     # for convenient tools
     python313Full
