@@ -205,6 +205,11 @@
         ''KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1"''
         ''RUN+="${hdparm}/bin/hdparm -B 90 -S 60 /dev/%k"''
       ])
+      (mkRule [
+        ''SUBSYSTEM=="block"''
+        ''ENV{ID_SERIAL}=="LGE_USB_Drive*"''
+        ''ENV{UDISKS_IGNORE}="1"''
+      ])
     ];
 
   # Copy the NixOS configuration file and link it from the resulting system
