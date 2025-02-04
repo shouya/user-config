@@ -81,7 +81,9 @@ in
     enable = true;
     package = pkgs.ollama-cuda;
     acceleration = "cuda";
+    host = "0.0.0.0";
     environmentVariables = {
+      OLLAMA_ORIGINS = "*";
       OLLAMA_FLASH_ATTENTION = "1";
       OLLAMA_KV_CACHE_TYPE = "q8_0";
     };
