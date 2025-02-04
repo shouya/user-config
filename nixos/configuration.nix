@@ -159,6 +159,7 @@
     xclip
     nix-search
     bluez-experimental
+    nix-alien
 
     # for convenient tools
     python313Full
@@ -204,7 +205,6 @@
         ''RUN+="${hdparm}/bin/hdparm -B 90 -S 60 /dev/%k"''
       ])
     ];
-
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
