@@ -8,6 +8,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./nfs-mount.nix
+      ./extra.hidden.nix
     ];
 
   # allow proprietary packages
@@ -190,7 +191,6 @@
   security.pam.services.login.enableGnomeKeyring = true;
   programs.gnupg.agent = {
     enable = true;
-    enableSSHSupport = true;
     pinentryPackage = pkgs.pinentry-gnome3; # use gnome-keyring
   };
 
