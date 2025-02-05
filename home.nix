@@ -75,11 +75,15 @@ in
 
     # shell utils
     zoxide
-    direnv
 
     # dev tools
     nixd # nix lsp
   ];
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   services.ollama = {
     enable = true;
