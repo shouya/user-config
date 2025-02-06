@@ -63,6 +63,7 @@ in
 
     # tools
     (nvtopPackages.nvidia.override { amd = true; })
+    aider-chat
     flameshot
     git-crypt
     kubectl

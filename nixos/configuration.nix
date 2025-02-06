@@ -161,6 +161,7 @@
     ripgrep
     tree
     vim
+    wget
     xclip
 
     # for convenient tools
