@@ -81,3 +81,7 @@ scratch/
 # environments
 .direnv
 .envrc
+
+# aider-chat
+.aider*
+.env
