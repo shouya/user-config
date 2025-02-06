@@ -126,6 +126,9 @@
   };
   fileSystems."/home/shou/tmp" = {device = "tmpfs"; fsType = "tmpfs";};
 
+  documentation.doc.enable = true;
+  documentation.dev.enable = true;
+  documentation.man.enable = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -155,6 +158,8 @@
     htop
     lm_sensors
     lshw
+    man-pages
+    man-pages-posix
     ncdu
     nix-search
     pciutils
