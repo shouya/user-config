@@ -27,11 +27,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1738483014,
-        "narHash": "sha256-DCa8Ut3iw2m2v9W/ZCVZCxQmYxH7WRUbguSmBUu/HAc=",
+        "lastModified": 1738827856,
+        "narHash": "sha256-7jHEwIUgIVOHI+gbBBwyh4HUw5JVafW6YfSpNcZT8AI=",
         "owner": "shouya",
         "repo": "malakal",
-        "rev": "759d39b51e09796e2a0c2d0f07268f2ea25dd390",
+        "rev": "e8becaec5467e9c2cd23ebf8bd58849191c0345b",
         "type": "github"
       },
       "original": {
@@ -89,11 +89,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1737885589,
-        "narHash": "sha256-Zf0hSrtzaM1DEz8//+Xs51k/wdSajticVrATqDrfQjg=",
+        "lastModified": 1738680400,
+        "narHash": "sha256-ooLh+XW8jfa+91F1nhf9OF7qhuA/y1ChLx6lXDNeY5U=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "852ff1d9e153d8875a83602e03fdef8a63f0ecf8",
+        "rev": "799ba5bffed04ced7067a91798353d360788b30d",
         "type": "github"
       },
       "original": {
