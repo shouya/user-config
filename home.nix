@@ -36,10 +36,7 @@ in
     ignores = [ (builtins.readFile ./base/gitignore) ];
   };
 
-  programs.ssh = {
-    enable = true;
-    extraConfig = builtins.readFile ./base/ssh_config.private;
-  };
+  home.file.".ssh/config".source = linkConfig "base/ssh_config.private";
 
   programs.emacs.enable = true;
   xdg.enable = true;
