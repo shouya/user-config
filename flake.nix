@@ -21,6 +21,13 @@
         };
       };
     in {
+      nixosConfigurations.mrnix = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./nixos/configuration.nix
+        ];
+      };
+
       homeConfigurations.shou = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
