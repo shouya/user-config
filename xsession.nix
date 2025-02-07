@@ -31,7 +31,6 @@
     gnome-keyring # ssh-agent, etc
     libnotify # for notify-send
     picom
-    rofi
     gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
     seahorse # manage gnome keyring
     wmctrl # used by emacs, eww, etc
@@ -69,6 +68,10 @@
       { mods = "Control"; key = "Minus";  action = "None";             }
     ];
   };
+
+  programs.rofi.enable = true;
+  programs.rofi.extraConfig.dpi = 1; # auto dpi
+  programs.rofi.extraConfig.show-icons = true;
 
   services.gnome-keyring.enable = true;
   services.copyq.enable = true;
