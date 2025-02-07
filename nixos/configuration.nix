@@ -156,10 +156,12 @@
     git-lfs
     gnumake
     htop
+    jq
     lm_sensors
     lshw
     man-pages
     man-pages-posix
+    moreutils
     ncdu
     nix-search
     pciutils

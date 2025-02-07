@@ -54,7 +54,7 @@ in
     calibre
     chromium
     firefox
-    starship
+    element
     telegram-desktop
     anki-bin
     mpv # used by anki
@@ -64,14 +64,18 @@ in
     # tools
     (nvtopPackages.nvidia.override { amd = true; })
     aider-chat
+    aria2
     flameshot
     git-crypt
     kubectl
     pass
     podman
+    uv
     wireshark
+    yt-dlp
 
     # shell utils
+    starship
     zoxide
 
     # dev tools
