@@ -181,12 +181,15 @@
   programs.fish.enable = true;
 
   # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
     settings.PermitRootLogin = "yes";
   };
+
+  services.collectd.enable = true;
+  services.collectd.extraConfig = lib.readFile /home/shou/projects/infra/collectd/gen/mrnix.conf;
+
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 11434 ];
