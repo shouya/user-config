@@ -9,8 +9,9 @@ if not type -qf wakeonlan
     alias wakeonlan-mrnix 'wakeonlan 10:ff:e0:3c:6d:ec'
 end
 
-alias nix-shell-fish 'nix-shell --command fish'
-alias nix-develop-fish 'nix develop--command fish'
+function nix-shell-here --description 'Load nix-shell env without a subshell'
+    eval (nix-shell $argv --run "direnv dump fish")
+end
 
 function nixos-conf-repl --description 'Start a nixos configuration repl'
     # run in a subshell so cwd is not changed
