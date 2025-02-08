@@ -175,6 +175,15 @@
     python313Full
   ];
 
+  # globally available aliases
+  environment.shellAliases = {
+    ll = "ls -lh";
+    l = "ls";
+    lt = "ls -lhtr";
+    rg = "rg --smart-case";
+    less = "less -R";
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
