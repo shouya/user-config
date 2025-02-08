@@ -14,6 +14,7 @@ let runtimeDeps  = with pkgs; [
       wirelesstools # iwgetid
       wmctrl
       xorg.xprop # xprop
+      xdotool # for summoning malakal
       eww # eww msg
     ];
     eww = pkgs.eww;
