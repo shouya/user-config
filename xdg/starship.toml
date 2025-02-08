@@ -13,6 +13,7 @@ $package\
 $python\
 $elixir\
 $rust\
+$nix_shell\
 $env_var\
 $custom\
 $cmd_duration\
@@ -83,3 +84,7 @@ disabled = false
 [env_var]
 variable = "incognito_mode"
 style = "dimmed"
+
+[nix_shell]
+# snow flake unicode
+symbol = "\u2744 "
