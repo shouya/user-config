@@ -156,8 +156,8 @@ gpg: # GnuPG agent config
 	killall -9 gpg-agent
 
 tmux: # Tmux
-	./utils/backup ~/.tmux.conf
-	ln -rsf tmux/tmux.conf ~/.tmux.conf
+	./utils/backup ~/.config/tmux
+	ln -rsf xdg/tmux ~/.config
 
 rclone: # Rclone config (requires git-crypt)
 	git crypt unlock
