@@ -1,4 +1,4 @@
-{ config, pkgs, lib, linkConfig, ... }:
+{ config, pkgs, lib, scripts, linkConfig, ... }:
 {
   imports = [
     ./eww.nix
@@ -15,7 +15,7 @@
     "PATH" # allow for calling tools in PATH by eww, vdirsync etc
   ];
   xsession.windowManager.command = "env SHLVL=0 ${pkgs.xmonad-with-packages}/bin/xmonad >/tmp/xmonad.out 2>&1";
-  home.sessionVariables = { WINDOW_MANAGER = "xmonad"; };
+  home.sessionVariables.WINDOW_MANAGER = "xmonad";
 
   home.packages = with pkgs; [
     # fonts
@@ -78,6 +78,8 @@
   services.pasystray.enable = true;
   services.udiskie.enable = true;
   services.network-manager-applet.enable = true;
+
+  home.sessionVariables.PATH = "${scripts}/linux:${scripts}/common";
 
   home.pointerCursor = {
     package = pkgs.adwaita-icon-theme;

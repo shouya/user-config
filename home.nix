@@ -3,6 +3,7 @@
 
 let
   user-config = "${config.home.homeDirectory}/projects/user-config";
+  scripts = "${config.home.homeDirectory}/projects/scripts";
   link = config.lib.file.mkOutOfStoreSymlink;
   linkConfig = path: link "${user-config}/${path}";
 in
@@ -14,7 +15,7 @@ in
     ./fcitx.nix
   ];
   _module.args = {
-    inherit user-config link linkConfig;
+    inherit user-config scripts link linkConfig;
   };
 
   # Let Home Manager install and manage itself.
@@ -99,11 +100,6 @@ in
       OLLAMA_FLASH_ATTENTION = "1";
       OLLAMA_KV_CACHE_TYPE = "q8_0";
     };
-  };
-
-
-  home.sessionVariables = {
-    # EDITOR = "emacs";
   };
 
   home.stateVersion = "24.11";
