@@ -20,20 +20,9 @@
     };
   };
 
-  # xsession.windowManager.command = lib.mkForce (
-  #   let wmcmd = config.xsession.windowManager.command;
-  #       prefix = "env SHLVL=0 ";
-  #       suffix = " >/tmp/xmonad.out 2>/tmp/xmonad.err";
-  #       finalCmd = "${prefix}${wmcmd}${suffix}";
-  #   in finalCmd
-  # );
+  home.file.".xmonad/assets/percussion-10.wav".source =
+    ./xdg/xmonad/assets/percussion-10.wav;
 
-  # let wmcmd = config.xsession.windowManager.command;
-  #     commandUntouched = !(lib.strings.hasInfix "SHLVL" wmcmd);
-  #     prefix = "env SHLVL=0 ";
-  #     suffix = " >/tmp/xmonad.out 2>/tmp/xmonad.err";
-  #     finalCmd = lib.mkIf commandUntouched "${prefix}${wmcmd}${suffix}";
-  # in finalCmd;
   xsession.windowManager.command = lib.mkForce ''
   export SHLVL=0
   ~/.xmonad/xmonad-x86_64-linux >/tmp/xmonad.out 2>/tmp/xmonad.err
