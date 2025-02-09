@@ -67,6 +67,7 @@ in
     (nvtopPackages.nvidia.override { amd = true; })
     aider-chat
     aria2
+    bubblewrap
     flameshot
     git-crypt
     kubectl
