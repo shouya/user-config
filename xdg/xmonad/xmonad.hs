@@ -215,6 +215,7 @@ myKeybinding conf = removeKeysP conf (map oldkey repurposedKeys)
           , ("S-<XF86Display>", spawn "mons -e m")
           , ("C-M1-v", spawn "calibre-to-anki.sh")
           , ("C-M1-k", spawn "killall -9 java")
+          , ("M-S-p", spawn "rofi-pass")
           ]
         oldkey (a,b,c) = a
         newkey (a,b,c) = (b,c)

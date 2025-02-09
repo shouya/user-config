@@ -68,9 +68,19 @@
     ];
   };
 
-  programs.rofi.enable = true;
-  programs.rofi.extraConfig.dpi = 1; # auto dpi
-  programs.rofi.extraConfig.show-icons = true;
+  programs.rofi = {
+    enable = true;
+    extraConfig.dpi = 1; # auto dpi
+    extraConfig.show-icons = true;
+    pass = {
+      enable = true;
+      extraConfig = ''
+      clip=clipboard # save to clipboard instead of primary selection
+      default_do=copyPass # don't show menu, just copy
+      notify=true # notify on copy success
+      '';
+    };
+  };
 
   services.gnome-keyring.enable = true;
   services.copyq.enable = true;
