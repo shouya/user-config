@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1738145391,
-        "narHash": "sha256-/9mfbWYN9HDQbKa2HdAe2T5e3FfY8e4eqc1FIvAyvLg=",
+        "lastModified": 1739051380,
+        "narHash": "sha256-p1QSLO8DJnANY+ppK7fjD8GqfCrEIDjso1CSRHsXL7Y=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1b4f2a48168b3d90e11365552d1e7e601a4be6b6",
+        "rev": "5af1b9a0f193ab6138b89a8e0af8763c21bbf491",
         "type": "github"
       },
       "original": {
@@ -27,11 +27,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1738827856,
+        "lastModified": 1739087217,
         "narHash": "sha256-7jHEwIUgIVOHI+gbBBwyh4HUw5JVafW6YfSpNcZT8AI=",
         "owner": "shouya",
         "repo": "malakal",
-        "rev": "e8becaec5467e9c2cd23ebf8bd58849191c0345b",
+        "rev": "5b602d3568cd63f0b96ed87be9ffbc3dc5fe5a4f",
         "type": "github"
       },
       "original": {
@@ -71,6 +71,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1739087318,
+        "narHash": "sha256-WAz5ss5NgoBWWNvw9wNOJhXWKwmV1rIPHiEscwRDwSM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ef503dd62eec4aa7a47793ae43ad38e5716873c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "release-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1738297584,
@@ -89,11 +105,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1738680400,
-        "narHash": "sha256-ooLh+XW8jfa+91F1nhf9OF7qhuA/y1ChLx6lXDNeY5U=",
+        "lastModified": 1739020877,
+        "narHash": "sha256-mIvECo/NNdJJ/bXjNqIh8yeoSjVLAuDuTUzAo7dzs8Y=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+        "rev": "a79cfe0ebd24952b580b1cf08cd906354996d547",
         "type": "github"
       },
       "original": {
@@ -107,7 +123,8 @@
       "inputs": {
         "home-manager": "home-manager",
         "malakal": "malakal",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_3",
+        "nixpkgs-stable": "nixpkgs-stable"
       }
     },
     "systems": {
