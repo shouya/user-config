@@ -300,7 +300,7 @@ ${wifi.signal}"
    :tooltip { dunst-enabled ? "Notifications enabled" : "Notifications disabled" }
    :enabled dunst-enabled
    :enable-var-name "dunst-enabled"
-   :curr "test $(dunstctl is-paused) = true && echo false || echo true"
+   :curr "test `dunstctl is-paused` = true && echo false || echo true"
    :on "dunstctl set-paused false"
    :off "dunstctl set-paused true")
   )

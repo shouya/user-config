@@ -16,6 +16,7 @@ let runtimeDeps  = with pkgs; [
       xorg.xprop # xprop
       xdotool # for summoning malakal
       eww # eww msg
+      config.services.dunst.package # dunstctl
     ];
     eww = pkgs.eww;
 in {

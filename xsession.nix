@@ -79,6 +79,8 @@
   services.udiskie.enable = true;
   services.network-manager-applet.enable = true;
 
+  services.dunst.enable = true;
+
   home.sessionVariables.PATH = "${scripts}/linux:${scripts}/common";
 
   home.pointerCursor = {
