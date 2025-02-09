@@ -35,7 +35,8 @@
   #     finalCmd = lib.mkIf commandUntouched "${prefix}${wmcmd}${suffix}";
   # in finalCmd;
   xsession.windowManager.command = lib.mkForce ''
-  env SHLVL=0 ~/.xmonad/xmonad-x86_64-linux >/tmp/xmonad.out 2>/tmp/xmonad.err
+  export SHLVL=0
+  ~/.xmonad/xmonad-x86_64-linux >/tmp/xmonad.out 2>/tmp/xmonad.err
   '';
 
 
