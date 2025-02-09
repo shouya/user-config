@@ -81,7 +81,10 @@
 
   services.dunst.enable = true;
 
-  home.sessionVariables.PATH = "${scripts}/linux:${scripts}/common";
+  home.sessionPath = [
+    "${scripts}/linux"
+    "${scripts}/common"
+  ];
 
   home.pointerCursor = {
     package = pkgs.adwaita-icon-theme;
