@@ -31,6 +31,10 @@
   boot.initrd.luks.devices.nixos.keyFileOffset = 151243;
   boot.initrd.luks.devices.nixos.fallbackToPassword = true;
 
+  # ensure /tmp is a tmpfs
+  boot.tmp.cleanOnBoot = true;
+  boot.tmp.useTmpfs = true;
+
   # Power management configuration
   powerManagement.enable = true;
   networking.interfaces.eth.name = "enp6s0";
