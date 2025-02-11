@@ -65,7 +65,10 @@ in
 
     # tools
     (nvtopPackages.nvidia.override { amd = true; })
-    aider-chat
+    (aider-chat.overrideAttrs (p: {
+      version = "0.74.0";
+     src = p.src.override { tag = "v0.74.0"; };
+    }))
     aria2
     bubblewrap
     flameshot
