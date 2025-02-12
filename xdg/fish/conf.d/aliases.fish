@@ -38,7 +38,7 @@ alias xl 'atool --explain --list'
 alias k kubectl
 
 # aria
-alias a2c 'aria2c -x10 -s10 -c --file-allocation=none'
+abbr --add a2c --position anywhere -- aria2c -x10 -s10 -c --file-allocation=none
 
 # yt-dlp
 alias yt 'yt-dlp --no-progress --no-mtime --min-filesize 200k --cookies-from-browser firefox --downloader aria2c --verbose'
