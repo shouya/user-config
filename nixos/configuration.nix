@@ -207,7 +207,6 @@
     localNetworkGameTransfers.openFirewall = true;
   };
 
-
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 11434 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
