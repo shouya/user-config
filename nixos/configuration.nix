@@ -146,8 +146,6 @@
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
-  # programs.firefox.enable = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -202,6 +200,12 @@
 
   services.collectd.enable = true;
   services.collectd.extraConfig = lib.readFile /home/shou/projects/infra/collectd/gen/mrnix.conf;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
 
 
   # Open ports in the firewall.
