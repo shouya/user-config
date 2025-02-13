@@ -218,6 +218,18 @@
     pinentryPackage = pkgs.pinentry-gnome3; # use gnome-keyring
   };
 
+  services.udev.packages = lib.singleton (
+    pkgs.writeTextFile {
+      name = "hid-uaccess-rules";
+      text =''
+        # keychron keyboard
+        ACTION=="add|change", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="0933", MODE="0666", TAG+="uaccess"
+      '';
+      # must precede 73-seat-late.rules
+      destination = "/etc/udev/rules.d/70-keychron.rules";
+    }
+  );
+
   services.udev.extraRules =
     let mkRule = lib.concatStringsSep ", ";
     in with pkgs; lib.concatStringsSep "\n" [
