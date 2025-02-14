@@ -10,6 +10,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     malakal.url = "github:shouya/malakal";
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { nixpkgs, nixpkgs-stable, home-manager, ... }@inputs:
@@ -37,6 +42,7 @@
         inherit pkgs;
         modules = [
           { _module.args = { inherit inputs system; }; }
+          inputs.nix-index-database.hmModules.nix-index
           ./home.nix
         ];
 

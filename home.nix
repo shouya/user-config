@@ -13,6 +13,7 @@ in
     ./xsession.nix
     ./calendar.nix
     ./fcitx.nix
+    ./shell.nix
   ];
   _module.args = {
     inherit user-config scripts link linkConfig;
@@ -38,7 +39,6 @@ in
   };
 
   home.file.".ssh/config".source = linkConfig "base/ssh_config.private";
-  xdg.configFile."tmux/tmux.conf".source = linkConfig "xdg/tmux/tmux.conf";
 
   programs.emacs.enable = true;
   xdg.enable = true;
@@ -81,19 +81,9 @@ in
     wireshark
     yt-dlp
 
-    # shell utils
-    starship
-    zoxide
-    openssl # generate random password
-
     # dev tools
     nixd # nix lsp
   ];
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
 
   services.ollama = {
     enable = true;

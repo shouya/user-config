@@ -21,3 +21,8 @@ function nixos-conf-repl --description 'Start a nixos configuration repl'
     nix repl ".#nixosConfigurations."(hostname)
     '
 end
+
+# automatically run commands from packages without installing
+# https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/programs/command-not-found/command-not-found.nix
+# prefix command with a "," to run without installing
+# set -x NIX_AUTO_RUN 1
