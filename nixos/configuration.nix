@@ -168,6 +168,7 @@
     nix-search
     pciutils
     ripgrep
+    socat
     tree
     vim
     wget

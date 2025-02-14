@@ -84,6 +84,7 @@ in
     # shell utils
     starship
     zoxide
+    openssl # generate random password
 
     # dev tools
     nixd # nix lsp
