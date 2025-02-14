@@ -9,6 +9,7 @@ if not type -qf wakeonlan
     alias wakeonlan-mrnix 'wakeonlan 10:ff:e0:3c:6d:ec'
 end
 
+# run nix-shell environment without a subshell
 function nix-shell-here --description 'Load nix-shell env without a subshell'
     eval (nix-shell $argv --run "direnv dump fish")
 end
