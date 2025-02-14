@@ -20,6 +20,8 @@
     };
   };
 
+  home.file.".xmonad/scripts".source = ./xdg/xmonad/scripts;
+
   home.file.".xmonad/assets/percussion-10.wav".source =
     ./xdg/xmonad/assets/percussion-10.wav;
 
