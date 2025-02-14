@@ -5,6 +5,7 @@ end
 # LS related
 alias l ls
 alias ll 'ls -lh'
+alias lla 'ls -lah'
 alias lt 'ls -lhtr'
 
 # view file in vim with syntax highlighting
