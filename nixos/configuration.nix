@@ -39,7 +39,7 @@
 
   # Power management configuration
   powerManagement.enable = true;
-  networking.interfaces.eth.name = "enp6s0";
+  networking.interfaces.eth.name = "enp7s0";
   networking.interfaces.eth.wakeOnLan.enable = true;
   powerManagement.resumeCommands = ''
     echo "This should show up in the journal after resuming."
