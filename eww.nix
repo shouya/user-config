@@ -34,13 +34,12 @@ in {
   systemd.user.services.eww = {
       Unit = {
         Description = "Eww";
-        After = [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
       };
 
       Service.ExecStart = "${eww}/bin/eww --no-daemonize daemon";
       Service.ExecStartPost = "${eww}/bin/eww open --no-daemonize main-window";
-      Service.TimeoutStopSec = "5s";
+      Service.TimeoutStopSec = "2s";
       Service.Environment = "PATH=${lib.makeBinPath runtimeDeps}";
       Install.WantedBy = [ "graphical-session.target" ];
   };
