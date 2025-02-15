@@ -4,6 +4,7 @@
     ./xmonad.nix
     ./eww.nix
   ];
+
   home.file = {
     ".Xresources".source = linkConfig "x11/Xresources.herbian";
     ".config/picom".source = linkConfig "xdg/picom";
@@ -87,8 +88,25 @@
   services.pasystray.enable = true;
   services.udiskie.enable = true;
   services.network-manager-applet.enable = true;
-
   services.dunst.enable = true;
+
+  services.xidlehook = {
+    enable = true;
+    not-when-audio = true;
+    not-when-fullscreen = true;
+    environment = {
+      output = "$(xrandr | awk '/ primary/{print $1}')";
+    };
+
+    timers = [
+      {delay = 300;
+       command   = "xrandr --output $output --brightness .5";
+       canceller = "xrandr --output $output --brightness 1";
+      }
+      {delay = 600; command = "xset dpms force off";}
+      {delay = 1800; command = "systemctl hibernate";}
+    ];
+  };
 
   home.sessionPath = [
     "${scripts}/linux"
