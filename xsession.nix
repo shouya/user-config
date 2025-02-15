@@ -90,6 +90,7 @@
   services.network-manager-applet.enable = true;
   services.dunst.enable = true;
 
+  services.caffeine.enable = true;
   services.xidlehook = {
     enable = true;
     not-when-audio = true;
