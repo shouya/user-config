@@ -50,15 +50,15 @@ in
 
   home.packages = with pkgs; [
     # apps
-    calibre
-    chromium
-    firefox
-    element
-    telegram-desktop
-    anki-bin
-    mpv # used by anki
-    qalculate-gtk
-    goldendict-ng
+    (wrapGL calibre)
+    (wrapGL chromium)
+    (wrapGL firefox)
+    (wrapGL element)
+    (wrapGL telegram-desktop)
+    (wrapGL anki-bin)
+    (wrapGL mpv) # used by anki
+    (wrapGL qalculate-gtk)
+    (wrapGL goldendict-ng)
 
     # tools
     ({
