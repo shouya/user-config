@@ -30,7 +30,6 @@
     autocutsel
     gnome-keyring # ssh-agent, etc
     libnotify # for notify-send
-    (wrapGL picom)
     gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
     seahorse # manage gnome keyring
     wmctrl # used by emacs, eww, etc
@@ -47,7 +46,7 @@
     Unit.Description = "Picom X11 Compositor";
     Unit.PartOf = [ "graphical-session.target" ];
     Install.WantedBy = [ "graphical-session.target" ];
-    Service.ExecStart = "${pkgs.picom}/bin/picom";
+    Service.ExecStart = "${wrapGL pkgs.picom}/bin/picom";
     Service.Restart = "always";
     Service.RestartSec = "3";
   };
