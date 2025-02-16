@@ -1,4 +1,4 @@
-{ config, pkgs, lib, linkConfig, ... }:
+{ config, pkgs, lib, linkConf, ... }:
 let runtimeDeps  = with pkgs; [
       bash
       coreutils # stdbuf
@@ -29,7 +29,7 @@ in {
     eww
   ];
 
-  xdg.configFile."eww".source = linkConfig "xdg/eww";
+  xdg.configFile."eww".source = linkConf "eww";
 
   systemd.user.services.eww = {
       Unit = {

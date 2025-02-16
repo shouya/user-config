@@ -1,4 +1,4 @@
-{ config, pkgs, lib, scripts, linkConfig, ... }:
+{ config, pkgs, lib, scripts, linkConf, ... }:
 {
   imports = [
     ./xmonad.nix
@@ -6,10 +6,10 @@
   ];
 
   home.file = {
-    ".Xresources".source = linkConfig "x11/Xresources.herbian";
-    ".config/picom".source = linkConfig "xdg/picom";
-    ".config/copyq/copyq.conf".source = linkConfig "xdg/copyq/copyq.conf";
-    ".config/copyq/copyq-commands.conf".source = linkConfig "xdg/copyq/copyq-commands.conf";
+    ".Xresources".source = linkConf "x11/Xresources.herbian";
+    ".config/picom".source = linkConf "picom";
+    ".config/copyq/copyq.conf".source = linkConf "copyq/copyq.conf";
+    ".config/copyq/copyq-commands.conf".source = linkConf "copyq/copyq-commands.conf";
   };
 
   xsession.enable = true;

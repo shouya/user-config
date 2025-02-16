@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, linkConfig, ... }:
+{ config, pkgs, lib, inputs, linkConf, ... }:
 {
   # run nix-shell with fish
   programs.nix-your-shell.enable = true;
@@ -7,6 +7,7 @@
     ${config.programs.nix-your-shell.package}/bin/nix-your-shell fish | source
     '';
   };
+  xdg.configFile."starship.toml".source = linkConf "starship.toml";
 
   # shell utils
   home.packages = with pkgs; [
@@ -16,10 +17,10 @@
   ];
 
   # fish config
-  home.file.".config/fish".source = linkConfig "xdg/fish";
+  home.file.".config/fish".source = linkConf "fish";
 
   # tmux
-  xdg.configFile."tmux/tmux.conf".source = linkConfig "xdg/tmux/tmux.conf";
+  xdg.configFile."tmux/tmux.conf".source = linkConf "tmux/tmux.conf";
 
   # direnv
   programs.direnv = {

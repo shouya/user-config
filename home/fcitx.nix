@@ -1,4 +1,4 @@
-{ config, pkgs, lib, linkConfig, ... }:
+{ config, pkgs, lib, linkConf, ... }:
 {
   i18n.inputMethod = {
     enabled = "fcitx5";
@@ -9,5 +9,5 @@
     ];
   };
 
-  xdg.configFile."fcitx5".source = linkConfig "xdg/fcitx5";
+  xdg.configFile."fcitx5".source = linkConf "fcitx5";
 }

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, linkConfig, inputs, system, ... }:
+{ config, pkgs, lib, linkConf, inputs, system, ... }:
 {
   home.packages = with pkgs; [
     khal
@@ -6,8 +6,8 @@
     inputs.malakal.defaultPackage.${system}
   ];
 
-  home.file.".config/vdirsyncer".source = linkConfig "xdg/vdirsyncer";
-  home.file.".config/khal".source = linkConfig "xdg/khal";
+  home.file.".config/vdirsyncer".source = linkConf "vdirsyncer";
+  home.file.".config/khal".source = linkConf "khal";
   home.file.".config/malakal/config.toml".source =
     (pkgs.formats.toml {}).generate "config.toml" {
       calendar_name = "time-blocking";

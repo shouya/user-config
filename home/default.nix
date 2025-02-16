@@ -2,10 +2,9 @@
 
 
 let
-  user-config = "${config.home.homeDirectory}/projects/user-config";
+  conf-path = "${config.home.homeDirectory}/projects/user-config/conf";
   scripts = "${config.home.homeDirectory}/projects/scripts";
-  link = config.lib.file.mkOutOfStoreSymlink;
-  linkConfig = path: link "${user-config}/${path}";
+  linkConf = path: config.lib.file.mkOutOfStoreSymlink "${conf-path}/${path}";
 in
 {
   imports = [
@@ -16,7 +15,7 @@ in
     ./shell.nix
   ];
   _module.args = {
-    inherit user-config scripts link linkConfig;
+    inherit scripts linkConf;
   };
 
   # Let Home Manager install and manage itself.
@@ -34,11 +33,11 @@ in
 
   programs.git = {
     enable = true;
-    includes = [ { path = ./base/gitconfig; } ];
-    ignores = [ (builtins.readFile ./base/gitignore) ];
+    includes = [ { path = ../conf/gitconfig; } ];
+    ignores = [ (builtins.readFile ../conf/gitignore) ];
   };
 
-  home.file.".ssh/config".source = linkConfig "base/ssh_config.private";
+  home.file.".ssh/config".source = linkConf "base/ssh_config.private";
 
   programs.emacs.enable = true;
   xdg.enable = true;
