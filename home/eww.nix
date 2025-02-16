@@ -14,11 +14,11 @@ let eww = wrapGL pkgs.eww;
       util-linux # cal
       wirelesstools # iwgetid
       wmctrl
+      xapp # used
       xorg.xprop # xprop
       xdotool # for summoning malakal
-      eww # eww msg
       config.services.dunst.package # dunstctl
-    ];
+    ] ++ [eww];
 in {
   xsession.importedVariables = [
     "WINDOW_MANAGER" # eww uses this to determine if it should show workspaces
