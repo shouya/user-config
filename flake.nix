@@ -37,14 +37,26 @@
         ];
       };
 
-      homeConfigurations.shou = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."shou@mrnix" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
           { _module.args = { inherit inputs system; }; }
+          { _module.args = { host = "mrnix"; }; }
           inputs.nix-index-database.hmModules.nix-index
           ./home
         ];
 
       };
+
+      homeConfigurations."shou@herbian" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          { _module.args = { inherit inputs system; }; }
+          { _module.args = { host = "herbian"; }; }
+          inputs.nix-index-database.hmModules.nix-index
+          ./home
+        ];
+      };
+
     };
 }

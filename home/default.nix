@@ -1,6 +1,4 @@
-{ config, pkgs, lib, ... }:
-
-
+{ config, pkgs, lib, host, ... }:
 let
   conf-path = "${config.home.homeDirectory}/projects/user-config/conf";
   scripts = "${config.home.homeDirectory}/projects/scripts";
@@ -37,7 +35,7 @@ in
     ignores = [ (builtins.readFile ../conf/gitignore) ];
   };
 
-  home.file.".ssh/config".source = linkConf "base/ssh_config.private";
+  home.file.".ssh/config".source = linkConf "ssh_config.private";
 
   programs.emacs.enable = true;
   xdg.enable = true;
@@ -63,13 +61,17 @@ in
     goldendict-ng
 
     # tools
-    (nvtopPackages.nvidia.override { amd = true; })
+    ({
+      herbian = nvtopPackages.nvidia;
+      mrnix   = nvtopPackages.nvidia.override { amd = true; };
+    }."${host}")
     (aider-chat.overrideAttrs (p: {
       version = "0.74.0";
-     src = p.src.override { tag = "v0.74.0"; };
+      src = p.src.override { tag = "v0.74.0"; };
     }))
     aria2
     bubblewrap
+    cachix
     flameshot
     git-crypt
     kubectl
