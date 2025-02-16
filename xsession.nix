@@ -102,9 +102,10 @@
     timers = [
       {delay = 300;
        command   = "xrandr --output $output --brightness .5";
-       canceller = "xrandr --output $output --brightness 1";
-      }
-      {delay = 600; command = "xset dpms force off";}
+       canceller = "xrandr --output $output --brightness 1";}
+      {delay = 600;
+       command = ''xrandr --output $output --brightness 1;
+                   xset dpms force off'';}
       {delay = 1800; command = "systemctl hibernate";}
     ];
   };
