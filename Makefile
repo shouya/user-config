@@ -19,13 +19,6 @@ home-manager: install-home-manager # Home Manager
 unlock: # Unlock with git-crypt
 	@git crypt unlock || echo "git-crypt not found, skipping"
 
-vim: # Vim RC
-	ln -frs base/vimrc ~/.vimrc
-
-neovim: # Neovim
-	./utils/backup ~/.config/nvim
-	ln -rsf xdg/nvim ~/.config
-
 emacs: # Emacs config (requires git-crypt)
 	git clone --recursive git@git.lain.li:shouya/emacs.d.git emacs
 	cd emacs
