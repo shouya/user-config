@@ -1,5 +1,14 @@
 { config, pkgs, lib, linkConf, wrapGL, ... }:
-let eww = wrapGL pkgs.eww;
+let eww = pkgs.symlinkJoin {
+      name = "eww";
+      paths = [ (wrapGL pkgs.eww) ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/eww \
+          --prefix PATH : ${lib.makeBinPath runtimeDeps} \
+          --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.xapp]}
+      '';
+    };
     runtimeDeps  = with pkgs; [
       bash
       coreutils # stdbuf
@@ -14,11 +23,10 @@ let eww = wrapGL pkgs.eww;
       util-linux # cal
       wirelesstools # iwgetid
       wmctrl
-      xapp # used
       xorg.xprop # xprop
       xdotool # for summoning malakal
       config.services.dunst.package # dunstctl
-    ] ++ [eww];
+    ];
 in {
   xsession.importedVariables = [
     "WINDOW_MANAGER" # eww uses this to determine if it should show workspaces
@@ -26,8 +34,7 @@ in {
 
   home.packages = with pkgs; [
     nerd-fonts.symbols-only
-    eww
-  ];
+  ] ++ [eww];
 
   xdg.configFile."eww".source = linkConf "eww";
 
@@ -38,9 +45,8 @@ in {
       };
 
       Service.ExecStart = "${eww}/bin/eww --no-daemonize daemon";
-      Service.ExecStartPost = "${eww}/bin/eww open --no-daemonize main-window";
+      Service.ExecStartPost = "${eww}/bin/eww open main-window";
       Service.TimeoutStopSec = "2s";
-      Service.Environment = "PATH=${lib.makeBinPath runtimeDeps}";
       Install.WantedBy = [ "graphical-session.target" ];
   };
 }
