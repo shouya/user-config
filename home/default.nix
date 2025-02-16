@@ -1,8 +1,9 @@
 { config, pkgs, lib, host, ... }:
 let
-  conf-path = "${config.home.homeDirectory}/projects/user-config/conf";
+  root = "${config.home.homeDirectory}/projects/user-config";
   scripts = "${config.home.homeDirectory}/projects/scripts";
-  linkConf = path: config.lib.file.mkOutOfStoreSymlink "${conf-path}/${path}";
+  linkConf = path: config.lib.file.mkOutOfStoreSymlink "${root}/conf/${path}";
+  link = path: config.lib.file.mkOutOfStoreSymlink "${root}/${path}";
 in
 {
   imports = [
@@ -13,7 +14,7 @@ in
     ./shell.nix
   ];
   _module.args = {
-    inherit scripts linkConf;
+    inherit scripts linkConf link;
   };
 
   # Let Home Manager install and manage itself.

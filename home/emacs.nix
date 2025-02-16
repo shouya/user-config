@@ -1,4 +1,4 @@
-{ pkgs, lib, config, linkConf, ... }:
+{ pkgs, lib, config, link, ... }:
 with lib;
 let cfg = config.programs.emacs;
     symlinks = [
@@ -29,7 +29,7 @@ in
         {
           name = ".emacs.d/${name}";
           value = {
-            source = linkConf "emacs/${name}";
+            source = link "emacs/${name}";
           };
         }
       )
