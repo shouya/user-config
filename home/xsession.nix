@@ -9,7 +9,7 @@
     ".Xresources".source = linkConf "x11/Xresources.herbian";
     ".config/picom".source = linkConf "picom";
     ".config/copyq/copyq.conf".source = linkConf "copyq/copyq.conf";
-    ".config/copyq/copyq-commands.conf".source = linkConf "copyq/copyq-commands.conf";
+    ".config/copyq/copyq-commands.ini".source = linkConf "copyq/copyq-commands.ini";
   };
 
   xsession.enable = true;
