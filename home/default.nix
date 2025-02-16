@@ -1,4 +1,4 @@
-{ config, pkgs, lib, host, ... }:
+{ config, pkgs, lib, host, wrapGL, ... }:
 let
   root = "${config.home.homeDirectory}/projects/user-config";
   scripts = "${config.home.homeDirectory}/projects/scripts";
@@ -50,7 +50,7 @@ in
 
   home.packages = with pkgs; [
     # apps
-    alacritty
+    (wrapGL alacritty)
     calibre
     chromium
     firefox
@@ -73,7 +73,7 @@ in
     aria2
     bubblewrap
     cachix
-    flameshot
+    (wrapGL flameshot)
     git-crypt
     kubectl
     pass
