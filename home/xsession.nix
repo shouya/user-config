@@ -52,21 +52,24 @@
     Service.RestartSec = "3";
   };
 
-  programs.alacritty.enable = true;
-  programs.alacritty.settings = {
-    window.dimensions = {
-      lines = 24;
-      columns = 80;
+  programs.alacritty = {
+    enable = true;
+    package = wrapGL pkgs.alacritty;
+    settings = {
+      window.dimensions = {
+        lines = 24;
+        columns = 80;
+      };
+      env.REAL_TERM = "alacritty";
+      env.TERM = "xterm-256color";
+      env.WINIT_X11_SCALE_FACTOR = "1.5";
+      keyboard.bindings = [
+        { mods = "Super";   key = "Equals"; action = "IncreaseFontSize"; }
+        { mods = "Super";   key = "Minus";  action = "DecreaseFontSize"; }
+        { mods = "Control"; key = "Equals"; action = "None";             }
+        { mods = "Control"; key = "Minus";  action = "None";             }
+      ];
     };
-    env.REAL_TERM = "alacritty";
-    env.TERM = "xterm-256color";
-    env.WINIT_X11_SCALE_FACTOR = "1.5";
-    keyboard.bindings = [
-      { mods = "Super";   key = "Equals"; action = "IncreaseFontSize"; }
-      { mods = "Super";   key = "Minus";  action = "DecreaseFontSize"; }
-      { mods = "Control"; key = "Equals"; action = "None";             }
-      { mods = "Control"; key = "Minus";  action = "None";             }
-    ];
   };
 
   programs.rofi = {

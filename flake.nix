@@ -15,6 +15,7 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixGL.url = "github:nix-community/nixGL";
   };
 
   outputs = { nixpkgs, nixpkgs-stable, home-manager, ... }@inputs:

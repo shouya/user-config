@@ -50,7 +50,6 @@ in
 
   home.packages = with pkgs; [
     # apps
-    (wrapGL alacritty)
     calibre
     chromium
     firefox
