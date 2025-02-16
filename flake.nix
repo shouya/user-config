@@ -21,9 +21,8 @@
     let
       system = "x86_64-linux";
       stable-pkgs = import nixpkgs-stable { inherit system; config.allowUnfree = true; };
-      pins = final: prev: {
-        # tracking: https://github.com/NixOS/nixpkgs/issues/380562
-        khal = stable-pkgs.khal;
+      pins = _final: _prev: {
+        # khal = stable-pkgs.khal;
       };
       pkgs = (import nixpkgs {
         inherit system;
