@@ -73,6 +73,7 @@ in
     bubblewrap
     cachix
     (wrapGL flameshot)
+    delta # git diff
     git-crypt
     kubectl
     pass
