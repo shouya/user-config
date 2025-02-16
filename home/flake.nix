@@ -42,7 +42,7 @@
         modules = [
           { _module.args = { inherit inputs system; }; }
           inputs.nix-index-database.hmModules.nix-index
-          ./home
+          ./home.nix
         ];
 
       };
