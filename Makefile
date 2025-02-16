@@ -25,6 +25,11 @@ emacs: # Emacs config (requires git-crypt)
 	mkdir -p ~/.emacs.d
 	ln -rsf emacs/* ~/.emacs.d
 
+cachix: # Cache for nix
+	@which nix-shell || echo Please install nix first.
+	nix-shell -p cachix --run "cachix use nix-community"
+	nix-shell -p cachix --run "cachix use spray8696"
+
 pass: # Password store
 	git clone git@git.lain.li:shouya/pass.git ~/.password-store || true
 	cd ~/.password-store; git pull --rebase
