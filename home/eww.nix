@@ -1,5 +1,6 @@
-{ config, pkgs, lib, linkConf, ... }:
-let runtimeDeps  = with pkgs; [
+{ config, pkgs, lib, linkConf, wrapGL, ... }:
+let eww = wrapGL pkgs.eww;
+    runtimeDeps  = with pkgs; [
       bash
       coreutils # stdbuf
       gawk # awk
@@ -18,7 +19,6 @@ let runtimeDeps  = with pkgs; [
       eww # eww msg
       config.services.dunst.package # dunstctl
     ];
-    eww = pkgs.eww;
 in {
   xsession.importedVariables = [
     "WINDOW_MANAGER" # eww uses this to determine if it should show workspaces

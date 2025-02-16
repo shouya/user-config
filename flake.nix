@@ -43,6 +43,7 @@
           { _module.args = { inherit inputs system; }; }
           { _module.args = { host = "mrnix"; }; }
           inputs.nix-index-database.hmModules.nix-index
+          ./home/nixos.nix
           ./home
         ];
 
@@ -54,6 +55,7 @@
           { _module.args = { inherit inputs system; }; }
           { _module.args = { host = "herbian"; }; }
           inputs.nix-index-database.hmModules.nix-index
+          ./home/non-nixos.nix
           ./home
         ];
       };

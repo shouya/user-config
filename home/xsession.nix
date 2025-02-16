@@ -1,4 +1,4 @@
-{ config, pkgs, lib, scripts, linkConf, ... }:
+{ config, pkgs, lib, scripts, linkConf, wrapGL, ... }:
 {
   imports = [
     ./xmonad.nix
@@ -30,7 +30,7 @@
     autocutsel
     gnome-keyring # ssh-agent, etc
     libnotify # for notify-send
-    picom
+    (wrapGL picom)
     gcr # provides org.gnome.keyring.SystemPrompter (pinentry?)
     seahorse # manage gnome keyring
     wmctrl # used by emacs, eww, etc
