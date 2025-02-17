@@ -85,3 +85,5 @@ scratch/
 # aider-chat
 .aider*
 .env
+
+*.nix-gc-root
