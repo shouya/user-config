@@ -3,9 +3,11 @@ let eww = pkgs.symlinkJoin {
       name = "eww";
       paths = [ (wrapGL pkgs.eww) ];
       buildInputs = [ pkgs.makeWrapper ];
+      # make sure eww widgets can call runtime deps and eww binary.
       postBuild = ''
         wrapProgram $out/bin/eww \
           --prefix PATH : ${lib.makeBinPath runtimeDeps} \
+          --prefix PATH : $out/bin \
           --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.xapp]}
       '';
     };
