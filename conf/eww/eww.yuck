@@ -301,8 +301,8 @@ ${wifi.signal}"
    :enabled dunst-enabled
    :enable-var-name "dunst-enabled"
    :curr "test `dunstctl is-paused` = true && echo false || echo true"
-   :on "dunstctl set-paused false"
-   :off "dunstctl set-paused true")
+   :on "dunstctl set-paused false && eww update dunst-enabled=true"
+   :off "dunstctl set-paused true && eww update dunst-enabled=false")
   )
 
 (defwidget vigilare-toggle-tooltip []

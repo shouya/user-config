@@ -6,12 +6,11 @@ let eww = pkgs.symlinkJoin {
       # make sure eww widgets can call runtime deps and eww binary.
       postBuild = ''
         wrapProgram $out/bin/eww \
-          --prefix PATH : ${lib.makeBinPath runtimeDeps} \
-          --prefix PATH : $out/bin \
-          --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.xapp]}
+          --prefix PATH : "${lib.makeBinPath runtimeDeps}" \
+          --prefix PATH : $out/bin
       '';
     };
-    runtimeDeps  = with pkgs; [
+    runtimeDeps = with pkgs; [
       bash
       coreutils # stdbuf
       gawk # awk
@@ -24,7 +23,7 @@ let eww = pkgs.symlinkJoin {
       python313Full
       util-linux # cal
       wirelesstools # iwgetid
-      wmctrl
+      wmctrl # for workspace switching
       xorg.xprop # xprop
       xdotool # for summoning malakal
       config.services.dunst.package # dunstctl
