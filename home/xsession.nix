@@ -3,6 +3,7 @@
   imports = [
     ./xmonad.nix
     ./eww.nix
+    ./input.nix
   ];
 
   home.file = {

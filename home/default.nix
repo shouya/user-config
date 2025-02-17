@@ -19,13 +19,6 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  home.keyboard.options = [
-    "ctrl:nocaps"
-    "altwin:swap_lalt_lwin"
-  ];
-  systemd.user.services.setxkbmap.Service.ExecStartPre = ''
-  ${pkgs.xorg.xset}/bin/xset r rate 200 45
-  '';
 
   home.username = "shou";
   home.homeDirectory = "/home/shou";
