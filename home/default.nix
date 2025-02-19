@@ -7,6 +7,7 @@ let
 in
 {
   imports = [
+    ./ssh.nix
     ./emacs.nix
     ./xsession.nix
     ./calendar.nix
@@ -28,8 +29,6 @@ in
     includes = [ { path = ../conf/gitconfig; } ];
     ignores = [ (builtins.readFile ../conf/gitignore) ];
   };
-
-  home.file.".ssh/config".source = linkConf "ssh_config.private";
 
   programs.emacs.enable = true;
   xdg.enable = true;
