@@ -104,12 +104,15 @@
 
     timers = [
       {delay = 300;
-       command   = "xrandr --output $output --brightness .5";
-       canceller = "xrandr --output $output --brightness 1";}
+       command   = ''echo dim;
+                     xrandr --output $output --brightness .5'';
+       canceller = ''echo undim;
+                     xrandr --output $output --brightness 1'';}
       {delay = 600;
-       command = ''xrandr --output $output --brightness 1;
+       command = ''echo blank;
+                   xrandr --output $output --brightness 1;
                    xset dpms force off'';}
-      {delay = 1800; command = "systemctl hibernate";}
+      {delay = 1800; command = "echo hib; systemctl hibernate";}
     ];
   };
 
