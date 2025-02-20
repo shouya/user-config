@@ -5,20 +5,21 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.11";
+    nixos-hardware.url = "github:shouya/nixos-hardware/fix-gigabyte-b650-suspend";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    malakal.url = "github:shouya/malakal";
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixGL.url = "github:nix-community/nixGL";
+    malakal.url = "github:shouya/malakal";
   };
 
-  outputs = { nixpkgs, nixpkgs-stable, home-manager, ... }@inputs:
+  outputs = { nixpkgs, nixpkgs-stable, home-manager, nixos-hardware, ... }@inputs:
     let
       system = "x86_64-linux";
       stable-pkgs = import nixpkgs-stable { inherit system; config.allowUnfree = true; };
@@ -33,6 +34,7 @@
       nixosConfigurations.mrnix = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
+          nixos-hardware.nixosModules.gigabyte-b650
           { _module.args = { inherit inputs system; }; }
           ./nixos/configuration.nix
         ];

@@ -113,6 +113,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1740017258,
+        "narHash": "sha256-DGZE74qfuBMXA3odUqZx7rmwFvxBSWVeZqnh7wFKNao=",
+        "owner": "shouya",
+        "repo": "nixos-hardware",
+        "rev": "abbd95141efbafdc0b4846efea268e5eaa8a0e2b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shouya",
+        "ref": "fix-gigabyte-b650-suspend",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 0,
@@ -194,6 +210,7 @@
         "malakal": "malakal",
         "nix-index-database": "nix-index-database",
         "nixGL": "nixGL",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-stable": "nixpkgs-stable"
       }
