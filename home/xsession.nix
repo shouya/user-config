@@ -103,16 +103,16 @@
     };
 
     timers = [
-      {delay = 300;
+      {delay = 180;
        command   = ''echo dim;
                      xrandr --output $output --brightness .5'';
        canceller = ''echo undim;
                      xrandr --output $output --brightness 1'';}
-      {delay = 600;
+      {delay = 240;
        command = ''echo blank;
                    xrandr --output $output --brightness 1;
                    xset dpms force off'';}
-      {delay = 1800; command = "echo hib; systemctl hibernate";}
+      {delay = 600; command = "echo sleep; systemctl suspend";}
     ];
   };
 
