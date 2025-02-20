@@ -37,6 +37,11 @@
   boot.tmp.cleanOnBoot = true;
   boot.tmp.useTmpfs = true;
 
+  boot.kernelParams = [
+    # see https://bbs.archlinux.org/viewtopic.php?pid=2227023
+    "acpi_osi=\"!Windows 2015\""
+  ];
+
   # Power management configuration
   powerManagement.enable = true;
   networking.interfaces.eth.name = "enp7s0";
