@@ -35,6 +35,9 @@
         inherit system;
         modules = [
           nixos-hardware.nixosModules.gigabyte-b650
+          nixos-hardware.nixosModules.common-cpu-amd-pstate
+          nixos-hardware.nixosModules.common-cpu-amd
+          nixos-hardware.nixosModules.common-pc-ssd
           { _module.args = { inherit inputs system; }; }
           ./nixos/configuration.nix
         ];
