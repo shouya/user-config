@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ lib, pkgs, inputs, ... }:
+{ lib, config, pkgs, inputs, ... }:
 {
   imports =
     [
@@ -76,6 +76,7 @@
     powerManagement.enable = true;
     powerManagement.finegrained = true;
     nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     prime = {
       offload.enable = true;
       offload.enableOffloadCmd = true; # generate the nvidia-offload command
