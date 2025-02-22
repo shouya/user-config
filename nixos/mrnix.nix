@@ -7,6 +7,8 @@
       inputs.nixos-hardware.nixosModules.common-cpu-amd
       inputs.nixos-hardware.nixosModules.common-pc-ssd
 
+      ./nix.nix
+
       ./nfs-mount.nix
       ./mrnix/configuration.nix
       ./mrnix/hardware-configuration.nix

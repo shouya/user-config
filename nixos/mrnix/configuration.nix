@@ -4,11 +4,6 @@
 
 { lib, config, pkgs, inputs, ... }:
 {
-  # allow proprietary packages
-  nixpkgs.config.allowUnfree = true;
-  # build package with CUDA support
-  nixpkgs.config.cudaSupport = true;
-
   hardware.enableRedistributableFirmware = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -130,17 +125,6 @@
   documentation.dev.enable = true;
   documentation.man.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # mostly for CUDA cache
-  # https://discourse.nixos.org/t/cuda-cache-for-nix-community/56038
-  nix.settings.substituters = [
-    "https://nix-community.cachix.org"
-  ];
-  nix.settings.trusted-public-keys = [
-    # Compare to the key published at https://nix-community.org/cache
-    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -247,16 +231,6 @@
         ''ENV{UDISKS_IGNORE}="1"''
       ])
     ];
-
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 30d";
-  };
-  nix.optimise = {
-    dates = ["weekly"];
-    automatic = true;
-  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
