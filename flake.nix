@@ -35,7 +35,7 @@
         inherit system;
         specialArgs = {inherit inputs system;};
         modules = [
-          ./nixos/configuration.nix
+          ./nixos/mrnix.nix
         ];
       };
 

@@ -4,19 +4,6 @@
 
 { lib, config, pkgs, inputs, ... }:
 {
-  imports =
-    [
-      inputs.nixos-hardware.nixosModules.gigabyte-b650
-      inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
-      inputs.nixos-hardware.nixosModules.common-cpu-amd
-      inputs.nixos-hardware.nixosModules.common-pc-ssd
-
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./nfs-mount.nix
-      ./extra.hidden.nix
-    ];
-
   # allow proprietary packages
   nixpkgs.config.allowUnfree = true;
   # build package with CUDA support
