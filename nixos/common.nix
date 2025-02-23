@@ -27,4 +27,16 @@
     dates = ["weekly"];
     automatic = true;
   };
+
+  # locale
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  # globally available aliases
+  environment.shellAliases = {
+    ll = "ls -lh";
+    l = "ls";
+    lt = "ls -lhtr";
+    rg = "rg --smart-case";
+    less = "less -R";
+  };
 }
