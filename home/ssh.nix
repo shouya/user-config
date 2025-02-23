@@ -5,5 +5,4 @@ let keys = pkgs.fetchurl {
     };
 in {
   home.file.".ssh/authorized_keys".source = keys;
-  home.file.".ssh/config".source = linkConf "ssh_config.private";
 }

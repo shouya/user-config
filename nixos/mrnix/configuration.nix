@@ -91,9 +91,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" "wireshark" ];
     uid = 1000;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqp5GiCayavtH8l4rfvg5Wi57yGxedOoXZd64oAy9Hv shou@herbian"
-    ];
+    openssh.authorizedKeys.keys = (import ../../ssh-keys.hidden.nix).common;
     shell = pkgs.fish;
   };
   fileSystems."/home/shou/tmp" = {device = "tmpfs"; fsType = "tmpfs";};

@@ -7,7 +7,6 @@ let
 in
 {
   imports = [
-    ./ssh.nix
     ./emacs.nix
     ./xsession.nix
     ./calendar.nix
@@ -20,6 +19,9 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # link ssh config
+  home.file.".ssh/config".source = linkConf "ssh_config.private";
 
   home.username = "shou";
   home.homeDirectory = "/home/shou";
