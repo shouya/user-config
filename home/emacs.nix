@@ -45,6 +45,9 @@ in
 
       # node for copilot.el
       nodejs_22
+
+      # used by ox-pandoc
+      pandoc
     ];
   };
 }
