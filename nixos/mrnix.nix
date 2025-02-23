@@ -9,9 +9,13 @@
 
       ./common.nix
 
+      ./bluetooth.nix
       ./nfs-mount.nix
+
       ./mrnix/configuration.nix
       ./mrnix/hardware-configuration.nix
       ./mrnix/extra.hidden.nix
     ];
+
+  networking.hostName = "mrnix";
 }

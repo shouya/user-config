@@ -29,23 +29,14 @@
   powerManagement.enable = true;
   networking.interfaces.eth.name = "enp7s0";
   networking.interfaces.eth.wakeOnLan.enable = true;
-  powerManagement.resumeCommands = ''
-    echo "This should show up in the journal after resuming."
-  '';
 
-  networking.hostName = "mrnix"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;
 
   time.timeZone = "Asia/Seoul";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+  console = {
+    font = "Lat2-Terminus16";
+    useXkbConfig = true; # use xkb.options in tty.
+  };
 
   # Enable the X11 windowing system.
   services.xserver = {
@@ -74,15 +65,9 @@
   };
 
   # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+  services.xserver.xkb.layout = "us";
+  services.xserver.xkb.options = "ctrl:nocaps,altwin:swap_lalt_lwin";
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
   services.pipewire = {
     enable = true;
     pulse.enable = true;
@@ -97,14 +82,6 @@
   };
   services.udisks2.enable = true; # required by udiskie
 
-  # bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-    # for battery status
-    settings = {General = {Experimental = true;};};
-  };
-  services.blueman.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
@@ -124,7 +101,6 @@
   documentation.doc.enable = true;
   documentation.dev.enable = true;
   documentation.man.enable = true;
-
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -158,26 +134,13 @@
     python313Full
   ];
 
-  # globally available aliases
-  environment.shellAliases = {
-    ll = "ls -lh";
-    l = "ls";
-    lt = "ls -lhtr";
-    rg = "rg --smart-case";
-    less = "less -R";
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
   programs.fish.enable = true;
 
-  # List services that you want to enable:
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "yes";
-  };
+  services.openssh.enable = true;
 
   services.collectd.enable = true;
   services.collectd.extraConfig = lib.readFile /home/shou/projects/infra/collectd/gen/mrnix.conf;
@@ -216,7 +179,8 @@
 
   services.udev.extraRules =
     let mkRule = lib.concatStringsSep ", ";
-    in with pkgs; lib.concatStringsSep "\n" [
+        hdparm = pkgs.hdparm;
+    in lib.concatStringsSep "\n" [
       # turn off rotational disk after 5 minutes (60 * 5) and set power
       # saving level to 128
       (mkRule [
