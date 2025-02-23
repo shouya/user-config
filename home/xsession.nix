@@ -98,6 +98,9 @@
     enable = true;
     not-when-audio = true;
     not-when-fullscreen = true;
+    # In case of bad behaving window setting itself as fullscreen when it's not,
+    # find out the culprit with this command:
+    # , xwininfo -tree -root | awk '/0x[a-z0-9]{5,}/ {print $1}' | xargs -I9 sh -c '(xprop -id 9 | grep FULL) && xprop -id 9
     environment = {
       output = "$(xrandr | awk '/ primary/{print $1}')";
     };
